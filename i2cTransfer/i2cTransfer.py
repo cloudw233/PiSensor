@@ -45,20 +45,114 @@ class IntegratedSensorHub:
             'ina226': {'voltage': 0.0},
             'pcf8591': [0, 0, 0, 0]
         }
+        self.device_data = {
+            'pcf8574': 0,
+            'max30102': {
+                'heart_rate': 0,
+                'finger_detected': False,
+                'signal_quality': 0
+            },
+            'ina226': {'voltage': 0.0},
+            'pcf8591': [0, 0, 0, 0]
+        }
+
+        # 心率计算相关变量
+        self.ir_samples = []
+        self.last_beat_time = time.time()
+        self.beats_count = 0
+        self.sampling_start_time = time.time()
+
+    def calculate_heart_rate(self, ir_value):
+        """计算心率"""
+        SAMPLE_RATE = 100      # 采样率 Hz
+        MIN_HR = 45           # 最小心率 BPM
+        MAX_HR = 200          # 最大心率 BPM
+        FINGER_THRESHOLD = 30000  # 手指检测阈值
+        PEAK_THRESHOLD = 1.005   # 降低峰值检测阈值
+        MIN_PEAK_INTERVAL = 0.3  # 最小峰值间隔（秒）
+        
+        current_time = time.time()
+        
+        # 检查是否有手指放置
+        if ir_value < FINGER_THRESHOLD:
+            self.device_data['max30102']['finger_detected'] = False
+            self.device_data['max30102']['heart_rate'] = 0
+            self.ir_samples = []
+            self.last_beat_time = current_time
+            return
+        
+        self.device_data['max30102']['finger_detected'] = True
+        self.ir_samples.append((current_time, ir_value))
+        
+        # 保持3秒的采样窗口
+        while self.ir_samples and (current_time - self.ir_samples[0][0]) > 3.0:
+            self.ir_samples.pop(0)
+        
+        # 至少需要0.5秒的数据
+        if len(self.ir_samples) >= 50:
+            # 使用移动平均平滑数据
+            window_size = 4
+            smoothed_samples = []
+            for i in range(len(self.ir_samples) - window_size + 1):
+                avg_value = sum(x[1] for x in self.ir_samples[i:i+window_size]) / window_size
+                smoothed_samples.append((self.ir_samples[i+window_size-1][0], avg_value))
+            
+            # 峰值检测
+            peaks = []
+            for i in range(1, len(smoothed_samples)-1):
+                _, prev_val = smoothed_samples[i-1]
+                curr_time, curr_val = smoothed_samples[i]
+                _, next_val = smoothed_samples[i+1]
+                
+                if (curr_val > prev_val and 
+                    curr_val > next_val and 
+                    curr_val > prev_val * PEAK_THRESHOLD):
+                    
+                    # 检查是否与上一个峰值间隔足够
+                    if not peaks or (curr_time - peaks[-1][0]) >= MIN_PEAK_INTERVAL:
+                        peaks.append((curr_time, curr_val))
+            
+            # 计算心率
+            if len(peaks) >= 2:
+                # 使用多个峰值间隔的平均值
+                intervals = []
+                for i in range(1, len(peaks)):
+                    interval = peaks[i][0] - peaks[i-1][0]
+                    if interval > 0:
+                        bpm = 60 / interval
+                        if MIN_HR <= bpm <= MAX_HR:
+                            intervals.append(bpm)
+                
+                if intervals:
+                    avg_bpm = sum(intervals) / len(intervals)
+                    
+                    # 平滑心率输出
+                    if self.device_data['max30102']['heart_rate'] == 0:
+                        self.device_data['max30102']['heart_rate'] = int(avg_bpm)
+                    else:
+                        current_hr = self.device_data['max30102']['heart_rate']
+                        new_hr = int((current_hr * 0.7) + (avg_bpm * 0.3))
+                        self.device_data['max30102']['heart_rate'] = new_hr
+                    print(f"检测到心跳峰值数: {len(peaks)}, 计算心率: {new_hr} BPM")
 
     def read_tilt_switch(self):
         """
         读取倾斜开关状态 (PCF8574T P6)
         返回: (bool, bool) - (当前状态, 是否改变)
         """
-        data = self.device_data['pcf8574']
-        tilt_state = not (data & 0x01)  # 低电平有效
-        
-        # 状态变化检测
-        changed = tilt_state != self.last_tilt_state
-        self.last_tilt_state = tilt_state
-        
-        return tilt_state, changed
+        try:
+            data = self.device_data['pcf8574']
+            # 修改为直接读取P6引脚状态，低电平表示触发
+            tilt_state = not bool(data & 0x40)  # 0x40 = 0b01000000，取P6引脚
+            
+            # 状态变化检测
+            changed = tilt_state != self.last_tilt_state
+            self.last_tilt_state = tilt_state
+            
+            return tilt_state, changed
+        except Exception as e:
+            print(f"倾斜开关读取错误: {e}")
+            return False, False
     
     def read_gas_sensors(self):
         """
@@ -90,29 +184,64 @@ class IntegratedSensorHub:
             return False
             
     def read_max30102(self):
+        """读取和初始化MAX30102心率传感器"""
         try:
-        # 1. 软复位
+            # 1. 检查传感器是否存在并打印调试信息
+            part_id = self.bus.read_byte_data(MAX30102_ADDR, REG_PART_ID)
+            rev_id = self.bus.read_byte_data(MAX30102_ADDR, REG_REV_ID)
+            print(f"MAX30102 ID: 0x{part_id:02X}, REV: 0x{rev_id:02X}")
+            
+            if part_id != 0x15:
+                print(f"MAX30102器件ID错误: 0x{part_id:02X}")
+                return False
+
+            # 2. 软复位并等待
             self.bus.write_byte_data(MAX30102_ADDR, REG_MODE_CONFIG, 0x40)
             time.sleep(0.1)
-        
-        # 2. 设置SpO2模式
-            self.bus.write_byte_data(MAX30102_ADDR, REG_MODE_CONFIG, 0x03)
-        
-        # 3. 配置SpO2参数
-        # 采样率=100Hz, LED脉冲宽度=411μs, ADC范围=4096nA
-            self.bus.write_byte_data(MAX30102_ADDR, REG_SPO2_CONFIG, 0x27)
-        
-        # 4. 设置LED电流（0xFF=最大亮度）
-            self.bus.write_byte_data(MAX30102_ADDR, REG_LED1_PA, 0xFF)  # 红光
-            self.bus.write_byte_data(MAX30102_ADDR, REG_LED2_PA, 0xFF)  # 红外
-        
-        # 5. 清除所有中断
-            self.bus.write_byte_data(MAX30102_ADDR, REG_INTR_STATUS_1, 0xFF)
-            self.bus.write_byte_data(MAX30102_ADDR, REG_INTR_STATUS_2, 0xFF)
-        
+
+            # 3. 完整配置序列
+            # 禁用所有中断
+            self.bus.write_byte_data(MAX30102_ADDR, REG_INTR_ENABLE_1, 0x00)
+            self.bus.write_byte_data(MAX30102_ADDR, REG_INTR_ENABLE_2, 0x00)
+            
+            # 配置FIFO
+            self.bus.write_byte_data(MAX30102_ADDR, REG_FIFO_WR_PTR, 0x00)
+            self.bus.write_byte_data(MAX30102_ADDR, REG_FIFO_RD_PTR, 0x00)
+            self.bus.write_byte_data(MAX30102_ADDR, REG_FIFO_OVF_COUNTER, 0x00)
+            
+            # 配置模式
+            self.bus.write_byte_data(MAX30102_ADDR, REG_MODE_CONFIG, 0x03)  # SpO2模式
+            
+            # 配置SPO2（采样率=100Hz，ADC量程=16384）
+            self.bus.write_byte_data(MAX30102_ADDR, REG_SPO2_CONFIG, 0x47)  # 0x47: 100Hz, 16384, 411us
+            
+            # 增加LED亮度
+            self.bus.write_byte_data(MAX30102_ADDR, REG_LED1_PA, 0x7F)  # 红光LED ~24mA
+            self.bus.write_byte_data(MAX30102_ADDR, REG_LED2_PA, 0x7F)  # 红外LED ~24mA
+
+            # 4. 等待数据
+            time.sleep(0.1)  # 等待至少一个样本
+            
+            # 5. 读取FIFO数据
+            num_samples = self.bus.read_byte_data(MAX30102_ADDR, REG_FIFO_WR_PTR) - \
+                        self.bus.read_byte_data(MAX30102_ADDR, REG_FIFO_RD_PTR)
+            
+            
+            if num_samples > 0:
+                ir_sum = 0
+                samples_read = 0
+                for _ in range(min(num_samples, 4)):
+                    data = self.bus.read_i2c_block_data(MAX30102_ADDR, REG_FIFO_DATA, 6)
+                    ir = ((data[3] << 16) | (data[4] << 8) | data[5]) & 0x3FFFF
+                    ir_sum += ir
+                    samples_read += 1
+                    self.calculate_heart_rate(ir)
+                
+            print(f"平均IR值: {ir_sum/samples_read:.0f}")  # 调试信息
             return True
+            
         except Exception as e:
-            print(f"MAX30102初始化错误: {e}")
+            print(f"MAX30102读取错误: {e}")
             return False
 
     def read_ina226(self):
@@ -201,10 +330,12 @@ def main():
         while True:
             sensor_data = sensor_hub.read_all_sensors()
             
-            # 倾斜状态
+            print(f"传感器数据：")
+
+          # 倾斜状态（添加更多调试信息）
             tilt_status = "倾斜" if sensor_data["tilt"]["state"] else "水平"
-            if sensor_data["tilt"]["changed"]:
-                print(f"[倾斜开关] 状态改变: {tilt_status}")
+            print(f"[倾斜开关] 当前状态: {tilt_status}")
+            
             
             # 气体传感器状态
             gas_status = []
@@ -218,17 +349,24 @@ def main():
             
             if gas_status:
                 print("[气体传感器] " + ", ".join(gas_status))
-            
+           
             # 心率传感器数据
-            print(f"[心率传感器] RED: {sensor_data['heart_rate']['red']}, IR: {sensor_data['heart_rate']['ir']}")
+            if sensor_data['heart_rate']['finger_detected']:
+                if sensor_data['heart_rate']['heart_rate'] > 0:
+                    print(f"[心率传感器] 心率: {sensor_data['heart_rate']['heart_rate']} BPM")
+                else:
+                    print("[心率传感器] 正在计算心率...")
+            else:
+                print("[心率传感器] 未检测到手指")
+            
             
             # 电源监测
-            print(f"[电源状态] 电压: {sensor_data['power']['voltage']:.3f}V")
+            print(f"[12v电源状态] 电压: {sensor_data['power']['voltage']:.3f}V")
             
             # ADC数据
             print(f"[5v与3.3v] 电压: {sensor_data['adc']}")
             
-            time.sleep(5)  # 5秒采样间隔
+            time.sleep(1)  # 1秒采样间隔
             
     except KeyboardInterrupt:
         print("\n程序终止")

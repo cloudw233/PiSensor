@@ -2,7 +2,7 @@ import serial
 import pynmea2
 
 class ATK1218GPS:
-    def __init__(self, port="/dev/ttyUSB0", baudrate=38400):
+    def __init__(self, port="/dev/ttyUSB1", baudrate=38400):
         # 初始化串口
         self.ser = serial.Serial(
             port=port,

@@ -10,11 +10,11 @@ class StepperMotor:
             # 使用完整路径打开GPIO芯片
             self.chip = gpiod.Chip(chip_path)
             chip_info = self.chip.get_info()
-            print(f"成功打开GPIO芯片: {chip_info.name}")
-            print(f"GPIO芯片信息: {chip_info.name}, 引脚数量: {chip_info.num_lines}")
+            # print(f"成功打开GPIO芯片: {chip_info.name}")
+            # print(f"GPIO芯片信息: {chip_info.name}, 引脚数量: {chip_info.num_lines}")
             
-            if any(pin >= chip_info.num_lines for pin in pin_numbers):
-                raise ValueError(f"无效的引脚号: {pin_numbers}")
+            # if any(pin >= chip_info.num_lines for pin in pin_numbers):
+            #     raise ValueError(f"无效的引脚号: {pin_numbers}")
             
             # 创建线路配置
             line_settings = gpiod.LineSettings(
@@ -27,7 +27,7 @@ class StepperMotor:
                 consumer="stepper-motor",
                 config={pin: line_settings for pin in pin_numbers}
             )
-            print(f"成功配置GPIO引脚: {pin_numbers}")
+            # print(f"成功配置GPIO引脚: {pin_numbers}")
             
             # 初始化相位序列（八拍模式）
             self.phase_sequence = [
@@ -95,33 +95,33 @@ if __name__ == "__main__":
             try:
                 with gpiod.Chip(chip_path) as chip:
                     chip_info = chip.get_info()
-                    print(f"发现GPIO芯片: {chip_info.name}, 引脚数量: {chip_info.num_lines}")
+                    # print(f"发现GPIO芯片: {chip_info.name}, 引脚数量: {chip_info.num_lines}")
                     available_chips.append(chip_path)
             except Exception as e:
                 print(f"无法访问 {chip_path}: {e}")
         
-        if not available_chips:
-            raise RuntimeError("未找到可用的GPIO芯片")
+        # if not available_chips:
+        #     raise RuntimeError("未找到可用的GPIO芯片")
             
         # 使用完整路径创建电机对象
-        motor = StepperMotor("/dev/gpiochip0", MOTOR_PINS1)
+        motor1 = StepperMotor("/dev/gpiochip0", MOTOR_PINS1)
         motor2 = StepperMotor("/dev/gpiochip0", MOTOR_PINS2)
-        print("开始电机测试...")
         
-        print("1. 顺时针旋转")
-        motor.rotate(4096, "cw", delay_ms=6)
-        # motor2.rotate(4096, "cw", delay_ms=3)
+        
+        motor1.rotate(4096, "cw", delay_ms=3)
+        motor2.rotate(4096, "cw", delay_ms=3)
         time.sleep(1)
         
-        print("2. 逆时针旋转")
-        motor.rotate(4096, "ccw", delay_ms=3)
-        # motor2.rotate(2048, "ccw", delay_ms=1)
         
-        print("测试完成")
+        motor1.rotate(2048, "ccw", delay_ms=1)
+        motor2.rotate(2048, "ccw", delay_ms=1)
+        
+        print("done")
         
     except Exception as e:
         print(f"错误: {e}", file=sys.stderr)
     finally:
-        if 'motor' in locals():
-            motor.release()
+        if 'motor1' and 'motor2' in locals():
+            motor1.release()
+            motor2.release()
             print("已释放GPIO资源")

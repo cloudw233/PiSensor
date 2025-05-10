@@ -1,0 +1,54 @@
+class MotorControl:
+    def __init__(self, chip_path, pin_numbers):
+        # 保持原有初始化代码不变
+        self.chip = gpiod.Chip(chip_path)
+        self.pin_map = pin_numbers
+        self.motor_pins = pin_numbers
+        
+        # 分开普通GPIO和PWM引脚的配置
+        self.gpio_pins = {k:v for k,v in pin_numbers.items() if k not in ['pwmL', 'pwmR']}
+        self.pwm_pins = {k:v for k,v in pin_numbers.items() if k in ['pwmL', 'pwmR']}
+        
+        # 初始化GPIO配置
+        line_settings = gpiod.LineSettings(
+            direction=Direction.OUTPUT,
+            output_value=Value.INACTIVE
+        )
+        
+        config = {pin: line_settings for pin in self.gpio_pins.values()}
+        self.request = self.chip.request_lines(
+            consumer="wheel-motor",
+            config=config
+        )
+
+    def control(self, direction, speed=200):
+        """
+        控制电机运动
+        direction: F-前进, B-后退
+        speed: PWM值(0-255)
+        """
+        try:
+            # 控制方向引脚
+            if direction == 'F':
+                gpio_values = {
+                    self.pin_map['ENL1']: Value.ACTIVE,
+                    self.pin_map['ENL2']: Value.INACTIVE,
+                    self.pin_map['ENR1']: Value.ACTIVE,
+                    self.pin_map['ENR2']: Value.INACTIVE
+                }
+            elif direction == 'B':
+                gpio_values = {
+                    self.pin_map['ENL1']: Value.INACTIVE,
+                    self.pin_map['ENL2']: Value.ACTIVE,
+                    self.pin_map['ENR1']: Value.INACTIVE,
+                    self.pin_map['ENR2']: Value.ACTIVE
+                }
+            
+            # 设置GPIO值
+            self.request.set_values(gpio_values)
+            
+            # TODO: 在这里添加PWM控制代码
+            # 由于gpiod不直接支持PWM，需要使用其他方式实现PWM控制
+            
+        except Exception as e:
+            print(f"控制失败: {e}")

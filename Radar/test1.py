@@ -1,71 +1,103 @@
-#!/usr/bin/env python3
 import serial
-import threading
 import time
 import sys
+from typing import List, Optional
 
-class SerialRawReader:
-    def __init__(self, port, baudrate=115200):
-        self.ser = serial.Serial(port, baudrate, timeout=1)
-        self.running = True
-        
-    def start(self):
-        self.thread = threading.Thread(target=self._read_loop)
-        self.thread.daemon = True
-        self.thread.start()
-        
-    def stop(self):
-        self.running = False
-        self.thread.join()
-        self.ser.close()
-        
-    def _read_loop(self):
-        """持续读取并输出原始串口数据"""
-        while self.running:
-            data = self.ser.read(self.ser.in_waiting or 1)
-            if data:
-                # 以16进制和ASCII形式显示原始数据
-                hex_str = ' '.join(f'{b:02X}' for b in data)
-                ascii_str = ''.join(chr(b) if 32 <= b <= 126 else '.' for b in data)
-                print(f"[{self.ser.port}] HEX: {hex_str} | ASCII: {ascii_str}")
+class RD03ERadar:
+    def __init__(self, port='/dev/ttyUSB0', baudrate=256000):
+        """初始化雷达"""
+        try:
+            self.ser = serial.Serial(
+                port=port,
+                baudrate=baudrate,
+                timeout=1  # 添加超时
+            )
+            self.buffer = bytearray()
+            print(f"雷达初始化成功: {port}")
+        except Exception as e:
+            print(f"雷达初始化失败: {e}", file=sys.stderr)
+            raise
 
-def find_ch340_devices():
-    """查找所有CH340设备"""
-    import glob
-    return glob.glob('/dev/ttyUSB*')
+    def read_distance(self) -> Optional[float]:
+        try:
+            if self.ser.in_waiting:
+                data = self.ser.read(self.ser.in_waiting)
+                print(data)
+                data = [r"\x"+i for i in ("aaaa"+data.hex("::").split('aaaa')[0]).split("::")]
+                data = bytes(data.join())
+                self.buffer.extend(data)
+                # 查找帧头和完整帧
+                while len(self.buffer) >= 7:
+                    if self.buffer[0:2] == b'\xaa\xaa':
+                        frame = bytes(self.buffer[:7])
+                        self.buffer = self.buffer[7:]
+                        
+                        result = self.parse_frame(frame)
+                        if result:
+                            return result['distance']
+                    else:
+                        self.buffer.pop(0)
+            return None
+            
+        except Exception as e:
+            print(f"读取错误: {e}", file=sys.stderr)
+            return None
+
+    def parse_frame(self, frame: bytes) -> Optional[dict]:
+        """解析数据帧: AA AA 02 XX XX 55 55"""
+        try:
+            if len(frame) < 7:  # 检查帧长度
+                return None
+                
+            # 检查帧头和帧尾
+            if (frame[0:2] != b'\xaa\xaa' or
+                frame[-2:] != b'\x55\x55'):
+                return None
+                
+            # 合并两个字节为距离值
+            distance = (frame[3] << 8) | frame[4]  # 高字节在前
+            
+            print(f"原始字节: {frame[3]:02x} {frame[4]:02x}, 距离: {distance}cm")
+            
+            return {
+                'distance': distance,
+                'raw': frame.hex()
+            }
+            
+        except Exception as e:
+            print(f"解析错误: {e}", file=sys.stderr)
+            return None
+
+    def close(self):
+        """关闭串口"""
+        if hasattr(self, 'ser') and self.ser.is_open:
+            self.ser.close()
 
 def main():
-    # 初始化所有串口读取器
-    readers = []
-    ports = find_ch340_devices()
-    
-    if not ports:
-        print("未检测到CH340设备!", file=sys.stderr)
-        return
-    
-    print(f"检测到{len(ports)}个串口设备: {ports}")
-    
-    for port in ports[:4]:  # 最多处理4个设备
-        try:
-            reader = SerialRawReader(port)
-            reader.start()
-            readers.append(reader)
-            print(f"已开始监听: {port}")
-        except Exception as e:
-            print(f"无法打开端口 {port}: {e}", file=sys.stderr)
-    
-    if not readers:
-        print("没有可用的串口设备!", file=sys.stderr)
-        return
-    
+    radar = None
     try:
-        # 主循环保持运行
+        radar = RD03ERadar()
+        print("开始读取数据...")
+        
         while True:
-            time.sleep(1)
+            if radar.ser.in_waiting:  # 检查是否有数据
+                raw_data = radar.ser.read(radar.ser.in_waiting)
+                print(f"原始数据: {raw_data.hex()}")  # 打印原始数据
+                
+                distance = radar.read_distance()
+                if distance:
+                    print(f"检测距离: {distance:.1f}cm")
+                else:
+                    print("解析距离失败")
+            time.sleep(0.1)
+            
     except KeyboardInterrupt:
-        print("\n正在停止监听...")
-        for reader in readers:
-            reader.stop()
+        print("\n程序终止")
+    except Exception as e:
+        print(f"运行错误: {e}", file=sys.stderr)
+    finally:
+        if radar:
+            radar.close()
 
 if __name__ == "__main__":
     main()

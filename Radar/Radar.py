@@ -1,5 +1,4 @@
 import serial
-from loguru import logger
 from multiprocessing import Process
 # 打开串行端口
 ser = serial.Serial('/dev/ttyUSB0', 256000, timeout=1)

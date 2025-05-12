@@ -948,6 +948,23 @@ url = "https://pypi.tuna.tsinghua.edu.cn/simple"
 reference = "pypi-tuna"
 
 [[package]]
+name = "spidev"
+version = "3.7"
+description = "Python bindings for Linux SPI access through spidev"
+optional = false
+python-versions = "*"
+groups = ["main"]
+files = [
+    {file = "spidev-3.7-cp39-cp39-linux_armv7l.whl", hash = "sha256:6f9a51d72eac0785d3b7a839c5ee1b6a16a9b711fe053d56adecdf18786e2550"},
+    {file = "spidev-3.7.tar.gz", hash = "sha256:ce628a5ff489f45132679879bff5f455a66abf9751af01843850155b06ae92f0"},
+]
+
+[package.source]
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+reference = "pypi-tuna"
+
+[[package]]
 name = "starlette"
 version = "0.46.2"
 description = "The little ASGI library that shines."
@@ -1153,4 +1170,4 @@ reference = "pypi-tuna"
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11,<4.0"
-content-hash = "908bf8e77e19a2a5b4686b2080e3167e9420b91aaf6bb39d7c4891dbf1583fcf"
+content-hash = "3d18781b10e1a66af925dd5b94bfe30a70354f596dfe0500cc9937a764453ea1"

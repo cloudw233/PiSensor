@@ -2,10 +2,9 @@ import time
 from smbus2 import SMBus, i2c_msg
 
 # I2C设备地址定义
-PCF8574_ADDR = 0x20   # PCF8574T地址(气体传感器和倾斜开关)
-MAX30102_ADDR = 0x57  # MAX30102心率传感器地址
-INA226_ADDR = 0x40    # INA226电压电流监测地址
-PCF8591_ADDR = 0x48   # PCF8591 ADC地址
+PCF8574_ADDR = 0x20
+INA226_ADDR = 0x40
+PCF8591_ADDR = 0x48
 
 class IntegratedSensorHub:
     def __init__(self, bus_number=1):
@@ -28,7 +27,7 @@ class IntegratedSensorHub:
     def read_tilt_switch(self):
         """
         读取倾斜开关状态 (PCF8574T P6)
-        返回: (bool, bool) - (当前状态, 是否改变)
+        :return: (bool, bool) - (当前状态, 是否改变)
         """
         try:
             data = self.device_data['pcf8574']
@@ -46,7 +45,7 @@ class IntegratedSensorHub:
     def read_gas_sensors(self):
         """
         读取6个MQ气体传感器状态 (PCF8574T P0-P5)
-        返回: (list, list) - (当前状态列表, 变化状态列表)
+        :return: (list, list) - (当前状态列表, 变化状态列表)
         """
         data = self.device_data['pcf8574']
         
@@ -148,42 +147,33 @@ class IntegratedSensorHub:
         """清理资源"""
         self.bus.close()
 
-def main():
+if __name__ == "__main__":
     """主程序"""
     sensor_hub = IntegratedSensorHub()
-    
-    try:
-        while True:
-            sensor_data = sensor_hub.read_all()
-            print("\nSensorDATA：")
-            
-            # 倾斜检测
-            print(f"[Tilt] {'true' if sensor_data['tilt']['state'] else 'false'}")
-                
-            # 气体传感器
-            gas_sensors = {
-                'MQ2': 'smoke',
-                'MQ7': 'CO'
-            }
-            
-            for gas, desc in gas_sensors.items():
-                state = "true" if sensor_data["gas_sensors"][gas] else "false"
-                print(f"[{gas}] {desc}: {state}")
-            
-            # 电源监控
-            print(f"[12v] {sensor_data['power']['voltage']:.2f}v")
-                  
-            # ADC数据
-            adc_data = sensor_data['adc']
-            print(f"[5v] {adc_data['5v'][0]:.1f}v")    
-            print(f"[3.3v] {adc_data['3.3v'][0]:.1f}v") 
 
-            time.sleep(1)
-            
-    except KeyboardInterrupt:
-        print("\n程序终止")
+    try:
+        sensor_data = sensor_hub.read_all()
+        print("\nSensorDATA：")
+
+        # 倾斜检测
+        print(f"[Tilt] {'true' if sensor_data['tilt']['state'] else 'false'}")
+
+        # 气体传感器
+        gas_sensors = {
+            'MQ2': 'smoke',
+            'MQ7': 'CO'
+        }
+
+        for gas, desc in gas_sensors.items():
+            state = "true" if sensor_data["gas_sensors"][gas] else "false"
+            print(f"[{gas}] {desc}: {state}")
+
+        # 电源监控
+        print(f"[12v] {sensor_data['power']['voltage']:.2f}v")
+
+        # ADC数据
+        adc_data = sensor_data['adc']
+        print(f"[5v] {adc_data['5v'][0]:.1f}v")
+        print(f"[3.3v] {adc_data['3.3v'][0]:.1f}v")
     finally:
         sensor_hub.close()
-
-if __name__ == "__main__":
-    main()

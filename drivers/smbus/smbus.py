@@ -130,8 +130,8 @@ class IntegratedSensorHub:
                 "changed": tilt_changed
             },
             "gas_sensors": {
-                "MQ2": gas_readings[0],
-                "MQ7": gas_readings[3],  # 保持原有索引
+                "MQ2": not gas_readings[0],
+                "MQ7": not gas_readings[3],  # 保持原有索引
                 "changes": gas_changes
             },
             "power": self.device_data['ina226'],
@@ -171,9 +171,9 @@ if __name__ == "__main__":
         # 电源监控
         print(f"[12v] {sensor_data['power']['voltage']:.2f}v")
 
-        # ADC数据
-        adc_data = sensor_data['adc']
-        print(f"[5v] {adc_data['5v'][0]:.1f}v")
-        print(f"[3.3v] {adc_data['3.3v'][0]:.1f}v")
+        # # ADC数据
+        # adc_data = sensor_data['adc']
+        # print(f"[5v] {adc_data['5v']}v")
+        # print(f"[3.3v] {adc_data['3.3v']}v")
     finally:
         sensor_hub.close()

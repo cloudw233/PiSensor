@@ -2,7 +2,7 @@ import serial
 import pynmea2
 
 class Locator:
-    def __init__(self, port="/dev/ttyUSB1", baudrate=38400):
+    def __init__(self, port="/dev/ttyUSB0", baudrate=38400):
         # 初始化串口
         self.ser = serial.Serial(
             port=port,
@@ -17,6 +17,7 @@ class Locator:
         try:
             while True:
                 line = self.ser.readline().decode('utf-8', errors='ignore').strip()
+                print(line)
                 if line.startswith('$GNRMC') or line.startswith('$GNGGA'):
                     try:
                         msg = pynmea2.parse(line)
@@ -41,6 +42,6 @@ class Locator:
 if __name__ == "__main__":
     try:
         gnss = Locator()
-        gnss.read_location()
+        print(gnss.read_location())
     except Exception as e:
         print(f"错误: {e}")

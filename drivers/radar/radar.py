@@ -1,7 +1,7 @@
 import serial
 from multiprocessing import Process
 # 打开串行端口
-ser = serial.Serial('/dev/ttyUSB0', 256000, timeout=1)
+ser = serial.Serial('/dev/ttyUSB1', 256000, timeout=1)
 
 def radar():
     try:

@@ -9,7 +9,7 @@ class MCP3208_Joystick:
         self.spi = spidev.SpiDev()
         self.spi.open(0, 0)  # 使用CE0 (GPIO8)
         self.spi.max_speed_hz = 1000000  # 1MHz SPI时钟
-        self.button = Button()
+        self.button = Button(12)
         
     def read_channel(self, channel):
         """读取MCP3208指定通道的模拟值（0-7）"""

@@ -344,7 +344,7 @@ class StepperMotorElements(BaseElements):
     """
     步进电机元素
     """
-    pin: List[int,int,int,int] =
+    pin: List[int,int,int,int]
     step: int = 0
     direction: Literal['cw','ccw'] = 'cw'
 

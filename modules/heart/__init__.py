@@ -19,7 +19,7 @@ app = FastAPI()
 async def heart(websocket: WebSocket):
     await websocket.accept()
     while True:
-        recv_data = await websocket.receive_text()
+        recv_data = (await websocket.receive()).get('bytes').decode('utf8')
         data = MessageChainD(json.loads(recv_data))
         data.serialize()
         heart = [_ for _ in data.messages if isinstance(_, HeartElements)]

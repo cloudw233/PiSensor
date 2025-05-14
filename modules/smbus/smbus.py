@@ -19,7 +19,7 @@ class IntegratedSensorHub:
         # 设备数据缓存
         self.device_data = {
             'pcf8574': 0,
-            'ina226': {'voltage': 0.0},
+            'ina226': 0.0,
             'pcf8591': [0, 0, 0, 0]
         }
 
@@ -83,10 +83,10 @@ class IntegratedSensorHub:
             
             # 硬件校准补偿（实测12.5V但读数13.2V时的修正）
             compensation_factor = 12.5 / 13.2  # 校准系数
-            calibrated_voltage = voltage * compensation_factor
+            calibrated_voltage = round(voltage * compensation_factor, 2)
             
             # 存储结果
-            self.device_data['ina226']['voltage'] = round(calibrated_voltage, 2)
+            self.device_data['ina226'] = (calibrated_voltage - 9.6)/(12.6-9.6)*100
             return True
             
         except Exception as e:
@@ -121,7 +121,6 @@ class IntegratedSensorHub:
         
         # 读取其他传感器
         self.read_ina226()
-        self.read_pcf8591()
         
         # 返回完整的数据集
         return {
@@ -135,11 +134,6 @@ class IntegratedSensorHub:
                 "changes": gas_changes
             },
             "power": self.device_data['ina226'],
-            "adc": {
-                "5v": self.device_data['pcf8591'][0],
-                "3.3v": self.device_data['pcf8591'][1]
-
-            },
             "timestamp": time.time()
         }
 
@@ -169,7 +163,7 @@ if __name__ == "__main__":
             print(f"[{gas}] {desc}: {state}")
 
         # 电源监控
-        print(f"[12v] {sensor_data['power']['voltage']:.2f}v")
+        print(f"[Power Percentage] {sensor_data['power']}%")
 
         # # ADC数据
         # adc_data = sensor_data['adc']

@@ -29,7 +29,7 @@ def calc_speed(
 
 async def run():
     try:
-        async with websockets.connect('ws://localhost:10240/rocker') as ws:
+        async with websockets.connect('ws://localhost:25567/rocker') as ws:
             joystick = MCP3208_Joystick()
             while True:
                 value = joystick.read_joystick()
@@ -42,7 +42,7 @@ async def run():
                 elif 256 <= value[0] <= 768 <= value[1] <= 1023:
                     await ws.send('B'.join(f'|{calc_speed(value, "B"):.3f}'))
                 else:
-                    await ws.send('S')
+                    await ws.send('S'.join('|0'))
     except asyncio.CancelledError:
         joystick.close()
         raise

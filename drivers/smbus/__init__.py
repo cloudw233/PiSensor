@@ -14,6 +14,7 @@ async def run():
                 logger.debug(f"[SensorHub]{__data}")
                 await ws.send(__data)
                 await asyncio.sleep(2)
-        except Exception:
-            logger.exception("[SensorHub]<UNK>")
+        except asyncio.CancelledError:
+            __hub.close()
+            raise
 

@@ -1,9 +1,9 @@
 import serial
-from multiprocessing import Process
+
 # 打开串行端口
 ser = serial.Serial('/dev/ttyUSB0', 256000, timeout=1)
 
-def radar():
+async def radar(ws):
     try:
         while True:
             data = ser.read(7 * 11)
@@ -23,15 +23,7 @@ def radar():
             remove_count = 3
             length_list = length_list[remove_count:-remove_count]
             length_ = sum(length_list) / len(length_list) if len(length_list) !=0 else 1
-            print(length_)
+            await ws.send(length_)
     except KeyboardInterrupt:
         exit()
-
-try:
-    proc = Process(target=radar)
-    proc.run()
-except KeyboardInterrupt:
-    proc.close()
-    ser.close()
-    exit()
 

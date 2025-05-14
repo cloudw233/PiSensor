@@ -18,3 +18,6 @@ def get_humiture():
         logger.error(f"[Humiture]读取出错: {e}")
         dht_device.exit()
         return None
+
+if __name__ == "__main__":
+    print(get_humiture())

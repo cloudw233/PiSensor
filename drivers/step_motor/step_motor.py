@@ -17,15 +17,19 @@ class StepperMotor:
 
         # 相位序列（全步模式）
         self.full_step_sequence = [
-            [1, 0, 1, 0],
-            [0, 1, 1, 0],
-            [0, 1, 0, 1],
-            [1, 0, 0, 1]
-        ]
+                [1, 0, 0, 0],
+                [1, 1, 0, 0],
+                [0, 1, 0, 0],
+                [0, 1, 1, 0],
+                [0, 0, 1, 0],
+                [0, 0, 1, 1],
+                [0, 0, 0, 1],
+                [1, 0, 0, 1]
+            ]
 
         self.current_step = 0
 
-    def step(self, direction="cw", delay=0.002):
+    def step(self, direction="cw", delay=0.0015):
         """
         执行一步。
 
@@ -34,14 +38,14 @@ class StepperMotor:
             delay: 步进之间的延迟（秒）。
         """
         if direction == "cw":
-            self.current_step = (self.current_step + 1) % 4
+            self.current_step = (self.current_step + 1) % 8
         else:
-            self.current_step = (self.current_step - 1) % 4
+            self.current_step = (self.current_step - 1) % 8
 
         self.set_coil_state(self.full_step_sequence[self.current_step])
         time.sleep(delay)
 
-    def rotate(self, steps, direction="cw", delay=0.002):
+    def rotate(self, steps, direction="cw", delay=0.0015):
         """
         旋转指定的步数。
 
@@ -85,14 +89,11 @@ if __name__ == '__main__':
         motor1 = StepperMotor(*MOTOR_PINS1)
         motor2 = StepperMotor(*MOTOR_PINS2)
 
-        # 控制电机1和电机2正转4096步
-        motor1.rotate(4096, direction='cw', delay=0.003)
-        motor2.rotate(4096, direction='cw', delay=0.003)
+        motor1.rotate(4096, direction='cw')
+        motor1.rotate(4096, direction='ccw')
         time.sleep(1)
-
-        # 控制电机1和电机2反转2048步
-        motor1.rotate(2048, direction='ccw', delay=0.001)
-        motor2.rotate(2048, direction='ccw', delay=0.001)
+        motor2.rotate(4096, direction='cw')
+        motor2.rotate(4096, direction='ccw')
 
         print("Done")
 

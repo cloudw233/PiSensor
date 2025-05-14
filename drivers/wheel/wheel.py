@@ -98,21 +98,22 @@ if __name__ == '__main__':
     )
     
     try:
-        print("前进2秒")
-        motor.forward(0.5)  # 50%速度前进
-        time.sleep(2)
-        
-        print("后退2秒")
-        motor.backward(0.5)  # 50%速度后退
-        time.sleep(2)
-        
-        print("左转2秒")
-        motor.turn_left(0.5)
-        time.sleep(2)
-        
-        print("右转2秒")
-        motor.turn_right(0.5)
-        time.sleep(2)
+        for i in range(10):
+            print("前进2秒")
+            motor.forward(0.5)  # 50%速度前进
+            time.sleep(2)
+            
+            print("后退2秒")
+            motor.backward(0.5)  # 50%速度后退
+            time.sleep(2)
+            
+            print("左转2秒")
+            motor.turn_left(0.5)
+            time.sleep(2)
+            
+            print("右转2秒")
+            motor.turn_right(0.5)
+            time.sleep(2)
         
         print("停止")
         motor.stop()

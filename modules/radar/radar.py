@@ -1,11 +1,13 @@
+import asyncio
+
 import serial
 
 # 打开串行端口
 ser = serial.Serial('/dev/ttyUSB1', 256000, timeout=1)
 
 async def radar(ws):
-    try:
-        while True:
+    while True:
+        try:
             data = ser.read(7 * 11)
             length_list = [] # 索引0 运动1还是微动2 ，索引1，距离
             for i in range(len(data)):
@@ -24,6 +26,7 @@ async def radar(ws):
             length_list = length_list[remove_count:-remove_count]
             length_ = sum(length_list) / len(length_list) if len(length_list) !=0 else 1
             await ws.send(length_)
-    except KeyboardInterrupt:
-        exit()
+        except asyncio.CancelledError:
+            ser.close()
+            raise
 

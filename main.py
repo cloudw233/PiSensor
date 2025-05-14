@@ -12,23 +12,25 @@ logger.remove()  # 移除默认的处理器
 logger.add(
     "logs/app_{time}.log",  # 日志文件路径
     rotation="1 day",  # 每天轮换一次
-    retention="30 days",  # 保留30天的日志
-    format="<green>{time:YYYY-MM-DD HH:mm:ss}</green> | "
-           "<level>{level: <8}</level> | "
-           "<cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - "
-           "<level>{message}</level>",
+    retention="7 days",  # 保留30天的日志
+    format="<green>[{time:YYYY-MM-DD HH:mm:ss}]</green>"
+           "<cyan>[{name}]</cyan>"
+           "<magenta>[{function}]</magenta>"
+           "<level>[{level}]</level>"
+           " <level>{message}</level>",
     level="INFO",
     enqueue=True,  # 异步写入
 )
-# 同时输出到控制台
+
 logger.add(
-    lambda msg: print(msg, flush=True),
-    format="<green>{time:YYYY-MM-DD HH:mm:ss}</green> | "
-           "<level>{level: <8}</level> | "
-           "<cyan>{name}</cyan>:<cyan>{function}</cyan> - "
-           "<level>{message}</level>",
-    level="INFO",
-    colorize=True,
+    sink=lambda msg: print(msg, flush=True),  # 输出到控制台
+    format="<green>[{time:YYYY-MM-DD HH:mm:ss}]</green>"
+           "<cyan>[{name}]</cyan>"
+           "<magenta>[{function}]</magenta>"
+           "<level>[{level}]</level>"
+           " <level>{message}</level>",
+    colorize=True,  # 启用颜色
+    level="INFO"    # 设置日志级别
 )
 
 # 用于存储所有运行的任务
@@ -115,7 +117,7 @@ async def run_module(name: str, run_func: Callable) -> None:
 
 async def shutdown(signal_: signal.Signals) -> None:
     """
-    优雅关闭所有运行的任务
+    关闭所有运行的任务
     """
     logger.info(f"Received exit signal {signal_.name}...")
 
@@ -141,8 +143,7 @@ def handle_exception(loop: asyncio.AbstractEventLoop, context: dict) -> None:
 
 
 async def main():
-    # 设置driver文件夹的路径（相对于主脚本的位置）
-    driver_path = os.path.join(os.path.dirname(__file__), 'drivers')
+    driver_path = os.path.join(os.path.dirname(__file__), 'modules')
 
     try:
         # 收集所有的run函数

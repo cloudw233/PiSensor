@@ -1,9 +1,8 @@
 from copy import deepcopy
 from typing import Union, Literal, List
 
-from extensions.deepseek import get_deepseek_anwser
-from extensions.weather import QWeather
 from .assigned_element import *
+from elements import *
 from ..pydantic_models import Indices, WeatherDaily
 
 
@@ -44,6 +43,8 @@ class MessageChainInstance:
                     msg_chain_lst.append(DeepSeekAnswerElement(**data))
                 case "MachineryElement":
                     msg_chain_lst.append(MachineryElement(**data))
+                case "StepperMotorElement":
+                    msg_chain_lst.append(StepperMotorElement(**data))
                 case "ResponseElement":
                     msg_chain_lst.append(ResponseElement(**data))
                 case _:
@@ -54,16 +55,16 @@ class MessageChainInstance:
 
     @classmethod
     def assign(cls,
-               elements: List[
-                   AccountElement,
-                   SensorElement,
-                   WeatherElement,
-                   WeatherInfoElement,
-                   UIElement,
-                   HeartElement,
-                   DeepSeekElement,
-                   DeepSeekAnswerElement,
-                   ResponseElement]) -> "MessageChain":
+               elements: list[Union[
+                   AccountElements,
+                   SensorElements,
+                   WeatherElements,
+                   WeatherInfoElements,
+                   UIElements,
+                   HeartElements,
+                   DeepSeekElements,
+                   DeepSeekAnswerElements,
+                   ResponseElements]]) -> "MessageChain":
         cls.serialized = True
         cls.messages = elements
         return deepcopy(cls())
@@ -75,25 +76,7 @@ class MessageChainInstance:
         return deepcopy(cls())
 
 
-async def process_message(httpx_client, msgchain):
-    message_lst = []
-    for element in msgchain.messages:
-        match element.Meta.type:
-            case "WeatherElement":
-                message_lst.append(await QWeather(httpx_client).get_weather_element(element))
-            case "DeepSeekElement":
-                __answer = await get_deepseek_anwser(element.question)
-                message_lst.append(
-                    DeepSeekAnswerElement(
-                        answer=__answer,
-                        question=element.question,
-                    ))
-            case _:
-                message_lst.append(element)
-    message_lst.append(ResponseElement(ret_code=0, message="Data received"))
-    return MessageChain(message_lst)
-
 MessageChain = MessageChainInstance.assign
 MessageChainD = MessageChainInstance.assign_deserialized
 
-__all__ = ["MessageChain", "MessageChainD", "process_message"]
+__all__ = ["MessageChain", "MessageChainD"]

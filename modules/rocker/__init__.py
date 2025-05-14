@@ -4,7 +4,7 @@ from numpy import hypot
 
 import websockets
 
-from .rocker import MCP3208_Joystick
+from modules.rocker.rocker import MCP3208_Joystick
 
 def calc_speed(
         value: Tuple[float, float, bool],

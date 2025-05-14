@@ -1,6 +1,6 @@
 import attrs
 import orjson as json
-from typing import Literal, Union
+from typing import Literal, Union, List
 
 from loguru import logger
 
@@ -344,6 +344,7 @@ class StepperMotorElements(BaseElements):
     """
     步进电机元素
     """
+    pin: List[int,int,int,int] =
     step: int = 0
     direction: Literal['cw','ccw'] = 'cw'
 
@@ -414,5 +415,6 @@ __all__ = [
     'DeepSeekElements',
     'DeepSeekAnswerElements',
     'MachineryElements',
+    'StepperMotorElements',
     'ResponseElements'
 ]

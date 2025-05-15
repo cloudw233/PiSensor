@@ -2,7 +2,7 @@ from copy import deepcopy
 from typing import Union, Literal, List
 
 from .assigned_element import *
-from elements import *
+from .elements import *
 from ..pydantic_models import Indices, WeatherDaily
 
 

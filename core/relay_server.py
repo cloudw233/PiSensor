@@ -16,7 +16,15 @@ from config import config
 
 app = FastAPI()
 
-sensor = SensorElement(urgent_button=False)
+sensor = SensorElement(temp=0.0,
+    humidity=0.0,
+    power=30.0,
+    urgent_button=False,
+    tilt=False,
+    heart_data=0,
+    smoke={"MQ_2": False, "MQ_7": False},
+    seat=0,
+    )
 account = AccountElement(
     username=config('username'),
     action='data',

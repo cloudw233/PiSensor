@@ -1,3 +1,5 @@
+from config import init_config
+init_config()
 import os
 import importlib.util
 import asyncio
@@ -9,7 +11,6 @@ from loguru import logger
 
 from core.relay_server import run_relay_server
 from core.forwarding import forward_messages
-from config import init_config
 
 # 配置loguru
 logger.remove()  # 移除默认的处理器

@@ -1,8 +1,10 @@
-import attrs
+import attrs, sys, os
 import orjson as json
 from typing import Literal, Union, List
 
 from loguru import logger
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from core.pydantic_models import *
 from copy import deepcopy
@@ -344,7 +346,7 @@ class StepperMotorElements(BaseElements):
     """
     步进电机元素
     """
-    pin: List[int,int,int,int]
+    pin: list[int]
     step: int = 0
     direction: Literal['cw','ccw'] = 'cw'
 

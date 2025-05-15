@@ -1,6 +1,7 @@
 from pydantic import BaseModel as PydanticBaseModel
 from pydantic import ConfigDict
-from typing import Literal, Union, TypedDict
+from typing import Literal, Union
+from typing_extensions import TypedDict
 
 class BaseModel(PydanticBaseModel):
     model_config = ConfigDict(strict=True)
@@ -29,7 +30,7 @@ class Sensor(BaseModel):
     urgent_button: bool|None = None
     tilt: bool|None = None
     heart_data: int|None = None
-    smoke: Smoke|dict = {}
+    smoke: dict = {}
     seat: int|None = None
 
 

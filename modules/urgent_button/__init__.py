@@ -7,6 +7,7 @@ urgent_button = Button(16)
 
 async def run():
     try:
+        await asyncio.sleep(5)
         while True:
             urgent_button.wait_for_active()
             async with websockets.connect("ws://localhost:10240/urgent-button") as ws:

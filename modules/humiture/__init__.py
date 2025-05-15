@@ -7,6 +7,7 @@ from loguru import logger
 from modules.humiture.humiture import get_humiture
 
 async def run():
+    await asyncio.sleep(5)
     while True:
         try:
             async with websockets.connect("ws://localhost:10240/humiture") as ws:

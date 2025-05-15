@@ -1,4 +1,5 @@
 import tomlkit, os
+from loguru import logger
 
 config_path = os.path.abspath(__file__).replace('__init__.py','')
 
@@ -7,6 +8,9 @@ def init_config():
         with open(os.path.join(config_path,'config.toml'), 'w') as f,\
             open(os.path.join(config_path,'config.example.toml')) as r:
             f.write(r.read())
+        logger.warning('config.toml not found, created a new one from config.example.toml')
+        logger.warning('Please edit config.toml to your needs')
+        exit(0)
 
 def config(key:str):
     with open(os.path.join(config_path,'config.toml')) as f:

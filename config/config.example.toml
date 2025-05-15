@@ -1,0 +1,3 @@
+remote_server = "https://<server>[:<port>]/sensor"
+username = "your_username"
+key = "your_chair_access_key"

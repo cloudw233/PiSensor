@@ -8,6 +8,7 @@ from modules.locator.locator import Locator
 
 async def run():
     _location = Locator()
+    await asyncio.sleep(5)
     logger.info(f"[Location]Here we go!")
     while True:
         try:

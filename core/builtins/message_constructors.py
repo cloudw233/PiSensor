@@ -62,6 +62,8 @@ class MessageChainInstance:
                    WeatherInfoElements,
                    UIElements,
                    HeartElements,
+                   MachineryElements,
+                   StepperMotorElements,
                    DeepSeekElements,
                    DeepSeekAnswerElements,
                    ResponseElements]]) -> "MessageChain":

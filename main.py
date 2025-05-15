@@ -7,6 +7,10 @@ import signal
 from pathlib import Path
 from loguru import logger
 
+from core.relay_server import run_relay_server
+from core.forwarding import forward_messages
+from config import init_config
+
 # 配置loguru
 logger.remove()  # 移除默认的处理器
 logger.add(
@@ -35,6 +39,9 @@ logger.add(
 
 # 用于存储所有运行的任务
 running_tasks: List[asyncio.Task] = []
+
+# 初始化配置
+init_config()
 
 
 async def import_and_collect_runners(driver_path: str) -> List[Callable[[], Any]]:
@@ -143,6 +150,15 @@ def handle_exception(loop: asyncio.AbstractEventLoop, context: dict) -> None:
 
 
 async def main():
+    ascii_art = r"""
+  ____    _   ____                                      
+ |  _ \  (_) / ___|    ___   _ __    ___    ___    _ __ 
+ | |_) | | | \___ \   / _ \ | '_ \  / __|  / _ \  | '__|
+ |  __/  | |  ___) | |  __/ | | | | \__ \ | (_) | | |   
+ |_|     |_| |____/   \___| |_| |_| |___/  \___/  |_|   
+    """
+    logger.info(ascii_art)
+    logger.info("Here we go!")
     driver_path = os.path.join(os.path.dirname(__file__), 'modules')
 
     try:
@@ -171,6 +187,10 @@ async def main():
             asyncio.create_task(run_module(name, run_func), name=name)
             for name, run_func in runners
         ]
+        logger.info('Starting relay server...')
+        running_tasks.append(asyncio.create_task(run_module('relay_server', run_relay_server), name='relay_server'))
+        logger.info('Starting message forwarding service...')
+        running_tasks.append(asyncio.create_task(run_module('forward_messages', forward_messages), name='forward_messages'))
         await asyncio.gather(*running_tasks, return_exceptions=True)
 
     except Exception as e:

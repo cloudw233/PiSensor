@@ -9,6 +9,7 @@ from modules.smbus.smbus import IntegratedSensorHub
 
 async def run():
     __hub = IntegratedSensorHub()
+    await asyncio.sleep(5)
     while True:
         try:
             async with websockets.connect("ws://localhost:10240/smbus") as ws:

@@ -14,7 +14,7 @@ from modules.step_motor.step_motor import StepperMotor
 
 app = FastAPI()
 
-@app.websocket("/stepmotor")
+@app.websocket("/step-motor")
 async def stepper_motor(websocket: WebSocket):
     await websocket.accept()
     while True:

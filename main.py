@@ -11,6 +11,7 @@ from loguru import logger
 
 from core.relay_server import run_relay_server
 from core.forwarding import forward_messages
+from modules.wheel.wheel import MotorControl
 
 # 配置loguru
 logger.remove()  # 移除默认的处理器
@@ -45,7 +46,7 @@ running_tasks: List[asyncio.Task] = []
 init_config()
 
 
-async def import_and_collect_runners(driver_path: str) -> List[Callable[[], Any]]:
+async def import_and_collect_runners(driver_path: str, controller: MotorControl) -> List[Callable[[], Any]]:
     """
     导入driver文件夹中的所有模块的run函数
     按照module1/__init__.py, module2/__init__.py的结构导入
@@ -80,6 +81,9 @@ async def import_and_collect_runners(driver_path: str) -> List[Callable[[], Any]
 
             module = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(module)
+
+            if module_name == 'wheel' and hasattr(module, 'set_motor_instance'):
+                module.set_motor_instance(shared_motor_instance)
 
             # 检查模块是否有run函数
             if hasattr(module, 'run'):
@@ -161,10 +165,16 @@ async def main():
     logger.info(ascii_art)
     logger.info("Here we go!")
     driver_path = os.path.join(os.path.dirname(__file__), 'modules')
+    motor_controller = None
+    motor_controller = MotorControl(
+        ENL1=27, ENL2=22,
+        ENR1=23, ENR2=24,
+        pwmL=17, pwmR=18
+    )
 
     try:
         # 收集所有的run函数
-        runners = await import_and_collect_runners(driver_path)
+        runners = await import_and_collect_runners(driver_path, motor_controller)
 
         if not runners:
             logger.warning("No valid run functions found in any module")

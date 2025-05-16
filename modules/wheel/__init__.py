@@ -9,30 +9,35 @@ from modules.wheel.wheel import MotorControl
 
 app = FastAPI()
 
-motor = MotorControl(
-    ENL1=27, ENL2=22,  # 左电机方向控制引脚
-    ENR1=23, ENR2=24,  # 右电机方向控制引脚
-    pwmL=17, pwmR=18  # PWM速度控制引脚
-)
+motor_instance = None # 占位符，稍后由 main.py 注入
+
+def set_motor_instance(instance):
+    global motor_instance
+    motor_instance = instance
+    logger.info("Motor instance injected into wheel module.")
 
 
 @app.websocket("/wheel")
 async def wheel(websocket: WebSocket):
     await websocket.accept()
     while True:
+        if motor_instance is None:
+            logger.error("Motor instance not set in wheel module!")
+            await websocket.close(code=1011, reason="Motor not initialized")
+            return
         recv_data = (await websocket.receive()).get('bytes').decode('utf8')
         action, speed = recv_data.split('|')[0], float(recv_data.split('|')[1])
         match action:
             case 'F':
-                motor.forward(speed)
+                motor_instance.forward(speed)
             case 'B':
-                motor.backward(speed)
+                motor_instance.backward(speed)
             case 'L':
-                motor.turn_left(speed)
+                motor_instance.turn_left(speed)
             case 'R':
-                motor.turn_right(speed)
+                motor_instance.turn_right(speed)
             case _:
-                motor.stop()
+                motor_instance.stop()
 
 
 too_close = 0
@@ -42,6 +47,10 @@ async def radar(websocket: WebSocket):
     global too_close
     await websocket.accept()
     while True:
+        if motor_instance is None:
+            logger.error("Motor instance not set in wheel module!")
+            await websocket.close(code=1011, reason="Motor not initialized")
+            return
         recv_data = (await websocket.receive()).get('bytes').decode('utf8')
         length = int(recv_data)
         if length <= 20:
@@ -53,6 +62,9 @@ async def radar(websocket: WebSocket):
 
 async def run():
     try:
+        if motor_instance is None:
+            logger.critical("Motor instance not available when starting uvicorn for wheel module. Aborting.")
+            return
         class InterceptHandler(logging.Handler):
             def emit(self, record):
                 logger_opt = logger.opt(depth=6, exception=record.exc_info)

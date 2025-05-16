@@ -1,4 +1,6 @@
 from config import init_config
+from modules.rocker import MCP3208_Joystick
+
 init_config()
 import os
 import importlib.util
@@ -46,7 +48,7 @@ running_tasks: List[asyncio.Task] = []
 init_config()
 
 
-async def import_and_collect_runners(driver_path: str, controller: MotorControl) -> List[Callable[[], Any]]:
+async def import_and_collect_runners(driver_path: str, controller: MotorControl, rocker: MCP3208_Joystick) -> List[Callable[[], Any]]:
     """
     导入driver文件夹中的所有模块的run函数
     按照module1/__init__.py, module2/__init__.py的结构导入
@@ -84,6 +86,8 @@ async def import_and_collect_runners(driver_path: str, controller: MotorControl)
 
             if module_name == 'wheel' and hasattr(module, 'set_motor_instance'):
                 module.set_motor_instance(controller)
+            if module_name == 'rocker' and hasattr(module, 'set_joystick_instance'):
+                module.set_joystick_instance(rocker)
 
             # 检查模块是否有run函数
             if hasattr(module, 'run'):
@@ -171,10 +175,12 @@ async def main():
         ENR1=23, ENR2=24,
         pwmL=17, pwmR=18
     )
+    rocker = None
+    rocker = MCP3208_Joystick()
 
     try:
         # 收集所有的run函数
-        runners = await import_and_collect_runners(driver_path, motor_controller)
+        runners = await import_and_collect_runners(driver_path, motor_controller, rocker)
 
         if not runners:
             logger.warning("No valid run functions found in any module")

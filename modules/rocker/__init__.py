@@ -6,6 +6,12 @@ import websockets
 
 from modules.rocker.rocker import MCP3208_Joystick
 
+rocker = None
+
+def set_joystick_instance(joystick:MCP3208_Joystick):
+    global rocker
+    rocker = joystick
+
 def calc_speed(
         value: Tuple[float, float, bool],
         direction: Literal['R', 'L', 'F', 'B']
@@ -28,10 +34,11 @@ def calc_speed(
     return hypot((value_x-min_val_x)/(max_val_x-min_val_x), (value_y-min_val_y)/(max_val_y-min_val_y))
 
 async def run():
+    global rocker
     try:
         await asyncio.sleep(5)
         async with websockets.connect('ws://localhost:25567/wheel') as ws:
-            joystick = MCP3208_Joystick()
+            joystick = rocker
             while True:
                 value = joystick.read_joystick()
                 print(value)

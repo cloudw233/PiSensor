@@ -52,6 +52,8 @@ async def websocket_endpoint(websocket: WebSocket, path: str):
                     sensor.power = json.loads(data)['power']
                 case 'urgent-button':
                     sensor.urgent_button = True
+                case 'location':
+                    sensor
                 case 'server':
                     await websocket.send_text(MessageChain([account,sensor]))
                     sensor.urgent_button = False

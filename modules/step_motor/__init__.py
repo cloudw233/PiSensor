@@ -45,7 +45,7 @@ async def run():
         config = uvicorn.Config(app, host="localhost", port=int(25566), access_log=True, workers=2)
         server = uvicorn.Server(config)
         init_logger()
-        server.run()
+        await server.serve()
     except asyncio.CancelledError:
         await server.shutdown()
         raise

@@ -88,7 +88,7 @@ async def run_relay_server():
         config = uvicorn.Config(app, host="localhost", port=int(10240), access_log=True, workers=2)
         server = uvicorn.Server(config)
         init_logger()
-        server.run()
+        await server.serve()
     except asyncio.CancelledError:
         await server.shutdown()
         raise

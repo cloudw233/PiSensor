@@ -39,7 +39,7 @@ async def websocket_server(websocket: WebSocket):
             websockets.connect('ws://localhost:25566/step-motor') as step, \
             websockets.connect('ws://localhost:25567/wheel') as wheel:
         while True:
-            data = (await websocket.receive())
+            data = await websocket.receive_text()
             logger.debug(data)
             await websocket.send_text(MessageChain([account, sensor]))
             sensor.urgent_button = False

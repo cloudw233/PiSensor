@@ -51,7 +51,7 @@ async def radar(websocket: WebSocket):
             logger.error("Motor instance not set in wheel module!")
             await websocket.close(code=1011, reason="Motor not initialized")
             return
-        recv_data = await websocket.receive()
+        recv_data = await websocket.receive_text()
         length = int(recv_data)
         if length <= 20:
             too_close += 1

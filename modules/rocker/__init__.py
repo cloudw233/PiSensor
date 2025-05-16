@@ -29,7 +29,7 @@ def calc_speed(
 
 async def run():
     try:
-        async with websockets.connect('ws://localhost:25567/rocker') as ws:
+        async with websockets.connect('ws://localhost:25567/wheel') as ws:
             joystick = MCP3208_Joystick()
             while True:
                 value = joystick.read_joystick()

@@ -184,14 +184,14 @@ async def main():
         # 为每个模块创建任务
         logger.info(f"Starting {len(runners)} modules")
         global running_tasks
-        running_tasks = [
-            asyncio.create_task(run_module(name, run_func), name=name)
-            for name, run_func in runners
-        ]
         logger.info('Starting relay server...')
         running_tasks.append(asyncio.create_task(run_module('relay_server', run_relay_server), name='relay_server'))
         logger.info('Starting message forwarding service...')
         running_tasks.append(asyncio.create_task(run_module('forward_messages', forward_messages), name='forward_messages'))
+        running_tasks = [
+            asyncio.create_task(run_module(name, run_func), name=name)
+            for name, run_func in runners
+        ]
         await asyncio.gather(*running_tasks, return_exceptions=True)
 
     except Exception as e:

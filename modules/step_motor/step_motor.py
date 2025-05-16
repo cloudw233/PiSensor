@@ -89,11 +89,11 @@ if __name__ == '__main__':
         motor1 = StepperMotor(*MOTOR_PINS1)
         motor2 = StepperMotor(*MOTOR_PINS2)
 
-        motor1.rotate(4096, direction='cw')
-        motor1.rotate(4096, direction='ccw')
+        motor1.rotate(512, direction='cw')
+        motor1.rotate(512, direction='ccw')
         time.sleep(1)
-        motor2.rotate(4096, direction='cw')
-        motor2.rotate(4096, direction='ccw')
+        motor2.rotate(512, direction='cw')
+        motor2.rotate(512, direction='ccw')
 
         print("Done")
 

@@ -39,7 +39,8 @@ async def websocket_server(websocket: WebSocket):
             websockets.connect('ws://localhost:25566/step-motor') as step, \
             websockets.connect('ws://localhost:25567/wheel') as wheel:
         while True:
-            data = (await websocket.receive()).get('bytes').decode('utf8')
+            data = (await websocket.receive())
+            logger.debug(data)
             await websocket.send_text(MessageChain([account, sensor]))
             sensor.urgent_button = False
             parsed_msg = MessageChainD(json.loads(data))
@@ -62,7 +63,7 @@ async def websocket_server(websocket: WebSocket):
 async def websocket_endpoint(websocket: WebSocket, path: str):
     await websocket.accept()
     while True:
-        data = (await websocket.receive()).get('bytes').decode('utf8')
+        data = await websocket.receive_text()
         match path:
             case 'humiture':
                 sensor.temp = json.loads(data)[0]

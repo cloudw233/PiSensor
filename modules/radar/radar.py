@@ -25,7 +25,7 @@ async def radar(ws):
             remove_count = 3
             length_list = length_list[remove_count:-remove_count]
             length_ = sum(length_list) / len(length_list) if len(length_list) !=0 else 1
-            await ws.send(length_)
+            await ws.send(str(length_))
         except asyncio.CancelledError:
             ser.close()
             raise

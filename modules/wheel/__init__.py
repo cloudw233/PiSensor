@@ -25,7 +25,7 @@ async def wheel(websocket: WebSocket):
             logger.error("Motor instance not set in wheel module!")
             await websocket.close(code=1011, reason="Motor not initialized")
             return
-        recv_data = (await websocket.receive()).get('bytes').decode('utf8')
+        recv_data = await websocket.receive_text()
         action, speed = recv_data.split('|')[0], float(recv_data.split('|')[1])
         match action:
             case 'F':
@@ -51,7 +51,7 @@ async def radar(websocket: WebSocket):
             logger.error("Motor instance not set in wheel module!")
             await websocket.close(code=1011, reason="Motor not initialized")
             return
-        recv_data = (await websocket.receive()).get('bytes').decode('utf8')
+        recv_data = await websocket.receive()
         length = int(recv_data)
         if length <= 20:
             too_close += 1

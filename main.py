@@ -8,6 +8,7 @@ import asyncio
 from typing import List, Callable, Any
 import inspect
 import signal
+import multiprocessing
 from pathlib import Path
 from loguru import logger
 
@@ -115,50 +116,23 @@ async def import_and_collect_runners(driver_path: str, controller: MotorControl,
     return runners
 
 
-async def run_module(name: str, run_func: Callable) -> None:
+def run_module(name: str, run_func: Callable) -> None:
     """
     运行单个模块的run函数并处理异常
     """
     try:
         logger.info(f"Starting module: {name}")
-        await run_func()
-    except asyncio.CancelledError:
-        logger.info(f"Module {name} received cancel signal")
-        raise
+        loop = asyncio.new_event_loop()
+        loop.run_until_complete(run_func())
     except Exception as e:
         logger.exception(f"Error in module {name}")
     finally:
         logger.info(f"Module {name} stopped")
 
-
-async def shutdown(signal_: signal.Signals) -> None:
-    """
-    关闭所有运行的任务
-    """
-    logger.info(f"Received exit signal {signal_.name}...")
-
-    # 取消所有运行的任务
-    for task in running_tasks:
-        task.cancel()
-
-    # 等待所有任务完成
-    logger.info("Waiting for tasks to complete...")
-    await asyncio.gather(*running_tasks, return_exceptions=True)
-
-    # 停止事件循环
-    loop = asyncio.get_running_loop()
-    loop.stop()
-
-
-def handle_exception(loop: asyncio.AbstractEventLoop, context: dict) -> None:
-    """
-    处理未捕获的异常
-    """
-    exception = context.get("exception", context["message"])
-    logger.exception(f"Unhandled exception: {exception}")
-
+processes = []
 
 async def main():
+    global processes
     ascii_art = r"""
       ____    _   ____                                      
      |  _ \  (_) / ___|    ___   _ __    ___    ___    _ __ 
@@ -169,13 +143,11 @@ async def main():
     logger.info(ascii_art)
     logger.info("Here we go!")
     driver_path = os.path.join(os.path.dirname(__file__), 'modules')
-    motor_controller = None
     motor_controller = MotorControl(
         ENL1=27, ENL2=22,
         ENR1=23, ENR2=24,
         pwmL=17, pwmR=18
     )
-    rocker = None
     rocker = MCP3208_Joystick()
 
     try:
@@ -186,29 +158,16 @@ async def main():
             logger.warning("No valid run functions found in any module")
             return
 
-        # 设置信号处理
-        loop = asyncio.get_running_loop()
-        for sig in (signal.SIGTERM, signal.SIGINT):
-            loop.add_signal_handler(
-                sig,
-                lambda s=sig: asyncio.create_task(shutdown(s))
-            )
-
-        # 设置未捕获异常处理器
-        loop.set_exception_handler(handle_exception)
-
         # 为每个模块创建任务
         logger.info(f"Starting {len(runners)} modules")
         global running_tasks
         logger.info('Starting relay server...')
-        running_tasks.append(asyncio.create_task(run_module('relay_server', run_relay_server), name='relay_server'))
+        processes.append(multiprocessing.Process(target=run_module,args=("relay_server", run_relay_server),daemon=True))
         logger.info('Starting message forwarding service...')
-        running_tasks.append(asyncio.create_task(run_module('forward_messages', forward_messages), name='forward_messages'))
-        running_tasks = [
-            asyncio.create_task(run_module(name, run_func), name=name)
-            for name, run_func in runners
-        ]
-        await asyncio.gather(*running_tasks, return_exceptions=True)
+        processes.append(multiprocessing.Process(target=run_module,args=("forward_messages", forward_messages),daemon=True))
+        for name, run_func in enumerate(runners):
+            processes.append(multiprocessing.Process(target=run_module,args=(name, run_func)))
+
 
     except Exception as e:
         logger.exception("Main execution failed")

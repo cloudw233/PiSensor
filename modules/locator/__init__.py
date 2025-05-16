@@ -15,7 +15,7 @@ async def run():
             async with websockets.connect("ws://localhost:10240/location") as ws:
                 __location = _location.read_location()
                 logger.debug(f"[Location]{__location}")
-                await ws.send(json.dumps(__location))
+                await ws.send(','.join(__location))
                 await asyncio.sleep(2)
         except asyncio.CancelledError:
             _location.cleanup()

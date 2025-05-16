@@ -17,7 +17,6 @@ class Locator:
         try:
             while True:
                 line = self.ser.readline().decode('utf-8', errors='ignore').strip()
-                print(line)
                 if line.startswith('$GNRMC') or line.startswith('$GNGGA'):
                     try:
                         msg = pynmea2.parse(line)

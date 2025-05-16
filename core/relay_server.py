@@ -24,6 +24,7 @@ sensor = SensorElement(temp=0.0,
     heart_data=0,
     smoke={"MQ_2": False, "MQ_7": False},
     seat=0,
+    gps='0,0'
     )
 account = AccountElement(
     username=config('username'),
@@ -53,7 +54,7 @@ async def websocket_endpoint(websocket: WebSocket, path: str):
                 case 'urgent-button':
                     sensor.urgent_button = True
                 case 'location':
-                    sensor
+                    sensor.gps = data
                 case 'server':
                     await websocket.send_text(MessageChain([account,sensor]))
                     sensor.urgent_button = False

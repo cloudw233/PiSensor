@@ -83,7 +83,7 @@ async def import_and_collect_runners(driver_path: str, controller: MotorControl)
             spec.loader.exec_module(module)
 
             if module_name == 'wheel' and hasattr(module, 'set_motor_instance'):
-                module.set_motor_instance(shared_motor_instance)
+                module.set_motor_instance(controller)
 
             # 检查模块是否有run函数
             if hasattr(module, 'run'):

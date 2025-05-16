@@ -57,7 +57,7 @@ async def radar(websocket: WebSocket):
             too_close += 1
         if too_close >= 6:
             too_close = 0
-            motor.stop()
+            motor_instance.stop()
 
 
 async def run():

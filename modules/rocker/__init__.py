@@ -33,6 +33,7 @@ async def run():
             joystick = MCP3208_Joystick()
             while True:
                 value = joystick.read_joystick()
+                print(value)
                 if 1023 >= value[0] >= 768 >= value[1] >= 256:
                     await ws.send('R'.join(f'|{calc_speed(value, "R"):.3f}'))
                 elif 0 <= value[0] <= 256 <= value[1] <= 768:

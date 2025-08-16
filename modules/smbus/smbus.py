@@ -8,7 +8,8 @@ INA226_ADDR = 0x40
 PCF8591_ADDR = 0x48
 
 class IntegratedSensorHub:
-    def __init__(self, bus_number=1):
+    def __init__(self, bus_number=1, debug_enabled=False):
+        self._debug_enabled = debug_enabled
         """初始化传感器集线器"""
         # 初始化I2C总线
         self.bus = SMBus(bus_number)
@@ -67,9 +68,23 @@ class IntegratedSensorHub:
         for attempt in range(max_retries):
             try:
                 msg = i2c_msg.read(PCF8574_ADDR, 1)
-                self.bus.i2c_rdwr(msg)
-                self.device_data['pcf8574'] = list(msg)[0]
-                return True
+                start_time = time.time()
+                try:
+                    self.bus.i2c_rdwr(msg)
+                    self.device_data['pcf8574'] = list(msg)[0]
+                    end_time = time.time()
+                    self._log_i2c_operation(
+                        "read_pcf8574", PCF8574_ADDR, None, None, list(msg)[0],
+                        "SUCCESS", start_time, end_time
+                    )
+                    return True
+                except Exception as e:
+                    end_time = time.time()
+                    self._log_i2c_operation(
+                        "read_pcf8574", PCF8574_ADDR, None, None, None,
+                        f"FAILED: {e}", start_time, end_time
+                    )
+                    raise e
             except Exception as e:
                 if attempt == max_retries - 1:
                     logger.error(f"PCF8574 READ ERROR (final attempt): {e}")
@@ -84,8 +99,22 @@ class IntegratedSensorHub:
         for attempt in range(max_retries):
             try:
                 # 读取电压寄存器（0x02）
-                data = self.bus.read_i2c_block_data(INA226_ADDR, 0x02, 2)
-                voltage_raw = (data[0] << 8) | data[1]
+                start_time = time.time()
+                try:
+                    data = self.bus.read_i2c_block_data(INA226_ADDR, 0x02, 2)
+                    voltage_raw = (data[0] << 8) | data[1]
+                    end_time = time.time()
+                    self._log_i2c_operation(
+                        "read_ina226", INA226_ADDR, 0x02, None, data,
+                        "SUCCESS", start_time, end_time
+                    )
+                except Exception as e:
+                    end_time = time.time()
+                    self._log_i2c_operation(
+                        "read_ina226", INA226_ADDR, 0x02, None, None,
+                        f"FAILED: {e}", start_time, end_time
+                    )
+                    raise e
                 
                 # 计算原始电压值（1.25mV/LSB）
                 voltage = voltage_raw * 0.00125  # 单位：V
@@ -111,9 +140,34 @@ class IntegratedSensorHub:
         max_retries = 3
         for attempt in range(max_retries):
             try:
-                self.bus.write_byte_data(PCF8591_ADDR, 0x04, 0x04)
-                self.bus.read_byte(PCF8591_ADDR)  # 丢弃第一个字节
-                adc_values = self.bus.read_i2c_block_data(PCF8591_ADDR, 0x00, 2)
+                start_time = time.time()
+                try:
+                    self.bus.write_byte_data(PCF8591_ADDR, 0x04, 0x04)
+                    self._log_i2c_operation(
+                        "write_byte_data", PCF8591_ADDR, 0x04, 0x04, None,
+                        "SUCCESS", start_time, time.time()
+                    )
+
+                    start_time_read = time.time()
+                    self.bus.read_byte(PCF8591_ADDR)  # 丢弃第一个字节
+                    self._log_i2c_operation(
+                        "read_byte", PCF8591_ADDR, None, None, None,
+                        "SUCCESS", start_time_read, time.time()
+                    )
+
+                    start_time_block_read = time.time()
+                    adc_values = self.bus.read_i2c_block_data(PCF8591_ADDR, 0x00, 2)
+                    self._log_i2c_operation(
+                        "read_i2c_block_data", PCF8591_ADDR, 0x00, None, adc_values,
+                        "SUCCESS", start_time_block_read, time.time()
+                    )
+                except Exception as e:
+                    end_time = time.time()
+                    self._log_i2c_operation(
+                        "read_pcf8591", PCF8591_ADDR, None, None, None,
+                        f"FAILED: {e}", start_time, end_time
+                    )
+                    raise e
                     
                     # 第一个通道参考电压5V，第二个通道参考电压为3.3V
                 refer_vol = [5.0, 3.3]
@@ -159,6 +213,23 @@ class IntegratedSensorHub:
     def close(self):
         """清理资源"""
         self.bus.close()
+
+    def _log_i2c_operation(self, op_type, addr, reg=None, write_data=None, read_data=None, status="SUCCESS", start_time=None, end_time=None):
+        if not self._debug_enabled:
+            return
+
+        log_message = f"I2C Debug: Type={op_type}, Addr=0x{addr:02X}"
+        if reg is not None:
+            log_message += f", Reg=0x{reg:02X}"
+        if write_data is not None:
+            log_message += f", WriteData={write_data}"
+        if read_data is not None:
+            log_message += f", ReadData={read_data}"
+        if start_time is not None and end_time is not None:
+            log_message += f", Time={end_time - start_time:.4f}s"
+        log_message += f", Status={status}"
+
+        logger.debug(log_message)
 
 if __name__ == "__main__":
     """主程序"""

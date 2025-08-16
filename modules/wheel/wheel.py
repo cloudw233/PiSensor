@@ -1,5 +1,5 @@
-from gpiozero import PWMOutputDevice, DigitalOutputDevice
 import time
+from gpiozero import DigitalOutputDevice, PWMOutputDevice
 
 class MotorControl:
     def __init__(self, ENL1, ENL2, ENR1, ENR2, pwmL, pwmR, pwm_freq=1000):
@@ -82,12 +82,12 @@ class MotorControl:
         清理释放资源
         """
         self.stop()
-        self.ENL1.close()
-        self.ENL2.close()
-        self.ENR1.close()
-        self.ENR2.close()
-        self.pwmL.close()
-        self.pwmR.close()
+        if self.ENL1.is_active: self.ENL1.close()
+        if self.ENL2.is_active: self.ENL2.close()
+        if self.ENR1.is_active: self.ENR1.close()
+        if self.ENR2.is_active: self.ENR2.close()
+        if self.pwmL.is_active: self.pwmL.close()
+        if self.pwmR.is_active: self.pwmR.close()
 
 if __name__ == '__main__':
     # 测试代码

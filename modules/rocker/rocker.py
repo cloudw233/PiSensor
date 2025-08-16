@@ -2,6 +2,7 @@ import spidev
 import time
 
 from gpiozero import Button
+import spidev
 
 class MCP3208_Joystick:
     def __init__(self):
@@ -35,7 +36,7 @@ class MCP3208_Joystick:
     def close(self):
         """关闭SPI连接和GPIO资源"""
         self.spi.close()
-        self.button.close()
+        if self.button.is_active: self.button.close()
 
 # 使用示例
 if __name__ == "__main__":

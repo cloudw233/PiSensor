@@ -140,7 +140,6 @@ def main():
         logger.info('Starting relay server...')
         relay_thread = threading.Thread(target=run_relay_server, daemon=True)
         relay_thread.start()
-        time.sleep(2) # Give relay server some time to start
         running_threads.append(relay_thread)
         
         logger.info('Starting message forwarding service...')

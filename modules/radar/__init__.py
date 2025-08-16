@@ -1,5 +1,5 @@
 from loguru import logger
-from modules.radar.radar import radar
+from modules.radar.radar import run as radar
 from core.message_queue import message_queue_manager
 from core.constants import QueueNames
 import time

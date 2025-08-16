@@ -1,0 +1,263 @@
+[2025-08-16 10:47:20][__main__][<module>][INFO] === Starting application ===
+
+[2025-08-16 10:47:20][__main__][main][INFO] 
+
+    main()
+    └ <function main at 0x7f98559300>
+
+    │    └ <_frozen_importlib_external.SourceFileLoader object at 0x7f9855db10>
+    └ ModuleSpec(name='radar', loader=<_frozen_importlib_external.SourceFileLoader object at 0x7f9855db10>, origin='/root/new/PiSen...
+
+  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+
+  File "/root/new/PiSensor/modules/radar/__init__.py", line 3, in <module>
+    import websockets
+
+ModuleNotFoundError: No module named 'websockets'
+
+[2025-08-16 10:47:21][__main__][import_and_collect_runners][SUCCESS] Successfully loaded run function from humiture
+
+[2025-08-16 10:47:21][__main__][import_and_collect_runners][SUCCESS] Successfully loaded run function from urgent_button
+
+[2025-08-16 10:47:21][__main__][import_and_collect_runners][SUCCESS] Successfully loaded run function from smbus
+
+[2025-08-16 10:47:21][__main__][import_and_collect_runners][SUCCESS] Successfully loaded run function from step_motor
+
+[2025-08-16 10:47:21][__main__][import_and_collect_runners][SUCCESS] Successfully loaded run function from wheel
+
+[2025-08-16 10:47:21][__main__][import_and_collect_runners][ERROR] Error loading module locator
+Traceback (most recent call last):
+
+  File "/root/new/PiSensor/main.py", line 174, in <module>
+    main()
+    └ <function main at 0x7f98559300>
+
+  File "/root/new/PiSensor/main.py", line 131, in main
+    runners = import_and_collect_runners(driver_path)
+              │                          └ '/root/new/PiSensor/modules'
+              └ <function import_and_collect_runners at 0x7f98559080>
+
+> File "/root/new/PiSensor/main.py", line 82, in import_and_collect_runners
+    spec.loader.exec_module(module)
+    │    │      │           └ <module 'locator' from '/root/new/PiSensor/modules/locator/__init__.py'>
+    │    │      └ <function _LoaderBasics.exec_module at 0x7fa6291da0>
+    │    └ <_frozen_importlib_external.SourceFileLoader object at 0x7f9790e0d0>
+    └ ModuleSpec(name='locator', loader=<_frozen_importlib_external.SourceFileLoader object at 0x7f9790e0d0>, origin='/root/new/PiS...
+
+  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+
+[2025-08-16 10:47:21][__main__][import_and_collect_runners][SUCCESS] Successfully loaded run function from rocker
+
+[2025-08-16 10:47:26][__main__][import_and_collect_runners][SUCCESS] Successfully loaded run function from heart
+
+[2025-08-16 10:47:26][__main__][main][INFO] Starting 7 modules
+Traceback (most recent call last):
+
+  File "/usr/lib/python3.11/threading.py", line 1038, in _bootstrap_inner
+[2025-08-16 10:47:26][__main__][run_module][INFO] Starting module: humiture
+
+[2025-08-16 10:47:26][__main__][run_module][INFO] Starting module: urgent_button
+
+[2025-08-16 10:47:26][__main__][run_module][INFO] Starting module: smbus
+
+[2025-08-16 10:47:26][urgent_button][run][INFO] Urgent button module started.
+
+[2025-08-16 10:47:26][__main__][run_module][INFO] Starting module: step_motor
+
+[2025-08-16 10:47:26][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 10:47:26][core.message_queue][get_queue][INFO] Created queue: step_motor
+
+[2025-08-16 10:47:26][step_motor][run][INFO] Stepper motor module started.
+
+[2025-08-16 10:47:26][__main__][run_module][INFO] Starting module: rocker
+
+[2025-08-16 10:47:26][__main__][run_module][INFO] Starting module: heart
+
+[2025-08-16 10:47:26][core.message_queue][get_queue][INFO] Created queue: QueueNames.WHEEL
+
+[2025-08-16 10:47:26][wheel][run][INFO] Wheel and Radar modules started.
+
+[2025-08-16 10:47:26][__main__][run_module][INFO] Module step_motor stopped
+
+[2025-08-16 10:47:26][core.http_client][send_sensor_data][ERROR] Error sending data for sensor 'urgent_button': HTTPConnectionPool(host='localhost', port=10240): Max retries exceeded with url: /api/sensor/urgent_button (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f776bf690>: Failed[2025-08-16 10:47:26][core.message_queue][get_queue][INFO] Created queue: QueueNames.RADAR
+
+[2025-08-16 10:47:26][__main__][run_module][INFO] Module wheel stopped
+
+[2025-08-16 10:47:26][core.message_queue][get_queue][INFO] Created queue: heart
+
+    self.run()
+  File "/usr/lib/python3.11/threading.py", line 975, in run
+    self._target(*self._args, **self._kwargs)
+  File "/root/new/PiSensor/core/relay_server.py", line 40, in relay_server_thread
+    heart_queue = message_queue_manager.create_queue(QueueNames.HEART)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'MessageQueueManager' object has no attribute 'create_queue'. Did you mean: 'get_queue'?
+[2025-08-16 10:47:26][uvicorn.server][_serve][Level 20] Started server process [5953]
+
+[2025-08-16 10:47:26][core.forwarding][forward_messages][ERROR] Connection to remote server lost: [Errno 111] Connection refused. Reconnecting in 5 seconds...
+[2025-08-16 10:47:27][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 10:47:27][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:48354 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 10:47:28][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 10:47:29][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 10:47:29][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:48372 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 10:47:30][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:48388 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 10:47:31][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 10:47:31][core.relay_server][sensor_data_handler][ERROR] Error handling sensor data for humiture: string indices must be integers, not 'str'
+
+[2025-08-16 10:47:32][core.forwarding][forward_messages][ERROR] Connection to remote server lost: [Errno 111] Connection refused. Reconnecting in 5 seconds...
+[2025-08-16 10:47:32][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:48414 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+INA226 READ ERROR: [Errno 5] Input/output error
+[2025-08-16 10:47:33][core.relay_server][sensor_data_handler][ERROR] Error handling sensor data for smbus: byte indices must be integers or slices, not str
+
+[2025-08-16 10:47:33][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 10:47:34][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 10:47:34][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:48436 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+PCF8574 READ ERROR: [Errno 5] Input/output error
+INA226 READ ERROR: [Errno 5] Input/output error
+[2025-08-16 10:47:35][core.relay_server][sensor_data_handler][ERROR] Error handling sensor data for smbus: byte indices must be integers or slices, not str
+
+[2025-08-16 10:47:35][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 10:47:35][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:56568 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 10:47:35][core.relay_server][sensor_data_handler][ERROR] Error handling sensor data for humiture: string indices must be integers, not 'str'
+
+[2025-08-16 10:47:36][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:56580 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+PCF8574 READ ERROR: [Errno 5] Input/output error
+INA226 READ ERROR: [Errno 5] Input/output error
+[2025-08-16 10:47:37][core.relay_server][sensor_data_handler][ERROR] Error handling sensor data for smbus: byte indices must be integers or slices, not str
+
+[2025-08-16 10:47:37][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 10:47:37][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:56592 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 10:47:38][core.relay_server][sensor_data_handler][ERROR] Error handling sensor data for humiture: string indices must be integers, not 'str'
+
+[2025-08-16 10:47:38][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:56606 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+PCF8574 READ ERROR: [Errno 5] Input/output error
+INA226 READ ERROR: [Errno 5] Input/output error
+[2025-08-16 10:47:39][core.relay_server][sensor_data_handler][ERROR] Error handling sensor data for smbus: byte indices must be integers or slices, not str
+
+[2025-08-16 10:47:39][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:56618 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 10:47:40][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:56628 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 10:47:40][core.relay_server][sensor_data_handler][ERROR] Error handling sensor data for humiture: string indices must be integers, not 'str'
+
+PCF8574 READ ERROR: [Errno 5] Input/output error
+INA226 READ ERROR: [Errno 5] Input/output error
+[2025-08-16 10:47:41][core.relay_server][sensor_data_handler][ERROR] Error handling sensor data for smbus: byte indices must be integers or slices, not str
+
+[2025-08-16 10:47:42][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:56638 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 10:47:42][core.forwarding][forward_messages][ERROR] Connection to remote server lost: [Errno 111] Connection refused. Reconnecting in 5 seconds...
+PCF8574 READ ERROR: [Errno 5] Input/output error
+INA226 READ ERROR: [Errno 5] Input/output error
+[2025-08-16 10:47:43][core.relay_server][sensor_data_handler][ERROR] Error handling sensor data for smbus: byte indices must be integers or slices, not str
+
+[2025-08-16 10:47:43][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 10:47:43][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:56652 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 10:47:44][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 10:47:44][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:56658 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 10:47:45][core.relay_server][sensor_data_handler][ERROR] Error handling sensor data for humiture: string indices must be integers, not 'str'
+
+PCF8574 READ ERROR: [Errno 5] Input/output error
+INA226 READ ERROR: [Errno 5] Input/output error
+[2025-08-16 10:47:45][core.relay_server][sensor_data_handler][ERROR] Error handling sensor data for smbus: byte indices must be integers or slices, not str
+
+[2025-08-16 10:47:45][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 10:47:45][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:42114 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 10:47:46][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 10:47:46][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:42118 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+PCF8574 READ ERROR: [Errno 5] Input/output error
+
+[2025-08-16 10:47:47][core.relay_server][sensor_data_handler][ERROR] Error handling sensor data for humiture: string indices must be integers, not 'str'
+
+[2025-08-16 10:47:47][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 10:47:48][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:42138 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+PCF8574 READ ERROR: [Errno 5] Input/output error
+INA226 READ ERROR: [Errno 5] Input/output error
+[2025-08-16 10:47:49][core.relay_server][sensor_data_handler][ERROR] Error handling sensor data for smbus: byte indices must be integers or slices, not str
+
+[2025-08-16 10:47:49][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:42146 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 10:47:49][core.relay_server][sensor_data_handler][ERROR] Error handling sensor data for humiture: string indices must be integers, not 'str'
+
+[2025-08-16 10:47:50][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 10:47:50][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:42162 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+PCF8574 READ ERROR: [Errno 5] Input/output error
+INA226 READ ERROR: [Errno 5] Input/output error
+[2025-08-16 10:47:51][core.relay_server][sensor_data_handler][ERROR] Error handling sensor data for smbus: byte indices must be integers or slices, not str
+
+[2025-08-16 10:47:52][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:42182 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+PCF8574 READ ERROR: [Errno 5] Input/output error
+INA226 READ ERROR: [Errno 5] Input/output error
+[2025-08-16 10:47:53][core.relay_server][sensor_data_handler][ERROR] Error handling sensor data for smbus: byte indices must be integers or slices, not str
+
+[2025-08-16 10:47:53][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 10:47:53][core.forwarding][forward_messages][ERROR] Connection to remote server lost: [Errno 111] Connection refused. Reconnecting in 5 seconds...
+
+[2025-08-16 10:47:53][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:42188 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 10:47:54][core.relay_server][sensor_data_handler][ERROR] Error handling sensor data for humiture: string indices must be integers, not 'str'
+
+[2025-08-16 10:47:54][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 10:47:54][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:41668 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+PCF8574 READ ERROR: [Errno 5] Input/output error
+INA226 READ ERROR: [Errno 5] Input/output error
+[2025-08-16 10:47:55][core.relay_server][sensor_data_handler][ERROR] Error handling sensor data for smbus: byte indices must be integers or slices, not str
+
+[2025-08-16 10:47:55][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 10:47:55][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:41680 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 10:47:56][core.relay_server][sensor_data_handler][ERROR] Error handling sensor data for humiture: string indices must be integers, not 'str'
+
+[2025-08-16 10:47:56][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 10:47:56][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:41688 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+PCF8574 READ ERROR: [Errno 5] Input/output error
+INA226 READ ERROR: [Errno 5] Input/output error
+[2025-08-16 10:47:57][core.relay_server][sensor_data_handler][ERROR] Error handling sensor data for smbus: byte indices must be integers or slices, not str
+
+[2025-08-16 10:47:57][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 10:47:57][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:41690 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+^C[2025-08-16 10:47:57][__main__][shutdown][INFO] Received shutdown signal, shutting down...
+
+[2025-08-16 10:47:58][__main__][main][INFO] Main process ended
+
+[2025-08-16 10:47:58][__main__][<module>][INFO] === Application terminated ===

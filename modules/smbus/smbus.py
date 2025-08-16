@@ -1,5 +1,6 @@
 import time
 from smbus2 import SMBus, i2c_msg
+from loguru import logger
 
 # I2C设备地址定义
 PCF8574_ADDR = 0x20
@@ -68,7 +69,7 @@ class IntegratedSensorHub:
             self.device_data['pcf8574'] = list(msg)[0]
             return True
         except Exception as e:
-            print(f"PCF8574 READ ERROR: {e}")
+            logger.error(f"PCF8574 READ ERROR: {e}")
             return False
 
     def read_ina226(self):
@@ -90,7 +91,7 @@ class IntegratedSensorHub:
             return True
             
         except Exception as e:
-            print(f"INA226 READ ERROR: {e}")
+            logger.error(f"INA226 READ ERROR: {e}")
             return False
 
     def read_pcf8591(self):
@@ -107,7 +108,7 @@ class IntegratedSensorHub:
             self.device_data['pcf8591'] = vol5v,vol3v3
             return True
         except Exception as e:
-            print(f"PCF8591 READ ERROR: {e}")
+            logger.error(f"PCF8591 READ ERROR: {e}")
             return False
 
     def read_all(self):

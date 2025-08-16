@@ -4,6 +4,7 @@ import orjson as json
 from loguru import logger
 from modules.smbus.smbus import IntegratedSensorHub
 from core.relay_server import sensor_data_handler
+from core.http_client import send_sensor_data
 
 def run():
     __hub = IntegratedSensorHub()
@@ -12,7 +13,7 @@ def run():
         try:
             __data = __hub.read_all()
             logger.debug(f"[SensorHub]{__data}")
-            sensor_data_handler('smbus', json.dumps(__data))
+            send_sensor_data('smbus', __data)
             time.sleep(2)
         except Exception as e:
             logger.error(f"Error in smbus module: {e}")

@@ -3,10 +3,11 @@ import websockets
 
 import orjson as json
 
+import time
+
 from loguru import logger
 from modules.locator.locator import Locator
-from core.relay_server import sensor_data_handler
-import time
+from core.http_client import send_sensor_data
 
 def run():
     _location = Locator()
@@ -16,7 +17,7 @@ def run():
         try:
             __location = _location.read_location()
             logger.debug(f"[Location]{__location}")
-            sensor_data_handler('location', ",".join(__location))
+            send_sensor_data('locator', ",".join(map(str, __location)))
             time.sleep(2)
         except Exception as e:
             logger.error(f"Error in locator module: {e}")

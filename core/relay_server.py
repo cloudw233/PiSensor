@@ -37,9 +37,9 @@ def relay_server_thread():
     中继服务器线程函数，处理消息转发
     """
     # 创建与各模块通信的队列
-    heart_queue = message_queue_manager.create_queue(QueueNames.HEART)
-    step_motor_queue = message_queue_manager.create_queue(QueueNames.STEP_MOTOR)
-    wheel_queue = message_queue_manager.create_queue(QueueNames.WHEEL)
+    heart_queue = message_queue_manager.get_queue(QueueNames.HEART)
+    step_motor_queue = message_queue_manager.get_queue(QueueNames.STEP_MOTOR)
+    wheel_queue = message_queue_manager.get_queue(QueueNames.WHEEL)
     
     while True:
         try:

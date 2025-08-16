@@ -5,7 +5,7 @@ import json
 from loguru import logger
 from modules.humiture.humiture import get_humiture
 from core.message_queue import message_queue_manager
-from core.relay_server import sensor_data_handler
+from core.http_client import send_sensor_data
 
 def run():
     # 等待5秒后开始运行
@@ -17,8 +17,7 @@ def run():
             logger.debug(f"[Humiture]{__humiture}")
             
             # 通过队列发送数据到中继服务器
-            data = json.dumps(__humiture)
-            sensor_data_handler('humiture', data)
+            send_sensor_data('humiture', __humiture)
             
             # 每2秒发送一次数据
             time.sleep(2)

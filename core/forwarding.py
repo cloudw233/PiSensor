@@ -7,6 +7,7 @@ from loguru import logger
 from core.message_queue import message_queue_manager
 
 def forward_messages():
+    retry_delay = 1
     while True:
         try:
             # 连接到远程服务器
@@ -34,16 +35,18 @@ def forward_messages():
                 
                 # 转发消息
                 if recv_relay is not None:
-                    remote.send(recv_relay)
+                    remote.send_text(recv_relay)
                 
                 # 短暂休眠以避免过度占用CPU
                 time.sleep(0.01)
         except (websocket.WebSocketConnectionClosedException, ConnectionRefusedError, ConnectionResetError) as e:
-            logger.error(f"Connection to remote server lost: {e}. Reconnecting in 5 seconds...")
-            time.sleep(5)
+            logger.error(f"Connection to remote server lost: {e}. Reconnecting in {retry_delay} seconds...")
+            time.sleep(retry_delay)
+            retry_delay = min(retry_delay * 2, 60)  # Exponential backoff, max 60s
         except Exception as e:
-            logger.error(f"An unexpected error occurred in message forwarding: {e}. Retrying in 5 seconds...")
-            time.sleep(5)
+            logger.error(f"An unexpected error occurred in message forwarding: {e}. Retrying in {retry_delay} seconds...")
+            time.sleep(retry_delay)
+            retry_delay = min(retry_delay * 2, 60)
         finally:
             # 确保连接被正确关闭
             if 'remote' in locals() and remote.connected:

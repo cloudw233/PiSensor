@@ -1,16 +1,12 @@
-import asyncio
+import time
 from typing import Tuple, Literal
 from numpy import hypot
 
-import websockets
+from loguru import logger
 
+from core.message_queue import message_queue_manager
+from core.constants import QueueNames
 from modules.rocker.rocker import MCP3208_Joystick
-
-rocker = None
-
-def set_joystick_instance(joystick:MCP3208_Joystick):
-    global rocker
-    rocker = joystick
 
 def calc_speed(
         value: Tuple[float, float, bool],
@@ -33,26 +29,27 @@ def calc_speed(
     value_x, value_y, _ = value
     return hypot((value_x-min_val_x)/(max_val_x-min_val_x), (value_y-min_val_y)/(max_val_y-min_val_y))
 
-async def run():
-    global rocker
+def run():
+    joystick = MCP3208_Joystick()
+    wheel_queue = message_queue_manager.get_queue(QueueNames.WHEEL)
+    logger.info("Rocker module started.")
     try:
-        await asyncio.sleep(5)
-        async with websockets.connect('ws://localhost:25567/wheel') as ws:
-            joystick = rocker
-            while True:
-                value = joystick.read_joystick()
-                print(value)
-                if 1023 >= value[0] >= 768 >= value[1] >= 256:
-                    await ws.send('R'.join(f'|{calc_speed(value, "R"):.3f}'))
-                elif 0 <= value[0] <= 256 <= value[1] <= 768:
-                    await ws.send('L'.join(f'|{calc_speed(value, "L"):.3f}'))
-                elif 768 >= value[0] >= 256 >= value[1] >= 0:
-                    await ws.send('F'.join(f'|{calc_speed(value, "F"):.3f}'))
-                elif 256 <= value[0] <= 768 <= value[1] <= 1023:
-                    await ws.send('B'.join(f'|{calc_speed(value, "B"):.3f}'))
-                else:
-                    await ws.send('S'.join('|0'))
-    except asyncio.CancelledError:
+        while True:
+            value = joystick.read_joystick()
+            logger.debug(f"Joystick value: {value}")
+            if 1023 >= value[0] >= 768 >= value[1] >= 256:
+                wheel_queue.put(f'R|{calc_speed(value, "R"):.3f}')
+            elif 0 <= value[0] <= 256 <= value[1] <= 768:
+                wheel_queue.put(f'L|{calc_speed(value, "L"):.3f}')
+            elif 768 >= value[0] >= 256 >= value[1] >= 0:
+                wheel_queue.put(f'F|{calc_speed(value, "F"):.3f}')
+            elif 256 <= value[0] <= 768 <= value[1] <= 1023:
+                wheel_queue.put(f'B|{calc_speed(value, "B"):.3f}')
+            else:
+                wheel_queue.put('S|0')
+            time.sleep(0.1)
+    except Exception as e:
+        logger.error(f"Error in rocker module: {e}")
+    finally:
         joystick.close()
-        raise
 

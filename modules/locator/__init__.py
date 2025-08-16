@@ -5,20 +5,22 @@ import orjson as json
 
 from loguru import logger
 from modules.locator.locator import Locator
+from core.relay_server import sensor_data_handler
+import time
 
-async def run():
+def run():
     _location = Locator()
-    await asyncio.sleep(5)
+    time.sleep(5)
     logger.info(f"[Location]Here we go!")
     while True:
         try:
-            async with websockets.connect("ws://localhost:10240/location") as ws:
-                __location = _location.read_location()
-                logger.debug(f"[Location]{__location}")
-                await ws.send(','.join(__location))
-                await asyncio.sleep(2)
-        except asyncio.CancelledError:
+            __location = _location.read_location()
+            logger.debug(f"[Location]{__location}")
+            sensor_data_handler('location', ",".join(__location))
+            time.sleep(2)
+        except Exception as e:
+            logger.error(f"Error in locator module: {e}")
             _location.cleanup()
-            raise
+            time.sleep(2)
 
 

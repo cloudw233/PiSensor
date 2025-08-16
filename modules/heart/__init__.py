@@ -1,55 +1,46 @@
-import asyncio
+import json
+import threading
+import time
+import queue
 
-import orjson as json
-import logging
-import uvicorn
-
-from fastapi import FastAPI, WebSocket
 from loguru import logger
 
-from core.builtins.assigned_element import HeartElement
 from core.builtins.elements import HeartElements
-from core.builtins.message_constructors import MessageChainD, MessageChain
+from core.builtins.message_constructors import MessageChainD
+from core.message_queue import message_queue_manager
+from core.relay_server import sensor_data_handler
 
 from modules.heart.heart import init_max30102, measure_heart_rate
 
-app = FastAPI()
-
-@app.websocket("/heart")
-async def heart(websocket: WebSocket):
-    await websocket.accept()
+def heart_thread():
+    """
+    心率模块的处理线程
+    """
+    heart_queue = message_queue_manager.get_queue('heart')
+    
     while True:
-        recv_data = await websocket.receive_text()
-        data = MessageChainD(json.loads(recv_data))
-        data.serialize()
-        heart = [_ for _ in data.messages if isinstance(_, HeartElements)]
-        if len(heart) != 0 and heart[0].bpm == -1:
-            init_max30102()
-            logger.info("[Heart]Measuring heart rate...")
-            bpm = measure_heart_rate()
-            logger.debug(f"[Heart]<{heart[0].bpm}>")
-            await websocket.send_text(MessageChain(HeartElement(bpm)))
+        try:
+            recv_data = heart_queue.get(timeout=1)
+            data = MessageChainD(json.loads(recv_data))
+            data.serialize()
+            heart = [_ for _ in data.messages if isinstance(_, HeartElements)]
+            if len(heart) != 0 and heart[0].bpm == -1:
+                init_max30102()
+                logger.info("[Heart]Measuring heart rate...")
+                bpm = measure_heart_rate()
+                logger.debug(f"[Heart]<{bpm}>")
+                sensor_data_handler('heart', str(bpm))
+        except queue.Empty:
+            continue
+        except Exception as e:
+            logger.error(f"Error in heart thread: {e}")
+        time.sleep(0.1)
 
-async def run():
+def run():
     try:
-        class InterceptHandler(logging.Handler):
-            def emit(self, record):
-                logger_opt = logger.opt(depth=6, exception=record.exc_info)
-                logger_opt.log(record.levelno, record.getMessage())
-
-
-        def init_logger():
-            LOGGER_NAMES = ("uvicorn", "uvicorn.access",)
-            for logger_name in LOGGER_NAMES:
-                logging_logger = logging.getLogger(logger_name)
-                logging_logger.handlers = [InterceptHandler()]
-
-
-        config = uvicorn.Config(app, host="localhost", port=int(25565), access_log=True, workers=2)
-        server = uvicorn.Server(config)
-        init_logger()
-        await server.serve()
-    except asyncio.CancelledError:
-        await server.shutdown()
-        raise
+        heart_thread_instance = threading.Thread(target=heart_thread, daemon=True)
+        heart_thread_instance.start()
+        logger.info("Heart module started.")
+    except Exception as e:
+        logger.error(f"Error in heart module: {e}")
 

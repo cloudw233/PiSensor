@@ -1,20 +1,28 @@
-import asyncio
-import websockets
-
-import orjson as json
+import threading
+import time
+import json
 
 from loguru import logger
 from modules.humiture.humiture import get_humiture
+from core.message_queue import message_queue_manager
+from core.relay_server import sensor_data_handler
 
-async def run():
-    await asyncio.sleep(5)
+def run():
+    # 等待5秒后开始运行
+    time.sleep(5)
     while True:
         try:
-            async with websockets.connect("ws://localhost:10240/humiture") as ws:
-                __humiture = get_humiture()
-                logger.debug(f"[Humiture]{__humiture}")
-                await ws.send(json.dumps(__humiture))
-                await asyncio.sleep(2)
-        except asyncio.CancelledError:
-            raise
+            # 获取温湿度数据
+            __humiture = get_humiture()
+            logger.debug(f"[Humiture]{__humiture}")
+            
+            # 通过队列发送数据到中继服务器
+            data = json.dumps(__humiture)
+            sensor_data_handler('humiture', data)
+            
+            # 每2秒发送一次数据
+            time.sleep(2)
+        except Exception as e:
+            logger.error(f"Error in humiture module: {e}")
+            time.sleep(2)
 

@@ -4,13 +4,12 @@ from modules.rocker import MCP3208_Joystick
 init_config()
 import os
 import importlib.util
-import asyncio
+import threading
 from typing import List, Callable, Any
-import inspect
 import signal
-import multiprocessing
 from pathlib import Path
 from loguru import logger
+import time
 
 from core.relay_server import run_relay_server
 from core.forwarding import forward_messages
@@ -42,14 +41,11 @@ logger.add(
     level="INFO"    # 设置日志级别
 )
 
-# 用于存储所有运行的任务
-running_tasks: List[asyncio.Task] = []
+# 用于存储所有运行的线程
+running_threads: List[threading.Thread] = []
+stop_event = threading.Event()
 
-# 初始化配置
-init_config()
-
-
-async def import_and_collect_runners(driver_path: str, controller: MotorControl, rocker: MCP3208_Joystick) -> List[Callable[[], Any]]:
+def import_and_collect_runners(driver_path: str) -> List[Callable[[], Any]]:
     """
     导入driver文件夹中的所有模块的run函数
     按照module1/__init__.py, module2/__init__.py的结构导入
@@ -85,11 +81,6 @@ async def import_and_collect_runners(driver_path: str, controller: MotorControl,
             module = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(module)
 
-            if module_name == 'wheel' and hasattr(module, 'set_motor_instance'):
-                module.set_motor_instance(controller)
-            if module_name == 'rocker' and hasattr(module, 'set_joystick_instance'):
-                module.set_joystick_instance(rocker)
-
             # 检查模块是否有run函数
             if hasattr(module, 'run'):
                 run_func = getattr(module, 'run')
@@ -99,22 +90,16 @@ async def import_and_collect_runners(driver_path: str, controller: MotorControl,
                     logger.warning(f"'run' in {module_name} is not callable")
                     continue
 
-                # 检查是否是异步函数
-                if not inspect.iscoroutinefunction(run_func):
-                    logger.warning(f"'run' in {module_name} is not an async function")
-                    continue
-
-                runners.append((module_name, run_func))
+                runners.append((module_dir.name, run_func))
                 logger.success(f"Successfully loaded run function from {module_name}")
             else:
                 logger.warning(f"Module {module_name} does not contain a run function")
 
         except Exception as e:
-            logger.exception(f"Error loading module {module_name}")
+            logger.exception(f"Error loading module {module_dir.name}")
             continue
 
     return runners
-
 
 def run_module(name: str, run_func: Callable) -> None:
     """
@@ -122,17 +107,14 @@ def run_module(name: str, run_func: Callable) -> None:
     """
     try:
         logger.info(f"Starting module: {name}")
-        loop = asyncio.new_event_loop()
-        loop.run_until_complete(run_func())
+        run_func()
     except Exception as e:
         logger.exception(f"Error in module {name}")
     finally:
         logger.info(f"Module {name} stopped")
 
-processes = []
-
-async def main():
-    global processes
+def main():
+    global running_threads
     ascii_art = r"""
       ____    _   ____                                      
      |  _ \  (_) / ___|    ___   _ __    ___    ___    _ __ 
@@ -143,42 +125,53 @@ async def main():
     logger.info(ascii_art)
     logger.info("Here we go!")
     driver_path = os.path.join(os.path.dirname(__file__), 'modules')
-    motor_controller = MotorControl(
-        ENL1=27, ENL2=22,
-        ENR1=23, ENR2=24,
-        pwmL=17, pwmR=18
-    )
-    rocker = MCP3208_Joystick()
-
+    
     try:
         # 收集所有的run函数
-        runners = await import_and_collect_runners(driver_path, motor_controller, rocker)
+        runners = import_and_collect_runners(driver_path)
 
         if not runners:
             logger.warning("No valid run functions found in any module")
             return
 
-        # 为每个模块创建任务
+        # 为每个模块创建线程
         logger.info(f"Starting {len(runners)} modules")
-        global running_tasks
+        
         logger.info('Starting relay server...')
-        processes.append(multiprocessing.Process(target=run_module,args=("relay_server", run_relay_server),daemon=True))
+        relay_thread = threading.Thread(target=run_relay_server, daemon=True)
+        relay_thread.start()
+        running_threads.append(relay_thread)
+        
         logger.info('Starting message forwarding service...')
-        processes.append(multiprocessing.Process(target=run_module,args=("forward_messages", forward_messages),daemon=True))
-        for name, run_func in enumerate(runners):
-            processes.append(multiprocessing.Process(target=run_module,args=(name, run_func)))
+        forward_thread = threading.Thread(target=forward_messages, daemon=True)
+        forward_thread.start()
+        running_threads.append(forward_thread)
+        
+        for name, run_func in runners:
+            thread = threading.Thread(target=run_module, args=(name, run_func), daemon=True)
+            thread.start()
+            running_threads.append(thread)
 
+        # Keep the main thread alive
+        while not stop_event.is_set():
+            time.sleep(1)
 
     except Exception as e:
         logger.exception("Main execution failed")
     finally:
         logger.info("Main process ended")
 
+def shutdown(signum, frame):
+    logger.info("Received shutdown signal, shutting down...")
+    stop_event.set()
 
 if __name__ == "__main__":
+    signal.signal(signal.SIGINT, shutdown)
+    signal.signal(signal.SIGTERM, shutdown)
     try:
         logger.info("=== Starting application ===")
-        asyncio.run(main())
+        # 运行主函数
+        main()
     except KeyboardInterrupt:
         logger.info("Received keyboard interrupt, shutting down...")
     finally:

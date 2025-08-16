@@ -1,23 +1,21 @@
-import asyncio
-import websockets
-
+import time
 import orjson as json
 
 from loguru import logger
 from modules.smbus.smbus import IntegratedSensorHub
+from core.relay_server import sensor_data_handler
 
-
-async def run():
+def run():
     __hub = IntegratedSensorHub()
-    await asyncio.sleep(5)
+    time.sleep(5)
     while True:
         try:
-            async with websockets.connect("ws://localhost:10240/smbus") as ws:
-                __data = __hub.read_all()
-                logger.debug(f"[SensorHub]{__data}")
-                await ws.send(json.dumps(__data))
-                await asyncio.sleep(2)
-        except asyncio.CancelledError:
+            __data = __hub.read_all()
+            logger.debug(f"[SensorHub]{__data}")
+            sensor_data_handler('smbus', json.dumps(__data))
+            time.sleep(2)
+        except Exception as e:
+            logger.error(f"Error in smbus module: {e}")
             __hub.close()
-            raise
+            time.sleep(2)
 

@@ -165,12 +165,6 @@ def main():
 def shutdown(signum, frame):
     logger.info("Received shutdown signal, shutting down...")
     stop_event.set()
-    # 等待所有线程完成
-    for thread in running_threads:
-        if thread.is_alive():
-            thread.join(timeout=5)  # 设置超时，避免无限等待
-            if thread.is_alive():
-                logger.warning(f"Thread {thread.name} did not terminate in time.")
 
 if __name__ == "__main__":
     signal.signal(signal.SIGINT, shutdown)

@@ -7,7 +7,7 @@ from core.relay_server import sensor_data_handler
 from core.http_client import send_sensor_data
 
 def run():
-    __hub = IntegratedSensorHub(debug_enabled=True)
+    __hub = IntegratedSensorHub()
     time.sleep(5)
     while True:
         try:

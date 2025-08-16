@@ -1,285 +1,578 @@
-[2025-08-16 15:20:43][__main__][main][INFO] 
+[2025-08-16 15:07:27][__main__][<module>][INFO] === Starting application ===
+
+[2025-08-16 15:07:27][__main__][main][INFO] 
       ____    _   ____                                      
-     |  _ \  (_) / ___|    ___   _ __    ___    ___    _ __ 
-     | |_) | | | \___ \   / _ \ | '_ \  / __|  / _ \  | '__|
      |  __/  | |  ___) | |  __/ | | | | \__ \ | (_) | | |   
      |_|     |_| |____/   \___| |_| |_| |___/  \___/  |_|   
     
 
-[2025-08-16 15:20:43][__main__][main][INFO] Here we go!
+[2025-08-16 15:07:27][__main__][main][INFO] Here we go!
 
-[2025-08-16 15:20:43][__main__][import_and_collect_runners][SUCCESS] Successfully loaded run function from radar
+    main()
+    └ <function main at 0x7f73bd8040>
 
-[2025-08-16 15:20:44][__main__][import_and_collect_runners][SUCCESS] Successfully loaded run function from urgent_button
+  File "/root/new/PiSensor/main.py", line 131, in main
+    runners = import_and_collect_runners(driver_path)
+              │                          └ '/root/new/PiSensor/modules'
+              └ <function import_and_collect_runners at 0x7f73bc3d80>
 
-[2025-08-16 15:20:44][__main__][import_and_collect_runners][SUCCESS] Successfully loaded run function from smbus
+> File "/root/new/PiSensor/main.py", line 82, in import_and_collect_runners
+    spec.loader.exec_module(module)
+    │    │      │           └ <module 'radar' from '/root/new/PiSensor/modules/radar/__init__.py'>
+    │    │      └ <function _LoaderBasics.exec_module at 0x7f817e1da0>
+    │    └ <_frozen_importlib_external.SourceFileLoader object at 0x7f73bd5410>
+    └ ModuleSpec(name='radar', loader=<_frozen_importlib_external.SourceFileLoader object at 0x7f73bd5410>, origin='/root/new/PiSen...
 
-[2025-08-16 15:20:44][__main__][import_and_collect_runners][SUCCESS] Successfully loaded run function from step_motor
+  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
 
-[2025-08-16 15:20:44][__main__][import_and_collect_runners][SUCCESS] Successfully loaded run function from wheel
 
-[2025-08-16 15:20:44][__main__][import_and_collect_runners][SUCCESS] Successfully loaded run function from locator
+  File "/root/new/PiSensor/modules/radar/__init__.py", line 2, in <module>
+    from modules.radar.radar import radar
+                                    └ <module 'modules.radar.radar' from '/root/new/PiSensor/modules/radar/radar.py'>
 
-[2025-08-16 15:20:44][__main__][import_and_collect_runners][SUCCESS] Successfully loaded run function from rocker
+ImportError: cannot import name 'radar' from 'modules.radar.radar' (/root/new/PiSensor/modules/radar/radar.py)
 
-[2025-08-16 15:20:45][__main__][import_and_collect_runners][SUCCESS] Successfully loaded run function from heart
+[2025-08-16 15:07:27][__main__][import_and_collect_runners][SUCCESS] Successfully loaded run function from humiture
 
-[2025-08-16 15:20:45][__main__][main][INFO] Starting 9 modules
+[2025-08-16 15:07:27][__main__][import_and_collect_runners][SUCCESS] Successfully loaded run function from urgent_button
 
-[2025-08-16 15:20:45][__main__][main][INFO] Starting relay server...
+[2025-08-16 15:07:27][__main__][import_and_collect_runners][SUCCESS] Successfully loaded run function from smbus
 
-[2025-08-16 15:20:45][core.message_queue][get_queue][INFO] Created queue: QueueNames.STEP_MOTOR
+[2025-08-16 15:07:27][__main__][import_and_collect_runners][SUCCESS] Successfully loaded run function from step_motor
 
-[2025-08-16 15:20:45][uvicorn.server][_serve][Level 20] Started server process [13370]
+[2025-08-16 15:07:27][__main__][import_and_collect_runners][SUCCESS] Successfully loaded run function from wheel
 
-[2025-08-16 15:20:45][uvicorn.lifespan.on][startup][Level 20] Waiting for application startup.
+[2025-08-16 15:07:27][__main__][import_and_collect_runners][SUCCESS] Successfully loaded run function from locator
 
-[2025-08-16 15:20:45][uvicorn.lifespan.on][startup][Level 20] Application startup complete.
+[2025-08-16 15:07:31][__main__][import_and_collect_runners][SUCCESS] Successfully loaded run function from heart
 
-[2025-08-16 15:20:45][uvicorn.server][_log_started_message][Level 20] Uvicorn running on http://localhost:10240 (Press CTRL+C to quit)
+[2025-08-16 15:07:31][__main__][run_module][INFO] Starting module: humiture
 
-[2025-08-16 15:20:47][__main__][run_module][INFO] Starting module: humiture
+[2025-08-16 15:07:31][core.message_queue][get_queue][INFO] Created queue: QueueNames.STEP_MOTOR
 
-[2025-08-16 15:20:47][core.message_queue][get_queue][INFO] Created queue: QueueNames.RADAR
+[2025-08-16 15:07:31][__main__][run_module][INFO] Starting module: urgent_button
 
-[2025-08-16 15:20:47][__main__][run_module][INFO] Starting module: urgent_button
+[2025-08-16 15:07:31][__main__][run_module][INFO] Starting module: wheel
 
-[2025-08-16 15:20:47][__main__][run_module][INFO] Starting module: smbus
+[2025-08-16 15:07:31][core.message_queue][get_queue][INFO] Created queue: QueueNames.WHEEL
 
-[2025-08-16 15:20:47][__main__][run_module][INFO] Starting module: step_motor
+[2025-08-16 15:07:31][__main__][run_module][INFO] Starting module: rocker
 
-[2025-08-16 15:20:47][radar][run][INFO] [Radar]Here we go!
+[2025-08-16 15:07:31][__main__][run_module][INFO] Starting module: heart
 
-[2025-08-16 15:20:47][__main__][run_module][INFO] Starting module: locator
+[2025-08-16 15:07:31][step_motor][run][INFO] Stepper motor module started.
 
-[2025-08-16 15:20:47][__main__][run_module][INFO] Starting module: heart
+[2025-08-16 15:07:31][wheel][run][INFO] Wheel and Radar modules started.
 
-[2025-08-16 15:20:47][wheel][run][INFO] Wheel and Radar modules started.
+[2025-08-16 15:07:31][__main__][run_module][INFO] Module step_motor stopped
 
-[2025-08-16 15:20:47][rocker][run][INFO] Rocker module started.
+[2025-08-16 15:07:31][rocker][run][INFO] Rocker module started.
 
-[2025-08-16 15:20:47][urgent_button][run][INFO] Urgent button pressed.
+[2025-08-16 15:07:31][core.http_client][send_sensor_data][ERROR] Error sending data for sensor 'urgent_button': HTTPConnectionPool(host='localhost', port=10240): Max retries exceeded with url: /api/sensor/urgent_button (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f50dbe310>: Failed to establish a new connection: [Errno 111] Connection refused'))
 
-[2025-08-16 15:20:47][heart][run][INFO] Heart module started.
+[2025-08-16 15:07:31][core.forwarding][forward_messages][INFO] Successfully connected to remote server.
 
-[2025-08-16 15:20:47][__main__][run_module][INFO] Module step_motor stopped
+[2025-08-16 15:07:31][core.message_queue][get_queue][INFO] Created queue: main_response
 
-[2025-08-16 15:20:47][core.forwarding][forward_messages][INFO] Successfully connected to remote server.
+[2025-08-16 15:07:31][uvicorn.server][_serve][Level 20] Started server process [2756]
 
-[2025-08-16 15:20:47][__main__][run_module][INFO] Module heart stopped
+[2025-08-16 15:07:31][uvicorn.lifespan.on][startup][Level 20] Application startup complete.
 
-[2025-08-16 15:20:47][core.message_queue][get_queue][INFO] Created queue: main_response
+[2025-08-16 15:07:33][urgent_button][run][INFO] Urgent button pressed.
 
-[2025-08-16 15:20:47][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:47100 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+[2025-08-16 15:07:33][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:58414 - "POST /api/sensor/urgent_button HTTP/1.1" 200
 
-[2025-08-16 15:20:48][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:47104 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+[2025-08-16 15:07:34][urgent_button][run][INFO] Urgent button pressed.
 
-[2025-08-16 15:20:50][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:47118 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+[2025-08-16 15:07:34][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:58428 - "POST /api/sensor/urgent_button HTTP/1.1" 200
 
-[2025-08-16 15:20:51][urgent_button][run][INFO] Urgent button pressed.
+[2025-08-16 15:07:35][urgent_button][run][INFO] Urgent button pressed.
 
-[2025-08-16 15:20:51][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:47132 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+[2025-08-16 15:07:36][locator][run][INFO] [Location]Here we go!
 
-[2025-08-16 15:20:52][locator][run][INFO] [Location]Here we go!
+[2025-08-16 15:07:36][urgent_button][run][INFO] Urgent button pressed.
 
-[2025-08-16 15:20:52][modules.smbus.smbus][read_pcf8574][WARNING] PCF8574 READ ERROR (attempt 2): [Errno 5] Input/output error
+[2025-08-16 15:07:36][modules.smbus.smbus][read_pcf8574][WARNING] PCF8574 READ ERROR (attempt 2): [Errno 5] Input/output error
 
-[2025-08-16 15:20:52][urgent_button][run][INFO] Urgent button pressed.
+[2025-08-16 15:07:36][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:58438 - "POST /api/sensor/urgent_button HTTP/1.1" 200
 
-[2025-08-16 15:20:52][modules.smbus.smbus][read_pcf8574][ERROR] PCF8574 READ ERROR (final attempt): [Errno 5] Input/output error
+[2025-08-16 15:07:36][modules.smbus.smbus][read_pcf8574][ERROR] PCF8574 READ ERROR (final attempt): [Errno 5] Input/output error
 
-[2025-08-16 15:20:52][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:47146 - "POST /api/sensor/humiture HTTP/1.1" 200
+[2025-08-16 15:07:36][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 1): [Errno 5] Input/output error
 
-[2025-08-16 15:20:52][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 2): [Errno 5] Input/output error
+[2025-08-16 15:07:36][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:58448 - "POST /api/sensor/humiture HTTP/1.1" 200
 
-[2025-08-16 15:20:52][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:47154 - "POST /api/sensor/smbus HTTP/1.1" 200
+[2025-08-16 15:07:36][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 2): [Errno 5] Input/output error
 
-[2025-08-16 15:20:53][urgent_button][run][INFO] Urgent button pressed.
+[2025-08-16 15:07:36][modules.smbus.smbus][read_ina226][ERROR] INA226 READ ERROR (final attempt): [Errno 5] Input/output error
 
-[2025-08-16 15:20:53][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:47162 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+[2025-08-16 15:07:36][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:58452 - "POST /api/sensor/smbus HTTP/1.1" 200
 
-[2025-08-16 15:20:54][urgent_button][run][INFO] Urgent button pressed.
+[2025-08-16 15:07:37][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:47692 - "POST /api/sensor/urgent_button HTTP/1.1" 200
 
-[2025-08-16 15:20:54][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:47178 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+[2025-08-16 15:07:38][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:47700 - "POST /api/sensor/urgent_button HTTP/1.1" 200
 
-[2025-08-16 15:20:54][modules.smbus.smbus][read_pcf8574][WARNING] PCF8574 READ ERROR (attempt 1): [Errno 5] Input/output error
+[2025-08-16 15:07:38][modules.smbus.smbus][read_pcf8574][WARNING] PCF8574 READ ERROR (attempt 1): [Errno 5] Input/output error
 
-[2025-08-16 15:20:54][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:47192 - "POST /api/sensor/humiture HTTP/1.1" 200
+[2025-08-16 15:07:38][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:47702 - "POST /api/sensor/humiture HTTP/1.1" 200
 
-[2025-08-16 15:20:54][modules.smbus.smbus][read_pcf8574][ERROR] PCF8574 READ ERROR (final attempt): [Errno 5] Input/output error
+[2025-08-16 15:07:38][modules.smbus.smbus][read_pcf8574][WARNING] PCF8574 READ ERROR (attempt 2): [Errno 5] Input/output error
 
-[2025-08-16 15:20:54][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 1): [Errno 5] Input/output error
+[2025-08-16 15:07:38][modules.smbus.smbus][read_pcf8574][ERROR] PCF8574 READ ERROR (final attempt): [Errno 5] Input/output error
 
-[2025-08-16 15:20:55][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:47204 - "POST /api/sensor/smbus HTTP/1.1" 200
+[2025-08-16 15:07:38][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 1): [Errno 5] Input/output error
 
-[2025-08-16 15:20:55][urgent_button][run][INFO] Urgent button pressed.
+[2025-08-16 15:07:38][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 2): [Errno 5] Input/output error
 
-[2025-08-16 15:20:55][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:47216 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+[2025-08-16 15:07:39][urgent_button][run][INFO] Urgent button pressed.
 
-[2025-08-16 15:20:56][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:47226 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+[2025-08-16 15:07:39][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:47718 - "POST /api/sensor/urgent_button HTTP/1.1" 200
 
-[2025-08-16 15:20:57][modules.smbus.smbus][read_pcf8574][WARNING] PCF8574 READ ERROR (attempt 1): [Errno 5] Input/output error
+[2025-08-16 15:07:40][urgent_button][run][INFO] Urgent button pressed.
 
-[2025-08-16 15:20:57][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 1): [Errno 5] Input/output error
+[2025-08-16 15:07:40][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:47726 - "POST /api/sensor/urgent_button HTTP/1.1" 200
 
-[2025-08-16 15:20:57][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 2): [Errno 5] Input/output error
+[2025-08-16 15:07:40][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:47738 - "POST /api/sensor/humiture HTTP/1.1" 200
 
-[2025-08-16 15:20:57][urgent_button][run][INFO] Urgent button pressed.
+[2025-08-16 15:07:41][modules.smbus.smbus][read_pcf8574][ERROR] PCF8574 READ ERROR (final attempt): [Errno 5] Input/output error
 
-[2025-08-16 15:20:57][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:51684 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+[2025-08-16 15:07:41][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 1): [Errno 5] Input/output error
 
-[2025-08-16 15:20:57][modules.smbus.smbus][read_ina226][ERROR] INA226 READ ERROR (final attempt): [Errno 5] Input/output error
+[2025-08-16 15:07:41][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 2): [Errno 5] Input/output error
 
-[2025-08-16 15:20:57][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:51690 - "POST /api/sensor/smbus HTTP/1.1" 200
+[2025-08-16 15:07:41][urgent_button][run][INFO] Urgent button pressed.
 
-[2025-08-16 15:20:58][urgent_button][run][INFO] Urgent button pressed.
+[2025-08-16 15:07:41][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:47752 - "POST /api/sensor/urgent_button HTTP/1.1" 200
 
-[2025-08-16 15:20:58][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:51702 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+[2025-08-16 15:07:41][modules.smbus.smbus][read_ina226][ERROR] INA226 READ ERROR (final attempt): [Errno 5] Input/output error
 
-[2025-08-16 15:20:59][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:51712 - "POST /api/sensor/humiture HTTP/1.1" 200
+[2025-08-16 15:07:41][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:47762 - "POST /api/sensor/smbus HTTP/1.1" 200
 
-[2025-08-16 15:20:59][modules.smbus.smbus][read_pcf8574][WARNING] PCF8574 READ ERROR (attempt 2): [Errno 5] Input/output error
+[2025-08-16 15:07:42][urgent_button][run][INFO] Urgent button pressed.
 
-[2025-08-16 15:20:59][modules.smbus.smbus][read_pcf8574][ERROR] PCF8574 READ ERROR (final attempt): [Errno 5] Input/output error
+[2025-08-16 15:07:42][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:47764 - "POST /api/sensor/urgent_button HTTP/1.1" 200
 
-[2025-08-16 15:20:59][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 1): [Errno 5] Input/output error
+[2025-08-16 15:07:43][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:47768 - "POST /api/sensor/humiture HTTP/1.1" 200
 
-[2025-08-16 15:20:59][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 2): [Errno 5] Input/output error
+[2025-08-16 15:07:43][urgent_button][run][INFO] Urgent button pressed.
 
-[2025-08-16 15:21:00][modules.smbus.smbus][read_ina226][ERROR] INA226 READ ERROR (final attempt): [Errno 5] Input/output error
+[2025-08-16 15:07:43][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:47776 - "POST /api/sensor/urgent_button HTTP/1.1" 200
 
-[2025-08-16 15:21:00][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:51736 - "POST /api/sensor/smbus HTTP/1.1" 200
+[2025-08-16 15:07:43][modules.smbus.smbus][read_pcf8574][WARNING] PCF8574 READ ERROR (attempt 1): [Errno 5] Input/output error
 
-[2025-08-16 15:21:00][urgent_button][run][INFO] Urgent button pressed.
+[2025-08-16 15:07:43][modules.smbus.smbus][read_pcf8574][WARNING] PCF8574 READ ERROR (attempt 2): [Errno 5] Input/output error
 
-[2025-08-16 15:21:00][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:51742 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+[2025-08-16 15:07:43][modules.smbus.smbus][read_pcf8574][ERROR] PCF8574 READ ERROR (final attempt): [Errno 5] Input/output error
 
-[2025-08-16 15:21:01][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:51754 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+[2025-08-16 15:07:43][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 1): [Errno 5] Input/output error
 
-[2025-08-16 15:21:02][modules.smbus.smbus][read_pcf8574][WARNING] PCF8574 READ ERROR (attempt 1): [Errno 5] Input/output error
+[2025-08-16 15:07:43][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 2): [Errno 5] Input/output error
 
-[2025-08-16 15:21:02][modules.smbus.smbus][read_pcf8574][ERROR] PCF8574 READ ERROR (final attempt): [Errno 5] Input/output error
+[2025-08-16 15:07:45][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:47802 - "POST /api/sensor/urgent_button HTTP/1.1" 200
 
-[2025-08-16 15:21:02][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 1): [Errno 5] Input/output error
+[2025-08-16 15:07:45][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:47810 - "POST /api/sensor/humiture HTTP/1.1" 200
 
-[2025-08-16 15:21:02][modules.smbus.smbus][read_ina226][ERROR] INA226 READ ERROR (final attempt): [Errno 5] Input/output error
+[2025-08-16 15:07:45][modules.smbus.smbus][read_pcf8574][WARNING] PCF8574 READ ERROR (attempt 1): [Errno 5] Input/output error
 
-[2025-08-16 15:21:02][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:51774 - "POST /api/sensor/smbus HTTP/1.1" 200
+[2025-08-16 15:07:45][modules.smbus.smbus][read_pcf8574][ERROR] PCF8574 READ ERROR (final attempt): [Errno 5] Input/output error
 
-[2025-08-16 15:21:02][urgent_button][run][INFO] Urgent button pressed.
+[2025-08-16 15:07:46][modules.smbus.smbus][read_ina226][ERROR] INA226 READ ERROR (final attempt): [Errno 5] Input/output error
 
-[2025-08-16 15:21:02][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:51786 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+[2025-08-16 15:07:46][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:47826 - "POST /api/sensor/urgent_button HTTP/1.1" 200
 
-[2025-08-16 15:21:04][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:51816 - "POST /api/sensor/humiture HTTP/1.1" 200
+[2025-08-16 15:07:47][urgent_button][run][INFO] Urgent button pressed.
 
-[2025-08-16 15:21:04][modules.smbus.smbus][read_pcf8574][WARNING] PCF8574 READ ERROR (attempt 2): [Errno 5] Input/output error
+[2025-08-16 15:07:47][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:37482 - "POST /api/sensor/urgent_button HTTP/1.1" 200
 
-[2025-08-16 15:21:04][urgent_button][run][INFO] Urgent button pressed.
+[2025-08-16 15:07:47][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:37486 - "POST /api/sensor/humiture HTTP/1.1" 200
 
-[2025-08-16 15:21:04][modules.smbus.smbus][read_pcf8574][ERROR] PCF8574 READ ERROR (final attempt): [Errno 5] Input/output error
+[2025-08-16 15:07:48][modules.smbus.smbus][read_pcf8574][WARNING] PCF8574 READ ERROR (attempt 1): [Errno 5] Input/output error
 
-[2025-08-16 15:21:04][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 1): [Errno 5] Input/output error
+[2025-08-16 15:07:48][modules.smbus.smbus][read_pcf8574][ERROR] PCF8574 READ ERROR (final attempt): [Errno 5] Input/output error
 
-[2025-08-16 15:21:04][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:51836 - "POST /api/sensor/smbus HTTP/1.1" 200
+[2025-08-16 15:07:49][urgent_button][run][INFO] Urgent button pressed.
 
-[2025-08-16 15:21:05][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:51840 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+[2025-08-16 15:07:49][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:37502 - "POST /api/sensor/urgent_button HTTP/1.1" 200
 
-[2025-08-16 15:21:06][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:51850 - "POST /api/sensor/humiture HTTP/1.1" 200
+[2025-08-16 15:07:50][urgent_button][run][INFO] Urgent button pressed.
 
-[2025-08-16 15:21:06][urgent_button][run][INFO] Urgent button pressed.
+[2025-08-16 15:07:50][modules.smbus.smbus][read_pcf8574][WARNING] PCF8574 READ ERROR (attempt 1): [Errno 5] Input/output error
 
-[2025-08-16 15:21:06][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:40320 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+[2025-08-16 15:07:50][modules.smbus.smbus][read_pcf8574][WARNING] PCF8574 READ ERROR (attempt 2): [Errno 5] Input/output error
 
-[2025-08-16 15:21:06][modules.smbus.smbus][read_pcf8574][WARNING] PCF8574 READ ERROR (attempt 1): [Errno 5] Input/output error
+[2025-08-16 15:07:50][modules.smbus.smbus][read_pcf8574][ERROR] PCF8574 READ ERROR (final attempt): [Errno 5] Input/output error
 
-[2025-08-16 15:21:06][modules.smbus.smbus][read_pcf8574][WARNING] PCF8574 READ ERROR (attempt 2): [Errno 5] Input/output error
+[2025-08-16 15:07:50][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 1): [Errno 5] Input/output error
 
-[2025-08-16 15:21:07][modules.smbus.smbus][read_pcf8574][ERROR] PCF8574 READ ERROR (final attempt): [Errno 5] Input/output error
+[2025-08-16 15:07:51][modules.smbus.smbus][read_ina226][ERROR] INA226 READ ERROR (final attempt): [Errno 5] Input/output error
 
-[2025-08-16 15:21:07][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 1): [Errno 5] Input/output error
+[2025-08-16 15:07:51][urgent_button][run][INFO] Urgent button pressed.
 
-[2025-08-16 15:21:07][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 2): [Errno 5] Input/output error
+[2025-08-16 15:07:51][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:37546 - "POST /api/sensor/urgent_button HTTP/1.1" 200
 
-[2025-08-16 15:21:07][modules.smbus.smbus][read_ina226][ERROR] INA226 READ ERROR (final attempt): [Errno 5] Input/output error
+[2025-08-16 15:07:52][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:37552 - "POST /api/sensor/humiture HTTP/1.1" 200
 
-[2025-08-16 15:21:07][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:40330 - "POST /api/sensor/smbus HTTP/1.1" 200
+[2025-08-16 15:07:52][urgent_button][run][INFO] Urgent button pressed.
 
-[2025-08-16 15:21:08][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:40338 - "POST /api/sensor/humiture HTTP/1.1" 200
+[2025-08-16 15:07:52][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:37560 - "POST /api/sensor/urgent_button HTTP/1.1" 200
 
-[2025-08-16 15:21:08][urgent_button][run][INFO] Urgent button pressed.
+[2025-08-16 15:07:53][modules.smbus.smbus][read_pcf8574][WARNING] PCF8574 READ ERROR (attempt 1): [Errno 5] Input/output error
 
-[2025-08-16 15:21:08][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:40342 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+[2025-08-16 15:07:53][modules.smbus.smbus][read_pcf8574][WARNING] PCF8574 READ ERROR (attempt 2): [Errno 5] Input/output error
 
-[2025-08-16 15:21:09][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 1): [Errno 5] Input/output error
+[2025-08-16 15:07:53][modules.smbus.smbus][read_pcf8574][ERROR] PCF8574 READ ERROR (final attempt): [Errno 5] Input/output error
 
-[2025-08-16 15:21:09][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:40358 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+[2025-08-16 15:07:53][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 2): [Errno 5] Input/output error
 
-[2025-08-16 15:21:09][modules.smbus.smbus][read_ina226][ERROR] INA226 READ ERROR (final attempt): [Errno 5] Input/output error
+[2025-08-16 15:07:53][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:37572 - "POST /api/sensor/urgent_button HTTP/1.1" 200
 
-[2025-08-16 15:21:10][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:40372 - "POST /api/sensor/humiture HTTP/1.1" 200
+[2025-08-16 15:07:53][modules.smbus.smbus][read_ina226][ERROR] INA226 READ ERROR (final attempt): [Errno 5] Input/output error
 
-[2025-08-16 15:21:11][modules.smbus.smbus][read_pcf8574][WARNING] PCF8574 READ ERROR (attempt 2): [Errno 5] Input/output error
+[2025-08-16 15:07:54][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:37598 - "POST /api/sensor/urgent_button HTTP/1.1" 200
 
-[2025-08-16 15:21:11][modules.smbus.smbus][read_pcf8574][ERROR] PCF8574 READ ERROR (final attempt): [Errno 5] Input/output error
+[2025-08-16 15:07:54][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:37602 - "POST /api/sensor/humiture HTTP/1.1" 200
 
-[2025-08-16 15:21:12][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 2): [Errno 5] Input/output error
+[2025-08-16 15:07:55][urgent_button][run][INFO] Urgent button pressed.
 
-[2025-08-16 15:21:12][modules.smbus.smbus][read_ina226][ERROR] INA226 READ ERROR (final attempt): [Errno 5] Input/output error
+[2025-08-16 15:07:55][modules.smbus.smbus][read_ina226][ERROR] INA226 READ ERROR (final attempt): [Errno 5] Input/output error
 
-[2025-08-16 15:21:12][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:40386 - "POST /api/sensor/smbus HTTP/1.1" 200
+[2025-08-16 15:07:55][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:37616 - "POST /api/sensor/smbus HTTP/1.1" 200
 
-[2025-08-16 15:21:13][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:40404 - "POST /api/sensor/humiture HTTP/1.1" 200
+[2025-08-16 15:07:56][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:38768 - "POST /api/sensor/humiture HTTP/1.1" 200
 
-[2025-08-16 15:21:13][urgent_button][run][INFO] Urgent button pressed.
+[2025-08-16 15:07:57][urgent_button][run][INFO] Urgent button pressed.
 
-[2025-08-16 15:21:13][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:40406 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+[2025-08-16 15:07:57][modules.smbus.smbus][read_pcf8574][WARNING] PCF8574 READ ERROR (attempt 1): [Errno 5] Input/output error
 
-[2025-08-16 15:21:14][modules.smbus.smbus][read_pcf8574][WARNING] PCF8574 READ ERROR (attempt 1): [Errno 5] Input/output error
+[2025-08-16 15:07:57][modules.smbus.smbus][read_pcf8574][WARNING] PCF8574 READ ERROR (attempt 2): [Errno 5] Input/output error
 
-[2025-08-16 15:21:14][modules.smbus.smbus][read_pcf8574][WARNING] PCF8574 READ ERROR (attempt 2): [Errno 5] Input/output error
-[2025-08-16 15:21:14][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 2): [Errno 5] Input/output error
+[2025-08-16 15:07:58][modules.smbus.smbus][read_pcf8574][ERROR] PCF8574 READ ERROR (final attempt): [Errno 5] Input/output error
 
-[2025-08-16 15:21:14][modules.smbus.smbus][read_ina226][ERROR] INA226 READ ERROR (final attempt): [Errno 5] Input/output error
+[2025-08-16 15:07:58][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 1): [Errno 5] Input/output error
 
-[2025-08-16 15:21:14][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:40418 - "POST /api/sensor/smbus HTTP/1.1" 200
+[2025-08-16 15:07:58][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 2): [Errno 5] Input/output error
 
-[2025-08-16 15:21:14][urgent_button][run][INFO] Urgent button pressed.
+[2025-08-16 15:07:58][modules.smbus.smbus][read_ina226][ERROR] INA226 READ ERROR (final attempt): [Errno 5] Input/output error
 
-[2025-08-16 15:21:14][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:40424 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+[2025-08-16 15:07:58][urgent_button][run][INFO] Urgent button pressed.
 
-[2025-08-16 15:21:15][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:40440 - "POST /api/sensor/humiture HTTP/1.1" 200
+[2025-08-16 15:07:58][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:38778 - "POST /api/sensor/urgent_button HTTP/1.1" 200
 
-[2025-08-16 15:21:15][urgent_button][run][INFO] Urgent button pressed.
+[2025-08-16 15:07:58][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:38794 - "POST /api/sensor/humiture HTTP/1.1" 200
 
-[2025-08-16 15:21:15][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:40452 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+[2025-08-16 15:08:00][modules.smbus.smbus][read_pcf8574][WARNING] PCF8574 READ ERROR (attempt 1): [Errno 5] Input/output error
 
-[2025-08-16 15:21:16][modules.smbus.smbus][read_pcf8574][WARNING] PCF8574 READ ERROR (attempt 1): [Errno 5] Input/output error
+[2025-08-16 15:08:00][modules.smbus.smbus][read_pcf8574][WARNING] PCF8574 READ ERROR (attempt 2): [Errno 5] Input/output error
 
-[2025-08-16 15:21:16][modules.smbus.smbus][read_pcf8574][WARNING] PCF8574 READ ERROR (attempt 2): [Errno 5] Input/output error
+[2025-08-16 15:08:00][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:38834 - "POST /api/sensor/smbus HTTP/1.1" 200
 
-[2025-08-16 15:21:16][urgent_button][run][INFO] Urgent button pressed.
+[2025-08-16 15:08:01][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:38842 - "POST /api/sensor/humiture HTTP/1.1" 200
 
-[2025-08-16 15:21:16][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:57484 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+[2025-08-16 15:08:01][urgent_button][run][INFO] Urgent button pressed.
 
-[2025-08-16 15:21:16][modules.smbus.smbus][read_pcf8574][ERROR] PCF8574 READ ERROR (final attempt): [Errno 5] Input/output error
+[2025-08-16 15:08:01][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:38852 - "POST /api/sensor/urgent_button HTTP/1.1" 200
 
-[2025-08-16 15:21:16][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 1): [Errno 5] Input/output error
+[2025-08-16 15:08:02][urgent_button][run][INFO] Urgent button pressed.
 
-[2025-08-16 15:21:16][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 2): [Errno 5] Input/output error
+[2025-08-16 15:08:02][modules.smbus.smbus][read_pcf8574][WARNING] PCF8574 READ ERROR (attempt 2): [Errno 5] Input/output error
 
-[2025-08-16 15:21:16][modules.smbus.smbus][read_ina226][ERROR] INA226 READ ERROR (final attempt): [Errno 5] Input/output error
+[2025-08-16 15:08:02][modules.smbus.smbus][read_pcf8574][ERROR] PCF8574 READ ERROR (final attempt): [Errno 5] Input/output error
 
-[2025-08-16 15:21:16][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:57496 - "POST /api/sensor/smbus HTTP/1.1" 200
+[2025-08-16 15:08:02][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 1): [Errno 5] Input/output error
 
-^C[2025-08-16 15:21:17][__main__][shutdown][INFO] Received shutdown signal, shutting down...
+[2025-08-16 15:08:03][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 2): [Errno 5] Input/output error
 
-[2025-08-16 15:21:17][__main__][main][INFO] Main process ended
+[2025-08-16 15:08:03][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:38868 - "POST /api/sensor/smbus HTTP/1.1" 200
 
-[2025-08-16 15:21:17][__main__][<module>][INFO] === Application terminated ===
+[2025-08-16 15:08:03][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:38872 - "POST /api/sensor/urgent_button HTTP/1.1" 200
 
-[2025-08-16 15:21:17][wheel][wheel_thread][ERROR] Error in wheel thread: DigitalOutputDevice is closed or uninitialized
+[2025-08-16 15:08:05][modules.smbus.smbus][read_pcf8574][WARNING] PCF8574 READ ERROR (attempt 1): [Errno 5] Input/output error
 
-Exception in thread Thread-16 (wheel_thread):
-[2025-08-16 15:21:17][rocker][run][ERROR] Error in rocker module: Button is closed or uninitialized
-Traceback (most recent call last):
-  File "/root/.cache/pypoetry/virtualenvs/pisensor-8mj9H3NO-py3.11/lib/python3.11/site-packages/gpiozero/output_devices.py", line 87, in _write
+[2025-08-16 15:08:05][modules.smbus.smbus][read_pcf8574][WARNING] PCF8574 READ ERROR (attempt 2): [Errno 5] Input/output error
+
+[2025-08-16 15:08:05][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 1): [Errno 5] Input/output error
+
+[2025-08-16 15:08:05][modules.smbus.smbus][read_ina226][ERROR] INA226 READ ERROR (final attempt): [Errno 5] Input/output error
+
+[2025-08-16 15:08:05][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:38894 - "POST /api/sensor/smbus HTTP/1.1" 200
+
+[2025-08-16 15:08:07][modules.smbus.smbus][read_pcf8574][WARNING] PCF8574 READ ERROR (attempt 1): [Errno 5] Input/output error
+
+[2025-08-16 15:08:07][modules.smbus.smbus][read_pcf8574][WARNING] PCF8574 READ ERROR (attempt 2): [Errno 5] Input/output error
+
+[2025-08-16 15:08:07][modules.smbus.smbus][read_pcf8574][ERROR] PCF8574 READ ERROR (final attempt): [Errno 5] Input/output error
+
+[2025-08-16 15:08:07][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 1): [Errno 5] Input/output error
+
+[2025-08-16 15:08:07][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 2): [Errno 5] Input/output error
+
+[2025-08-16 15:08:07][modules.smbus.smbus][read_ina226][ERROR] INA226 READ ERROR (final attempt): [Errno 5] Input/output error
+
+[2025-08-16 15:08:07][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:52782 - "POST /api/sensor/smbus HTTP/1.1" 200
+
+[2025-08-16 15:08:10][modules.smbus.smbus][read_pcf8574][ERROR] PCF8574 READ ERROR (final attempt): [Errno 5] Input/output error
+
+[2025-08-16 15:08:10][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 1): [Errno 5] Input/output error
+
+[2025-08-16 15:08:10][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 2): [Errno 5] Input/output error
+
+[2025-08-16 15:08:10][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:52810 - "POST /api/sensor/humiture HTTP/1.1" 200
+
+[2025-08-16 15:08:10][modules.smbus.smbus][read_ina226][ERROR] INA226 READ ERROR (final attempt): [Errno 5] Input/output error
+
+[2025-08-16 15:08:10][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:52826 - "POST /api/sensor/smbus HTTP/1.1" 200
+
+[2025-08-16 15:08:11][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 15:08:11][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:52838 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 15:08:12][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 15:08:12][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:52842 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 15:08:12][modules.smbus.smbus][read_pcf8574][WARNING] PCF8574 READ ERROR (attempt 1): [Errno 5] Input/output error
+
+[2025-08-16 15:08:12][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:52852 - "POST /api/sensor/humiture HTTP/1.1" 200
+
+[2025-08-16 15:08:12][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 1): [Errno 5] Input/output error
+
+[2025-08-16 15:08:12][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 2): [Errno 5] Input/output error
+
+[2025-08-16 15:08:12][modules.smbus.smbus][read_ina226][ERROR] INA226 READ ERROR (final attempt): [Errno 5] Input/output error
+
+[2025-08-16 15:08:13][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 15:08:13][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:52884 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 15:08:14][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:52894 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 15:08:14][modules.smbus.smbus][read_pcf8574][WARNING] PCF8574 READ ERROR (attempt 1): [Errno 5] Input/output error
+
+[2025-08-16 15:08:15][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:52904 - "POST /api/sensor/humiture HTTP/1.1" 200
+
+[2025-08-16 15:08:15][modules.smbus.smbus][read_pcf8574][ERROR] PCF8574 READ ERROR (final attempt): [Errno 5] Input/output error
+
+[2025-08-16 15:08:15][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 1): [Errno 5] Input/output error
+
+[2025-08-16 15:08:15][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 2): [Errno 5] Input/output error
+
+[2025-08-16 15:08:15][modules.smbus.smbus][read_ina226][ERROR] INA226 READ ERROR (final attempt): [Errno 5] Input/output error
+
+[2025-08-16 15:08:15][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 15:08:15][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:52918 - "POST /api/sensor/smbus HTTP/1.1" 200
+
+[2025-08-16 15:08:15][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:52926 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 15:08:16][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 15:08:17][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:60738 - "POST /api/sensor/humiture HTTP/1.1" 200
+
+[2025-08-16 15:08:17][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 15:08:17][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:60748 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 15:08:17][modules.smbus.smbus][read_pcf8574][WARNING] PCF8574 READ ERROR (attempt 2): [Errno 5] Input/output error
+
+[2025-08-16 15:08:17][modules.smbus.smbus][read_pcf8574][ERROR] PCF8574 READ ERROR (final attempt): [Errno 5] Input/output error
+
+[2025-08-16 15:08:17][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 1): [Errno 5] Input/output error
+
+[2025-08-16 15:08:17][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 2): [Errno 5] Input/output error
+
+[2025-08-16 15:08:17][modules.smbus.smbus][read_ina226][ERROR] INA226 READ ERROR (final attempt): [Errno 5] Input/output error
+
+[2025-08-16 15:08:17][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:60750 - "POST /api/sensor/smbus HTTP/1.1" 200
+
+[2025-08-16 15:08:18][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 15:08:18][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:60762 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 15:08:19][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 15:08:19][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:60774 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 15:08:19][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:60778 - "POST /api/sensor/humiture HTTP/1.1" 200
+
+[2025-08-16 15:08:19][modules.smbus.smbus][read_pcf8574][WARNING] PCF8574 READ ERROR (attempt 2): [Errno 5] Input/output error
+
+[2025-08-16 15:08:19][modules.smbus.smbus][read_pcf8574][ERROR] PCF8574 READ ERROR (final attempt): [Errno 5] Input/output error
+
+[2025-08-16 15:08:20][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 2): [Errno 5] Input/output error
+
+[2025-08-16 15:08:20][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 15:08:21][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:60798 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 15:08:21][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:60814 - "POST /api/sensor/humiture HTTP/1.1" 200
+
+[2025-08-16 15:08:22][modules.smbus.smbus][read_pcf8574][WARNING] PCF8574 READ ERROR (attempt 2): [Errno 5] Input/output error
+
+[2025-08-16 15:08:22][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 1): [Errno 5] Input/output error
+
+[2025-08-16 15:08:22][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 15:08:22][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:60824 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 15:08:22][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 2): [Errno 5] Input/output error
+
+[2025-08-16 15:08:22][modules.smbus.smbus][read_ina226][ERROR] INA226 READ ERROR (final attempt): [Errno 5] Input/output error
+
+[2025-08-16 15:08:22][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:60832 - "POST /api/sensor/smbus HTTP/1.1" 200
+
+[2025-08-16 15:08:23][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:60844 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 15:08:24][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:60846 - "POST /api/sensor/humiture HTTP/1.1" 200
+
+[2025-08-16 15:08:24][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:60858 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 15:08:24][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 1): [Errno 5] Input/output error
+
+[2025-08-16 15:08:24][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 2): [Errno 5] Input/output error
+
+[2025-08-16 15:08:24][modules.smbus.smbus][read_ina226][ERROR] INA226 READ ERROR (final attempt): [Errno 5] Input/output error
+
+[2025-08-16 15:08:24][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:60872 - "POST /api/sensor/smbus HTTP/1.1" 200
+
+[2025-08-16 15:08:25][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 15:08:25][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:60886 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 15:08:26][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:60902 - "POST /api/sensor/humiture HTTP/1.1" 200
+
+[2025-08-16 15:08:26][modules.smbus.smbus][read_pcf8574][WARNING] PCF8574 READ ERROR (attempt 1): [Errno 5] Input/output error
+
+[2025-08-16 15:08:27][modules.smbus.smbus][read_pcf8574][WARNING] PCF8574 READ ERROR (attempt 2): [Errno 5] Input/output error
+
+[2025-08-16 15:08:27][modules.smbus.smbus][read_pcf8574][ERROR] PCF8574 READ ERROR (final attempt): [Errno 5] Input/output error
+
+[2025-08-16 15:08:27][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 1): [Errno 5] Input/output error
+
+[2025-08-16 15:08:27][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 2): [Errno 5] Input/output error
+
+[2025-08-16 15:08:27][modules.smbus.smbus][read_ina226][ERROR] INA226 READ ERROR (final attempt): [Errno 5] Input/output error
+
+[2025-08-16 15:08:27][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:53886 - "POST /api/sensor/smbus HTTP/1.1" 200
+
+[2025-08-16 15:08:27][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 15:08:27][locator][run][ERROR] Error in locator module: device reports readiness to read but returned no data (device disconnected or multiple access on port?)
+
+串口已关闭
+[2025-08-16 15:08:28][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 15:08:28][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:53896 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 15:08:28][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:53906 - "POST /api/sensor/humiture HTTP/1.1" 200
+
+[2025-08-16 15:08:29][modules.smbus.smbus][read_pcf8574][WARNING] PCF8574 READ ERROR (attempt 1): [Errno 5] Input/output error
+
+[2025-08-16 15:08:29][modules.smbus.smbus][read_pcf8574][WARNING] PCF8574 READ ERROR (attempt 2): [Errno 5] Input/output error
+
+[2025-08-16 15:08:29][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 15:08:29][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:53908 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 15:08:29][locator][run][ERROR] Error in locator module: Attempting to use a port that is not open
+
+[2025-08-16 15:08:29][modules.smbus.smbus][read_pcf8574][ERROR] PCF8574 READ ERROR (final attempt): [Errno 5] Input/output error
+
+[2025-08-16 15:08:29][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 1): [Errno 5] Input/output error
+
+[2025-08-16 15:08:29][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 2): [Errno 5] Input/output error
+
+[2025-08-16 15:08:29][modules.smbus.smbus][read_ina226][ERROR] INA226 READ ERROR (final attempt): [Errno 5] Input/output error
+
+[2025-08-16 15:08:29][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:53910 - "POST /api/sensor/smbus HTTP/1.1" 200
+
+[2025-08-16 15:08:30][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 15:08:30][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:53922 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 15:08:30][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:53930 - "POST /api/sensor/humiture HTTP/1.1" 200
+
+[2025-08-16 15:08:31][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 15:08:31][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:53942 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 15:08:32][modules.smbus.smbus][read_pcf8574][ERROR] PCF8574 READ ERROR (final attempt): [Errno 5] Input/output error
+
+[2025-08-16 15:08:32][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 1): [Errno 5] Input/output error
+
+[2025-08-16 15:08:32][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:53950 - "POST /api/sensor/smbus HTTP/1.1" 200
+
+[2025-08-16 15:08:32][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 15:08:32][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:53954 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 15:08:33][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:53968 - "POST /api/sensor/humiture HTTP/1.1" 200
+
+[2025-08-16 15:08:33][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 15:08:33][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:53984 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 15:08:34][modules.smbus.smbus][read_pcf8574][WARNING] PCF8574 READ ERROR (attempt 1): [Errno 5] Input/output error
+
+[2025-08-16 15:08:34][modules.smbus.smbus][read_pcf8574][WARNING] PCF8574 READ ERROR (attempt 2): [Errno 5] Input/output error
+
+[2025-08-16 15:08:34][modules.smbus.smbus][read_pcf8574][ERROR] PCF8574 READ ERROR (final attempt): [Errno 5] Input/output error
+
+[2025-08-16 15:08:34][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 1): [Errno 5] Input/output error
+
+[2025-08-16 15:08:34][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:53986 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 15:08:34][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 2): [Errno 5] Input/output error
+
+
+[2025-08-16 15:08:35][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:53996 - "POST /api/sensor/humiture HTTP/1.1" 200
+
+[2025-08-16 15:08:35][locator][run][ERROR] Error in locator module: Attempting to use a port that is not open
+
+[2025-08-16 15:08:35][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 15:08:35][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:54006 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 15:08:36][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 15:08:36][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:54012 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 15:08:36][modules.smbus.smbus][read_pcf8574][WARNING] PCF8574 READ ERROR (attempt 1): [Errno 5] Input/output error
+
+[2025-08-16 15:08:36][modules.smbus.smbus][read_pcf8574][WARNING] PCF8574 READ ERROR (attempt 2): [Errno 5] Input/output error
+
+[2025-08-16 15:08:36][modules.smbus.smbus][read_pcf8574][ERROR] PCF8574 READ ERROR (final attempt): [Errno 5] Input/output error
+
+[2025-08-16 15:08:36][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 1): [Errno 5] Input/output error
+
+[2025-08-16 15:08:36][modules.smbus.smbus][read_ina226][WARNING] INA226 READ ERROR (attempt 2): [Errno 5] Input/output error
+
+[2025-08-16 15:08:37][modules.smbus.smbus][read_ina226][ERROR] INA226 READ ERROR (final attempt): [Errno 5] Input/output error
+
+[2025-08-16 15:08:37][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:48644 - "POST /api/sensor/smbus HTTP/1.1" 200
+
+[2025-08-16 15:08:37][locator][run][ERROR] Error in locator module: Attempting to use a port that is not open
+
+[2025-08-16 15:08:37][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 15:08:37][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:48656 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 15:08:37][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:48666 - "POST /api/sensor/humiture HTTP/1.1" 200
+
+^C[2025-08-16 15:08:38][__main__][shutdown][INFO] Received shutdown signal, shutting down...
+
+[2025-08-16 15:08:38][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 15:08:38][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:48668 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 15:08:39][modules.smbus.smbus][read_pcf8574][WARNING] PCF8574 READ ERROR (attempt 1): [Errno 5] Input/output error
+
+[2025-08-16 15:08:39][__main__][main][INFO] Main process ended
+
+[2025-08-16 15:08:39][__main__][<module>][INFO] === Application terminated ===
+
+[2025-08-16 15:08:39][modules.smbus.smbus][read_pcf8574][WARNING] PCF8574 READ ERROR (attempt 2): [Errno 5] Input/output error
+
+[2025-08-16 15:08:39][modules.smbus.smbus][read_pcf8574][ERROR] PCF8574 READ ERROR (final attempt): [Errno 5] Input/output error
+
+[2025-08-16 15:08:39][rocker][run][ERROR] Error in rocker module: Button is closed or uninitialized

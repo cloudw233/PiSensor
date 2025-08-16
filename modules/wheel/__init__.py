@@ -7,6 +7,7 @@ from loguru import logger
 from modules.wheel.wheel import MotorControl
 from core.message_queue import message_queue_manager
 from core.constants import QueueNames
+from main import stop_event # 导入stop_event
 
 def wheel_thread(motor_instance):
     """
@@ -43,15 +44,19 @@ def radar_thread(motor_instance):
     radar_queue = message_queue_manager.get_queue(QueueNames.RADAR)
     too_close = 0
     
-    while True:
+    while not stop_event.is_set(): # 检查stop_event
         try:
             recv_data = radar_queue.get(timeout=1)
-            length = int(recv_data)
-            if length <= 20:
-                too_close += 1
-            if too_close >= 6:
-                too_close = 0
-                motor_instance.stop()
+            try:
+                length = int(recv_data)
+                if length <= 20:
+                    too_close += 1
+                if too_close >= 6:
+                    too_close = 0
+                    motor_instance.stop()
+            except ValueError:
+                logger.warning(f"Received invalid data for radar: {recv_data}. Skipping.")
+                continue
         except queue.Empty:
             continue
         except Exception as e:
@@ -73,7 +78,7 @@ def run():
         radar_thread_instance.start()
 
         logger.info("Wheel and Radar modules started.")
-        while True:
+        while not stop_event.is_set():
             time.sleep(1)
 
     except Exception as e:

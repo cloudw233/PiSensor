@@ -2,6 +2,7 @@ import logging
 import uvicorn
 import threading
 import time
+import logging
 
 from fastapi import FastAPI
 from loguru import logger
@@ -11,6 +12,7 @@ from core.builtins.message_constructors import MessageChain, MessageChainD
 from core.builtins.assigned_element import SensorElement, AccountElement
 from core.message_queue import message_queue_manager
 from core.constants import QueueNames
+from main import stop_event # 导入stop_event
 
 from config import config
 
@@ -41,7 +43,7 @@ def relay_server_thread():
     step_motor_queue = message_queue_manager.get_queue(QueueNames.STEP_MOTOR)
     wheel_queue = message_queue_manager.get_queue(QueueNames.WHEEL)
     
-    while True:
+    while not stop_event.is_set(): # 检查stop_event
         try:
             # 从主队列接收消息
             data = message_queue_manager.receive_message(QueueNames.MAIN, timeout=1)
@@ -114,6 +116,12 @@ def run_relay_server():
         config = uvicorn.Config(app, host="localhost", port=int(10240), access_log=True, workers=2)
         server = uvicorn.Server(config)
         init_logger()
-        server.run()
+        # 运行服务器，并在stop_event被设置时停止
+        while not stop_event.is_set():
+            server.run()
+            if stop_event.is_set():
+                server.should_exit = True
+                break
+        logger.info("Relay server stopped.")
     except Exception as e:
         logger.error(f"Error in relay server: {e}")

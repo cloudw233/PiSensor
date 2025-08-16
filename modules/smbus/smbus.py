@@ -108,20 +108,26 @@ class IntegratedSensorHub:
 
     def read_pcf8591(self):
         """读取PCF8591的前2个ADC通道并换算为电压"""
-        try:
-            self.bus.write_byte_data(PCF8591_ADDR, 0x04, 0x04)
-            self.bus.read_byte(PCF8591_ADDR)  # 丢弃第一个字节
-            adc_values = self.bus.read_i2c_block_data(PCF8591_ADDR, 0x00, 2)
-                
-                # 第一个通道参考电压5V，第二个通道参考电压为3.3V
-            refer_vol = [5.0, 3.3]
-            vol5v= [(adc_values[0] / 255.0) * refer_vol[0] ]
-            vol3v3= [(adc_values[1] / 255.0) * refer_vol[1] ]   
-            self.device_data['pcf8591'] = vol5v,vol3v3
-            return True
-        except Exception as e:
-            logger.error(f"PCF8591 READ ERROR: {e}")
-            return False
+        max_retries = 3
+        for attempt in range(max_retries):
+            try:
+                self.bus.write_byte_data(PCF8591_ADDR, 0x04, 0x04)
+                self.bus.read_byte(PCF8591_ADDR)  # 丢弃第一个字节
+                adc_values = self.bus.read_i2c_block_data(PCF8591_ADDR, 0x00, 2)
+                    
+                    # 第一个通道参考电压5V，第二个通道参考电压为3.3V
+                refer_vol = [5.0, 3.3]
+                vol5v= [(adc_values[0] / 255.0) * refer_vol[0] ]
+                vol3v3= [(adc_values[1] / 255.0) * refer_vol[1] ]   
+                self.device_data['pcf8591'] = vol5v,vol3v3
+                return True
+            except Exception as e:
+                if attempt == max_retries - 1:
+                    logger.error(f"PCF8591 READ ERROR (final attempt): {e}")
+                else:
+                    logger.warning(f"PCF8591 READ ERROR (attempt {attempt + 1}): {e}")
+                    time.sleep(0.1)
+        return False
 
     def read_all(self):
         """读取所有传感器数据"""

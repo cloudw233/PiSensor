@@ -33,8 +33,9 @@ class MCP3208_Joystick:
         return int(x_val/4), int(y_val/4), button_state
     
     def close(self):
-        """关闭SPI连接"""
+        """关闭SPI连接和GPIO资源"""
         self.spi.close()
+        self.button.close()
 
 # 使用示例
 if __name__ == "__main__":

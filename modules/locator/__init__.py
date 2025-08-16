@@ -1,6 +1,3 @@
-import asyncio
-import websockets
-
 import orjson as json
 
 import time

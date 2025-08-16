@@ -63,36 +63,48 @@ class IntegratedSensorHub:
 
     def read_pcf8574(self):
         """读取PCF8574的8位输入状态"""
-        try:
-            msg = i2c_msg.read(PCF8574_ADDR, 1)
-            self.bus.i2c_rdwr(msg)
-            self.device_data['pcf8574'] = list(msg)[0]
-            return True
-        except Exception as e:
-            logger.error(f"PCF8574 READ ERROR: {e}")
-            return False
+        max_retries = 3
+        for attempt in range(max_retries):
+            try:
+                msg = i2c_msg.read(PCF8574_ADDR, 1)
+                self.bus.i2c_rdwr(msg)
+                self.device_data['pcf8574'] = list(msg)[0]
+                return True
+            except Exception as e:
+                if attempt == max_retries - 1:
+                    logger.error(f"PCF8574 READ ERROR (final attempt): {e}")
+                else:
+                    logger.warning(f"PCF8574 READ ERROR (attempt {attempt + 1}): {e}")
+                    time.sleep(0.1)
+        return False
 
     def read_ina226(self):
         """仅读取INA226的电压（优化版）"""
-        try:
-            # 读取电压寄存器（0x02）
-            data = self.bus.read_i2c_block_data(INA226_ADDR, 0x02, 2)
-            voltage_raw = (data[0] << 8) | data[1]
-            
-            # 计算原始电压值（1.25mV/LSB）
-            voltage = voltage_raw * 0.00125  # 单位：V
-            
-            # 硬件校准补偿（实测12.5V但读数13.2V时的修正）
-            compensation_factor = 12.5 / 13.2  # 校准系数
-            calibrated_voltage = round(voltage * compensation_factor, 2)
-            
-            # 存储结果
-            self.device_data['ina226'] = (calibrated_voltage - 9.6)/(12.6-9.6)*100
-            return True
-            
-        except Exception as e:
-            logger.error(f"INA226 READ ERROR: {e}")
-            return False
+        max_retries = 3
+        for attempt in range(max_retries):
+            try:
+                # 读取电压寄存器（0x02）
+                data = self.bus.read_i2c_block_data(INA226_ADDR, 0x02, 2)
+                voltage_raw = (data[0] << 8) | data[1]
+                
+                # 计算原始电压值（1.25mV/LSB）
+                voltage = voltage_raw * 0.00125  # 单位：V
+                
+                # 硬件校准补偿（实测12.5V但读数13.2V时的修正）
+                compensation_factor = 12.5 / 13.2  # 校准系数
+                calibrated_voltage = round(voltage * compensation_factor, 2)
+                
+                # 存储结果
+                self.device_data['ina226'] = (calibrated_voltage - 9.6)/(12.6-9.6)*100
+                return True
+                
+            except Exception as e:
+                if attempt == max_retries - 1:
+                    logger.error(f"INA226 READ ERROR (final attempt): {e}")
+                else:
+                    logger.warning(f"INA226 READ ERROR (attempt {attempt + 1}): {e}")
+                    time.sleep(0.1)
+        return False
 
     def read_pcf8591(self):
         """读取PCF8591的前2个ADC通道并换算为电压"""

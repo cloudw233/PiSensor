@@ -51,5 +51,6 @@ def run():
     except Exception as e:
         logger.error(f"Error in rocker module: {e}")
     finally:
-        joystick.close()
+        if 'joystick' in locals() and joystick:
+            joystick.close()
 

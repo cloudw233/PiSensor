@@ -73,6 +73,11 @@ def run():
         radar_thread_instance.start()
 
         logger.info("Wheel and Radar modules started.")
+        while True:
+            time.sleep(1)
 
     except Exception as e:
         logger.error(f"Error in wheel module: {e}")
+    finally:
+        if 'motor_instance' in locals() and motor_instance:
+            motor_instance.cleanup()

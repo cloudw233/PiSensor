@@ -1,11 +1,11 @@
-import asyncio
-
 import serial
+from core.message_queue import message_queue_manager
+from core.constants import QueueNames
 
 # 打开串行端口
 ser = serial.Serial('/dev/ttyUSB1', 256000, timeout=1)
 
-async def radar(ws):
+def run():
     while True:
         try:
             data = ser.read(7 * 11)
@@ -25,8 +25,9 @@ async def radar(ws):
             remove_count = 3
             length_list = length_list[remove_count:-remove_count]
             length_ = sum(length_list) / len(length_list) if len(length_list) !=0 else 1
-            await ws.send(str(length_))
-        except asyncio.CancelledError:
+            message_queue_manager.send_message(QueueNames.RADAR, str(length_))
+        except Exception as e:
+            print(e)
             ser.close()
             raise
 

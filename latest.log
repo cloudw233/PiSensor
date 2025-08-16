@@ -1,263 +1,480 @@
-[2025-08-16 10:47:20][__main__][<module>][INFO] === Starting application ===
+[2025-08-16 11:26:13][__main__][main][INFO] Here we go!
 
-[2025-08-16 10:47:20][__main__][main][INFO] 
+[2025-08-16 11:26:13][__main__][import_and_collect_runners][SUCCESS] Successfully loaded run function from radar
 
-    main()
-    └ <function main at 0x7f98559300>
+[2025-08-16 11:26:14][__main__][import_and_collect_runners][SUCCESS] Successfully loaded run function from humiture
 
-    │    └ <_frozen_importlib_external.SourceFileLoader object at 0x7f9855db10>
-    └ ModuleSpec(name='radar', loader=<_frozen_importlib_external.SourceFileLoader object at 0x7f9855db10>, origin='/root/new/PiSen...
+[2025-08-16 11:26:14][__main__][import_and_collect_runners][SUCCESS] Successfully loaded run function from urgent_button
 
-  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
-  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+[2025-08-16 11:26:14][__main__][import_and_collect_runners][SUCCESS] Successfully loaded run function from smbus
 
-  File "/root/new/PiSensor/modules/radar/__init__.py", line 3, in <module>
-    import websockets
+[2025-08-16 11:26:14][__main__][import_and_collect_runners][SUCCESS] Successfully loaded run function from wheel
 
-ModuleNotFoundError: No module named 'websockets'
-
-[2025-08-16 10:47:21][__main__][import_and_collect_runners][SUCCESS] Successfully loaded run function from humiture
-
-[2025-08-16 10:47:21][__main__][import_and_collect_runners][SUCCESS] Successfully loaded run function from urgent_button
-
-[2025-08-16 10:47:21][__main__][import_and_collect_runners][SUCCESS] Successfully loaded run function from smbus
-
-[2025-08-16 10:47:21][__main__][import_and_collect_runners][SUCCESS] Successfully loaded run function from step_motor
-
-[2025-08-16 10:47:21][__main__][import_and_collect_runners][SUCCESS] Successfully loaded run function from wheel
-
-[2025-08-16 10:47:21][__main__][import_and_collect_runners][ERROR] Error loading module locator
+[2025-08-16 11:26:14][__main__][import_and_collect_runners][ERROR] Error loading module locator
 Traceback (most recent call last):
 
   File "/root/new/PiSensor/main.py", line 174, in <module>
     main()
-    └ <function main at 0x7f98559300>
+    └ <function main at 0x7faf783e20>
 
   File "/root/new/PiSensor/main.py", line 131, in main
     runners = import_and_collect_runners(driver_path)
               │                          └ '/root/new/PiSensor/modules'
-              └ <function import_and_collect_runners at 0x7f98559080>
+              └ <function import_and_collect_runners at 0x7faf783ba0>
 
 > File "/root/new/PiSensor/main.py", line 82, in import_and_collect_runners
     spec.loader.exec_module(module)
     │    │      │           └ <module 'locator' from '/root/new/PiSensor/modules/locator/__init__.py'>
-    │    │      └ <function _LoaderBasics.exec_module at 0x7fa6291da0>
-    │    └ <_frozen_importlib_external.SourceFileLoader object at 0x7f9790e0d0>
-    └ ModuleSpec(name='locator', loader=<_frozen_importlib_external.SourceFileLoader object at 0x7f9790e0d0>, origin='/root/new/PiS...
+    │    │      └ <function _LoaderBasics.exec_module at 0x7fbd3a1da0>
+    │    └ <_frozen_importlib_external.SourceFileLoader object at 0x7fae283550>
+    └ ModuleSpec(name='locator', loader=<_frozen_importlib_external.SourceFileLoader object at 0x7fae283550>, origin='/root/new/PiS...
 
   File "<frozen importlib._bootstrap_external>", line 940, in exec_module
   File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
 
-[2025-08-16 10:47:21][__main__][import_and_collect_runners][SUCCESS] Successfully loaded run function from rocker
+  File "/root/new/PiSensor/modules/locator/__init__.py", line 2, in <module>
+    import websockets
 
-[2025-08-16 10:47:26][__main__][import_and_collect_runners][SUCCESS] Successfully loaded run function from heart
+ModuleNotFoundError: No module named 'websockets'
 
-[2025-08-16 10:47:26][__main__][main][INFO] Starting 7 modules
+[2025-08-16 11:26:14][__main__][import_and_collect_runners][SUCCESS] Successfully loaded run function from rocker
+
+[2025-08-16 11:26:15][__main__][import_and_collect_runners][SUCCESS] Successfully loaded run function from heart
+
+[2025-08-16 11:26:15][__main__][main][INFO] Starting 8 modules
+[2025-08-16 11:26:15][core.message_queue][get_queue][INFO] Created queue: QueueNames.HEART
+[2025-08-16 11:26:15][core.message_queue][get_queue][INFO] Created queue: QueueNames.STEP_MOTOR
+[2025-08-16 11:26:15][__main__][run_module][INFO] Starting module: urgent_button
+
+[2025-08-16 11:26:15][__main__][run_module][INFO] Starting module: smbus
+
+[2025-08-16 11:26:15][core.message_queue][get_queue][INFO] Created queue: QueueNames.RADAR
+[2025-08-16 11:26:15][radar][run][INFO] [Radar]Here we go!
+
+[2025-08-16 11:26:15][core.message_queue][get_queue][INFO] Created queue: QueueNames.WHEEL
+
+[2025-08-16 11:26:15][step_motor][run][INFO] Stepper motor module started.
+
+[2025-08-16 11:26:15][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 11:26:15][rocker][run][INFO] Rocker module started.
+
+[2025-08-16 11:26:15][core.message_queue][get_queue][INFO] Created queue: QueueNames.MAIN
+
+[2025-08-16 11:26:15][__main__][run_module][ERROR] Error in module radar
 Traceback (most recent call last):
 
-  File "/usr/lib/python3.11/threading.py", line 1038, in _bootstrap_inner
-[2025-08-16 10:47:26][__main__][run_module][INFO] Starting module: humiture
-
-[2025-08-16 10:47:26][__main__][run_module][INFO] Starting module: urgent_button
-
-[2025-08-16 10:47:26][__main__][run_module][INFO] Starting module: smbus
-
-[2025-08-16 10:47:26][urgent_button][run][INFO] Urgent button module started.
-
-[2025-08-16 10:47:26][__main__][run_module][INFO] Starting module: step_motor
-
-[2025-08-16 10:47:26][urgent_button][run][INFO] Urgent button pressed.
-
-[2025-08-16 10:47:26][core.message_queue][get_queue][INFO] Created queue: step_motor
-
-[2025-08-16 10:47:26][step_motor][run][INFO] Stepper motor module started.
-
-[2025-08-16 10:47:26][__main__][run_module][INFO] Starting module: rocker
-
-[2025-08-16 10:47:26][__main__][run_module][INFO] Starting module: heart
-
-[2025-08-16 10:47:26][core.message_queue][get_queue][INFO] Created queue: QueueNames.WHEEL
-
-[2025-08-16 10:47:26][wheel][run][INFO] Wheel and Radar modules started.
-
-[2025-08-16 10:47:26][__main__][run_module][INFO] Module step_motor stopped
-
-[2025-08-16 10:47:26][core.http_client][send_sensor_data][ERROR] Error sending data for sensor 'urgent_button': HTTPConnectionPool(host='localhost', port=10240): Max retries exceeded with url: /api/sensor/urgent_button (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f776bf690>: Failed[2025-08-16 10:47:26][core.message_queue][get_queue][INFO] Created queue: QueueNames.RADAR
-
-[2025-08-16 10:47:26][__main__][run_module][INFO] Module wheel stopped
-
-[2025-08-16 10:47:26][core.message_queue][get_queue][INFO] Created queue: heart
-
-    self.run()
+  File "/usr/lib/python3.11/threading.py", line 995, in _bootstrap
+    self._bootstrap_inner()
+    │    └ <function Thread._bootstrap_inner at 0x7fbce6f420>
+    └ <Thread(Thread-6 (run_module), started daemon 547725635968)>
+    │    └ <function Thread.run at 0x7fbce6f100>
+    └ <Thread(Thread-6 (run_module), started daemon 547725635968)>
   File "/usr/lib/python3.11/threading.py", line 975, in run
     self._target(*self._args, **self._kwargs)
-  File "/root/new/PiSensor/core/relay_server.py", line 40, in relay_server_thread
-    heart_queue = message_queue_manager.create_queue(QueueNames.HEART)
-                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AttributeError: 'MessageQueueManager' object has no attribute 'create_queue'. Did you mean: 'get_queue'?
-[2025-08-16 10:47:26][uvicorn.server][_serve][Level 20] Started server process [5953]
+    │    │        │    │        │    └ {}
+    │    │        │    │        └ <Thread(Thread-6 (run_module), started daemon 547725635968)>
 
-[2025-08-16 10:47:26][core.forwarding][forward_messages][ERROR] Connection to remote server lost: [Errno 111] Connection refused. Reconnecting in 5 seconds...
-[2025-08-16 10:47:27][urgent_button][run][INFO] Urgent button pressed.
+TypeError: radar() missing 1 required positional argument: 'ws'
 
-[2025-08-16 10:47:27][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:48354 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+[2025-08-16 11:26:15][__main__][run_module][INFO] Module wheel stopped
 
-[2025-08-16 10:47:28][urgent_button][run][INFO] Urgent button pressed.
+[2025-08-16 11:26:15][__main__][run_module][INFO] Module heart stopped
 
-[2025-08-16 10:47:29][urgent_button][run][INFO] Urgent button pressed.
+ to establish a new connection: [Errno 111] Connection refused'))
 
-[2025-08-16 10:47:29][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:48372 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+[2025-08-16 11:26:15][core.message_queue][get_queue][INFO] Created queue: main_response
 
-[2025-08-16 10:47:30][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:48388 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+[2025-08-16 11:26:15][uvicorn.server][_serve][Level 20] Started server process [36235]
 
-[2025-08-16 10:47:31][urgent_button][run][INFO] Urgent button pressed.
+[2025-08-16 11:26:15][uvicorn.lifespan.on][startup][Level 20] Application startup complete.
 
-[2025-08-16 10:47:31][core.relay_server][sensor_data_handler][ERROR] Error handling sensor data for humiture: string indices must be integers, not 'str'
+[2025-08-16 11:26:15][uvicorn.server][_log_started_message][Level 20] Uvicorn running on http://localhost:10240 (Press CTRL+C to quit)
 
-[2025-08-16 10:47:32][core.forwarding][forward_messages][ERROR] Connection to remote server lost: [Errno 111] Connection refused. Reconnecting in 5 seconds...
-[2025-08-16 10:47:32][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:48414 - "POST /api/sensor/urgent_button HTTP/1.1" 200
-INA226 READ ERROR: [Errno 5] Input/output error
-[2025-08-16 10:47:33][core.relay_server][sensor_data_handler][ERROR] Error handling sensor data for smbus: byte indices must be integers or slices, not str
+[2025-08-16 11:26:16][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:41340 - "POST /api/sensor/urgent_button HTTP/1.1" 200
 
-[2025-08-16 10:47:33][urgent_button][run][INFO] Urgent button pressed.
+[2025-08-16 11:26:17][urgent_button][run][INFO] Urgent button pressed.
 
-[2025-08-16 10:47:34][urgent_button][run][INFO] Urgent button pressed.
+[2025-08-16 11:26:19][urgent_button][run][INFO] Urgent button pressed.
 
-[2025-08-16 10:47:34][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:48436 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+[2025-08-16 11:26:19][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:41360 - "POST /api/sensor/urgent_button HTTP/1.1" 200
 
-PCF8574 READ ERROR: [Errno 5] Input/output error
-INA226 READ ERROR: [Errno 5] Input/output error
-[2025-08-16 10:47:35][core.relay_server][sensor_data_handler][ERROR] Error handling sensor data for smbus: byte indices must be integers or slices, not str
+[2025-08-16 11:26:20][modules.smbus.smbus][read_pcf8574][ERROR] PCF8574 READ ERROR: [Errno 5] Input/output error
 
-[2025-08-16 10:47:35][urgent_button][run][INFO] Urgent button pressed.
+[2025-08-16 11:26:20][modules.smbus.smbus][read_ina226][ERROR] INA226 READ ERROR: [Errno 5] Input/output error
 
-[2025-08-16 10:47:35][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:56568 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+[2025-08-16 11:26:20][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:41374 - "POST /api/sensor/urgent_button HTTP/1.1" 200
 
-[2025-08-16 10:47:35][core.relay_server][sensor_data_handler][ERROR] Error handling sensor data for humiture: string indices must be integers, not 'str'
+[2025-08-16 11:26:20][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:41380 - "POST /api/sensor/humiture HTTP/1.1" 422
 
-[2025-08-16 10:47:36][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:56580 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+[2025-08-16 11:26:20][core.http_client][send_sensor_data][ERROR] Error sending data for sensor 'humiture': 422 Client Error: Unprocessable Entity for url: http://localhost:10240/api/sensor/humiture
 
-PCF8574 READ ERROR: [Errno 5] Input/output error
-INA226 READ ERROR: [Errno 5] Input/output error
-[2025-08-16 10:47:37][core.relay_server][sensor_data_handler][ERROR] Error handling sensor data for smbus: byte indices must be integers or slices, not str
+[2025-08-16 11:26:21][urgent_button][run][INFO] Urgent button pressed.
 
-[2025-08-16 10:47:37][urgent_button][run][INFO] Urgent button pressed.
+[2025-08-16 11:26:21][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:41390 - "POST /api/sensor/urgent_button HTTP/1.1" 200
 
-[2025-08-16 10:47:37][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:56592 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+[2025-08-16 11:26:22][modules.smbus.smbus][read_ina226][ERROR] INA226 READ ERROR: [Errno 5] Input/output error
+[2025-08-16 11:26:22][urgent_button][run][INFO] Urgent button pressed.
 
-[2025-08-16 10:47:38][core.relay_server][sensor_data_handler][ERROR] Error handling sensor data for humiture: string indices must be integers, not 'str'
+[2025-08-16 11:26:22][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:41416 - "POST /api/sensor/urgent_button HTTP/1.1" 200
 
-[2025-08-16 10:47:38][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:56606 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+[2025-08-16 11:26:22][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:41418 - "POST /api/sensor/humiture HTTP/1.1" 422
 
-PCF8574 READ ERROR: [Errno 5] Input/output error
-INA226 READ ERROR: [Errno 5] Input/output error
-[2025-08-16 10:47:39][core.relay_server][sensor_data_handler][ERROR] Error handling sensor data for smbus: byte indices must be integers or slices, not str
+[2025-08-16 11:26:22][core.http_client][send_sensor_data][ERROR] Error sending data for sensor 'humiture': 422 Client Error: Unprocessable Entity for url: http://localhost:10240/api/sensor/humiture
 
-[2025-08-16 10:47:39][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:56618 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+[2025-08-16 11:26:23][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:41424 - "POST /api/sensor/urgent_button HTTP/1.1" 200
 
-[2025-08-16 10:47:40][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:56628 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+[2025-08-16 11:26:24][modules.smbus.smbus][read_pcf8574][ERROR] PCF8574 READ ERROR: [Errno 5] Input/output error
 
-[2025-08-16 10:47:40][core.relay_server][sensor_data_handler][ERROR] Error handling sensor data for humiture: string indices must be integers, not 'str'
+[2025-08-16 11:26:24][modules.smbus.smbus][read_ina226][ERROR] INA226 READ ERROR: [Errno 5] Input/output error
 
-PCF8574 READ ERROR: [Errno 5] Input/output error
-INA226 READ ERROR: [Errno 5] Input/output error
-[2025-08-16 10:47:41][core.relay_server][sensor_data_handler][ERROR] Error handling sensor data for smbus: byte indices must be integers or slices, not str
+[2025-08-16 11:26:24][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:41438 - "POST /api/sensor/smbus HTTP/1.1" 200
 
-[2025-08-16 10:47:42][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:56638 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+[2025-08-16 11:26:25][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:56884 - "POST /api/sensor/humiture HTTP/1.1" 422
 
-[2025-08-16 10:47:42][core.forwarding][forward_messages][ERROR] Connection to remote server lost: [Errno 111] Connection refused. Reconnecting in 5 seconds...
-PCF8574 READ ERROR: [Errno 5] Input/output error
-INA226 READ ERROR: [Errno 5] Input/output error
-[2025-08-16 10:47:43][core.relay_server][sensor_data_handler][ERROR] Error handling sensor data for smbus: byte indices must be integers or slices, not str
+[2025-08-16 11:26:25][core.http_client][send_sensor_data][ERROR] Error sending data for sensor 'humiture': 422 Client Error: Unprocessable Entity for url: http://localhost:10240/api/sensor/humiture
 
-[2025-08-16 10:47:43][urgent_button][run][INFO] Urgent button pressed.
+[2025-08-16 11:26:25][urgent_button][run][INFO] Urgent button pressed.
 
-[2025-08-16 10:47:43][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:56652 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+[2025-08-16 11:26:25][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:56892 - "POST /api/sensor/urgent_button HTTP/1.1" 200
 
-[2025-08-16 10:47:44][urgent_button][run][INFO] Urgent button pressed.
+[2025-08-16 11:26:26][modules.smbus.smbus][read_pcf8574][ERROR] PCF8574 READ ERROR: [Errno 5] Input/output error
 
-[2025-08-16 10:47:44][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:56658 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+[2025-08-16 11:26:26][modules.smbus.smbus][read_ina226][ERROR] INA226 READ ERROR: [Errno 5] Input/output error
 
-[2025-08-16 10:47:45][core.relay_server][sensor_data_handler][ERROR] Error handling sensor data for humiture: string indices must be integers, not 'str'
+[2025-08-16 11:26:26][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:56902 - "POST /api/sensor/smbus HTTP/1.1" 200
 
-PCF8574 READ ERROR: [Errno 5] Input/output error
-INA226 READ ERROR: [Errno 5] Input/output error
-[2025-08-16 10:47:45][core.relay_server][sensor_data_handler][ERROR] Error handling sensor data for smbus: byte indices must be integers or slices, not str
+[2025-08-16 11:26:26][urgent_button][run][INFO] Urgent button pressed.
+[2025-08-16 11:26:27][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:56920 - "POST /api/sensor/humiture HTTP/1.1" 422
 
-[2025-08-16 10:47:45][urgent_button][run][INFO] Urgent button pressed.
+[2025-08-16 11:26:27][core.http_client][send_sensor_data][ERROR] Error sending data for sensor 'humiture': 422 Client Error: Unprocessable Entity for url: http://localhost:10240/api/sensor/humiture
 
-[2025-08-16 10:47:45][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:42114 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+[2025-08-16 11:26:27][urgent_button][run][INFO] Urgent button pressed.
 
-[2025-08-16 10:47:46][urgent_button][run][INFO] Urgent button pressed.
+[2025-08-16 11:26:28][modules.smbus.smbus][read_pcf8574][ERROR] PCF8574 READ ERROR: [Errno 5] Input/output error
 
-[2025-08-16 10:47:46][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:42118 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+[2025-08-16 11:26:28][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:56942 - "POST /api/sensor/smbus HTTP/1.1" 200
 
-PCF8574 READ ERROR: [Errno 5] Input/output error
+[2025-08-16 11:26:28][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:56946 - "POST /api/sensor/urgent_button HTTP/1.1" 200
 
-[2025-08-16 10:47:47][core.relay_server][sensor_data_handler][ERROR] Error handling sensor data for humiture: string indices must be integers, not 'str'
+[2025-08-16 11:26:29][urgent_button][run][INFO] Urgent button pressed.
 
-[2025-08-16 10:47:47][urgent_button][run][INFO] Urgent button pressed.
+[2025-08-16 11:26:29][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:56952 - "POST /api/sensor/urgent_button HTTP/1.1" 200
 
-[2025-08-16 10:47:48][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:42138 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+[2025-08-16 11:26:29][core.http_client][send_sensor_data][ERROR] Error sending data for sensor 'humiture': 422 Client Error: Unprocessable Entity for url: http://localhost:10240/api/sensor/humiture
 
-PCF8574 READ ERROR: [Errno 5] Input/output error
-INA226 READ ERROR: [Errno 5] Input/output error
-[2025-08-16 10:47:49][core.relay_server][sensor_data_handler][ERROR] Error handling sensor data for smbus: byte indices must be integers or slices, not str
+[2025-08-16 11:26:30][modules.smbus.smbus][read_pcf8574][ERROR] PCF8574 READ ERROR: [Errno 5] Input/output error
 
-[2025-08-16 10:47:49][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:42146 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+[2025-08-16 11:26:30][modules.smbus.smbus][read_ina226][ERROR] INA226 READ ERROR: [Errno 5] Input/output error
 
-[2025-08-16 10:47:49][core.relay_server][sensor_data_handler][ERROR] Error handling sensor data for humiture: string indices must be integers, not 'str'
+[2025-08-16 11:26:30][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:56972 - "POST /api/sensor/smbus HTTP/1.1" 200
 
-[2025-08-16 10:47:50][urgent_button][run][INFO] Urgent button pressed.
+[2025-08-16 11:26:30][urgent_button][run][INFO] Urgent button pressed.
 
-[2025-08-16 10:47:50][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:42162 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+[2025-08-16 11:26:31][urgent_button][run][INFO] Urgent button pressed.
 
-PCF8574 READ ERROR: [Errno 5] Input/output error
-INA226 READ ERROR: [Errno 5] Input/output error
-[2025-08-16 10:47:51][core.relay_server][sensor_data_handler][ERROR] Error handling sensor data for smbus: byte indices must be integers or slices, not str
 
-[2025-08-16 10:47:52][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:42182 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+[2025-08-16 11:26:32][modules.smbus.smbus][read_pcf8574][ERROR] PCF8574 READ ERROR: [Errno 5] Input/output error
 
-PCF8574 READ ERROR: [Errno 5] Input/output error
-INA226 READ ERROR: [Errno 5] Input/output error
-[2025-08-16 10:47:53][core.relay_server][sensor_data_handler][ERROR] Error handling sensor data for smbus: byte indices must be integers or slices, not str
+[2025-08-16 11:26:32][modules.smbus.smbus][read_ina226][ERROR] INA226 READ ERROR: [Errno 5] Input/output error
 
-[2025-08-16 10:47:53][urgent_button][run][INFO] Urgent button pressed.
+[2025-08-16 11:26:32][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:57008 - "POST /api/sensor/smbus HTTP/1.1" 200
 
-[2025-08-16 10:47:53][core.forwarding][forward_messages][ERROR] Connection to remote server lost: [Errno 111] Connection refused. Reconnecting in 5 seconds...
+[2025-08-16 11:26:32][urgent_button][run][INFO] Urgent button pressed.
 
-[2025-08-16 10:47:53][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:42188 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+[2025-08-16 11:26:32][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:57010 - "POST /api/sensor/urgent_button HTTP/1.1" 200
 
-[2025-08-16 10:47:54][core.relay_server][sensor_data_handler][ERROR] Error handling sensor data for humiture: string indices must be integers, not 'str'
+[2025-08-16 11:26:33][urgent_button][run][INFO] Urgent button pressed.
 
-[2025-08-16 10:47:54][urgent_button][run][INFO] Urgent button pressed.
+[2025-08-16 11:26:34][modules.smbus.smbus][read_ina226][ERROR] INA226 READ ERROR: [Errno 5] Input/output error
 
-[2025-08-16 10:47:54][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:41668 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+[2025-08-16 11:26:34][core.http_client][send_sensor_data][ERROR] Error sending data for sensor 'humiture': 422 Client Error: Unprocessable Entity for url: http://localhost:10240/api/sensor/humiture
 
-PCF8574 READ ERROR: [Errno 5] Input/output error
-INA226 READ ERROR: [Errno 5] Input/output error
-[2025-08-16 10:47:55][core.relay_server][sensor_data_handler][ERROR] Error handling sensor data for smbus: byte indices must be integers or slices, not str
+[2025-08-16 11:26:35][urgent_button][run][INFO] Urgent button pressed.
 
-[2025-08-16 10:47:55][urgent_button][run][INFO] Urgent button pressed.
+[2025-08-16 11:26:35][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:52830 - "POST /api/sensor/urgent_button HTTP/1.1" 200
 
-[2025-08-16 10:47:55][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:41680 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+[2025-08-16 11:26:36][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:52840 - "POST /api/sensor/humiture HTTP/1.1" 422
 
-[2025-08-16 10:47:56][core.relay_server][sensor_data_handler][ERROR] Error handling sensor data for humiture: string indices must be integers, not 'str'
 
-[2025-08-16 10:47:56][urgent_button][run][INFO] Urgent button pressed.
+[2025-08-16 11:26:37][urgent_button][run][INFO] Urgent button pressed.
 
-[2025-08-16 10:47:56][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:41688 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+[2025-08-16 11:26:38][modules.smbus.smbus][read_pcf8574][ERROR] PCF8574 READ ERROR: [Errno 5] Input/output error
 
-PCF8574 READ ERROR: [Errno 5] Input/output error
-INA226 READ ERROR: [Errno 5] Input/output error
-[2025-08-16 10:47:57][core.relay_server][sensor_data_handler][ERROR] Error handling sensor data for smbus: byte indices must be integers or slices, not str
+[2025-08-16 11:26:38][modules.smbus.smbus][read_ina226][ERROR] INA226 READ ERROR: [Errno 5] Input/output error
+[2025-08-16 11:26:38][urgent_button][run][INFO] Urgent button pressed.
 
-[2025-08-16 10:47:57][urgent_button][run][INFO] Urgent button pressed.
+[2025-08-16 11:26:38][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:52886 - "POST /api/sensor/urgent_button HTTP/1.1" 200
 
-[2025-08-16 10:47:57][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:41690 - "POST /api/sensor/urgent_button HTTP/1.1" 200
 
-^C[2025-08-16 10:47:57][__main__][shutdown][INFO] Received shutdown signal, shutting down...
+[2025-08-16 11:26:39][urgent_button][run][INFO] Urgent button pressed.
 
-[2025-08-16 10:47:58][__main__][main][INFO] Main process ended
+[2025-08-16 11:26:39][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:52896 - "POST /api/sensor/urgent_button HTTP/1.1" 200
 
-[2025-08-16 10:47:58][__main__][<module>][INFO] === Application terminated ===
+[2025-08-16 11:26:40][modules.smbus.smbus][read_ina226][ERROR] INA226 READ ERROR: [Errno 5] Input/output error
+
+[2025-08-16 11:26:40][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:52906 - "POST /api/sensor/smbus HTTP/1.1" 200
+[2025-08-16 11:26:41][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:52926 - "POST /api/sensor/humiture HTTP/1.1" 422
+
+[2025-08-16 11:26:41][core.http_client][send_sensor_data][ERROR] Error sending data for sensor 'humiture': 422 Client Error: Unprocessable Entity for url: http://localhost:10240/api/sensor/humiture
+
+[2025-08-16 11:26:41][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 11:26:41][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:52940 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 11:26:42][modules.smbus.smbus][read_ina226][ERROR] INA226 READ ERROR: [Errno 5] Input/output error
+
+[2025-08-16 11:26:42][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:52954 - "POST /api/sensor/smbus HTTP/1.1" 200
+
+[2025-08-16 11:26:42][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 11:26:43][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:52978 - "POST /api/sensor/humiture HTTP/1.1" 422
+
+
+[2025-08-16 11:26:43][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:52990 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 11:26:44][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:53002 - "POST /api/sensor/smbus HTTP/1.1" 200
+
+[2025-08-16 11:26:44][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 11:26:44][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:54626 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 11:26:45][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 11:26:45][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:54638 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+
+[2025-08-16 11:26:46][modules.smbus.smbus][read_pcf8574][ERROR] PCF8574 READ ERROR: [Errno 5] Input/output error
+
+[2025-08-16 11:26:46][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:54656 - "POST /api/sensor/smbus HTTP/1.1" 200
+
+[2025-08-16 11:26:46][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:54658 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 11:26:48][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:54674 - "POST /api/sensor/humiture HTTP/1.1" 422
+
+[2025-08-16 11:26:48][core.http_client][send_sensor_data][ERROR] Error sending data for sensor 'humiture': 422 Client Error: Unprocessable Entity for url: htt
+[2025-08-16 11:26:48][modules.smbus.smbus][read_ina226][ERROR] INA226 READ ERROR: [Errno 5] Input/output error
+
+[2025-08-16 11:26:48][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:54678 - "POST /api/sensor/smbus HTTP/1.1" 200
+
+[2025-08-16 11:26:48][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 11:26:48][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:54694 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 11:26:49][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 11:26:49][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:54700 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 11:26:50][modules.smbus.smbus][read_pcf8574][ERROR] PCF8574 READ ERROR: [Errno 5] Input/output error
+
+[2025-08-16 11:26:50][modules.smbus.smbus][read_ina226][ERROR] INA226 READ ERROR: [Errno 5] Input/output error
+[2025-08-16 11:26:50][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:54720 - "POST /api/sensor/humiture HTTP/1.1" 422
+
+[2025-08-16 11:26:50][core.http_client][send_sensor_data][ERROR] Error sending data for sensor 'humiture': 422 Client Error: Unprocessable Entity for url: http://localhost:10240/api/sensor/humiture
+
+[2025-08-16 11:26:50][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 11:26:52][modules.smbus.smbus][read_pcf8574][ERROR] PCF8574 READ ERROR: [Errno 5] Input/output error
+
+[2025-08-16 11:26:52][modules.smbus.smbus][read_ina226][ERROR] INA226 READ ERROR: [Errno 5] Input/output error
+[2025-08-16 11:26:52][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 11:26:52][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:54772 - "POST /api/sensor/humiture HTTP/1.1" 422
+
+[2025-08-16 11:26:52][core.http_client][send_sensor_data][ERROR] Error sending data for sensor 'humiture': 422 Client Error: Unprocessable Entity for url: http://localhost:10240/api/sensor/humiture
+
+[2025-08-16 11:26:53][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 11:26:53][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:54778 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 11:26:54][modules.smbus.smbus][read_pcf8574][ERROR] PCF8574 READ ERROR: [Errno 5] Input/output error
+
+[2025-08-16 11:26:54][modules.smbus.smbus][read_ina226][ERROR] INA226 READ ERROR: [Errno 5] Input/output error
+[2025-08-16 11:26:54][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 11:26:54][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:38362 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 11:26:55][core.http_client][send_sensor_data][ERROR] Error sending data for sensor 'humiture': 422 Client Error: Unprocessable Entity for url: http://localhost:10240/api/sensor/humiture
+
+[2025-08-16 11:26:55][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 11:26:55][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:38376 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 11:26:56][modules.smbus.smbus][read_pcf8574][ERROR] PCF8574 READ ERROR: [Errno 5] Input/output error
+
+[2025-08-16 11:26:56][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 11:26:57][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:38396 - "POST /api/sensor/humiture HTTP/1.1" 422
+
+[2025-08-16 11:26:57][core.http_client][send_sensor_data][ERROR] Error sending data for sensor 'humiture': 422 Client Error: Unprocessable Entity for url: http://localhost:10240/api/sensor/humiture
+
+[2025-08-16 11:26:57][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 11:26:57][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:38404 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 11:26:58][modules.smbus.smbus][read_pcf8574][ERROR] PCF8574 READ ERROR: [Errno 5] Input/output error
+
+[2025-08-16 11:26:58][modules.smbus.smbus][read_ina226][ERROR] INA226 READ ERROR: [Errno 5] Input/output error
+
+[2025-08-16 11:26:59][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:38420 - "POST /api/sensor/humiture HTTP/1.1" 422
+
+[2025-08-16 11:26:59][core.http_client][send_sensor_data][ERROR] Error sending data for sensor 'humiture': 422 Client Error: Unprocessable Entity for url: http://localhost:10240/api/sensor/humiture
+
+[2025-08-16 11:27:00][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 11:27:00][modules.smbus.smbus][read_ina226][ERROR] INA226 READ ERROR: [Errno 5] Input/output error
+
+[2025-08-16 11:27:00][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:38440 - "POST /api/sensor/smbus HTTP/1.1" 200
+
+[2025-08-16 11:27:01][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 11:27:01][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:38454 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 11:27:02][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 11:27:02][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:38460 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+
+[2025-08-16 11:27:02][modules.smbus.smbus][read_pcf8574][ERROR] PCF8574 READ ERROR: [Errno 5] Input/output error
+
+[2025-08-16 11:27:02][modules.smbus.smbus][read_ina226][ERROR] INA226 READ ERROR: [Errno 5] Input/output error
+
+[2025-08-16 11:27:02][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:38480 - "POST /api/sensor/smbus HTTP/1.1" 200
+
+[2025-08-16 11:27:03][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 11:27:03][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:38486 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 11:27:04][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:38502 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+[2025-08-16 11:27:04][core.http_client][send_sensor_data][ERROR] Error sending data for sensor 'humiture': 422 Client Error: Unprocessable Entity for url: http://localhost:10240/api/sensor/humiture
+
+[2025-08-16 11:27:04][modules.smbus.smbus][read_pcf8574][ERROR] PCF8574 READ ERROR: [Errno 5] Input/output error
+
+[2025-08-16 11:27:04][modules.smbus.smbus][read_ina226][ERROR] INA226 READ ERROR: [Errno 5] Input/output error
+
+[2025-08-16 11:27:06][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 11:27:06][modules.smbus.smbus][read_pcf8574][ERROR] PCF8574 READ ERROR: [Errno 5] Input/output error
+
+[2025-08-16 11:27:06][modules.smbus.smbus][read_ina226][ERROR] INA226 READ ERROR: [Errno 5] Input/output error
+[2025-08-16 11:27:06][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:60180 - "POST /api/sensor/humiture HTTP/1.1" 422
+
+[2025-08-16 11:27:06][core.http_client][send_sensor_data][ERROR] Error sending data for sensor 'humiture': 422 Client Error: Unprocessable Entity for url: http://localhost:10240/api/sensor/humiture
+
+[2025-08-16 11:27:07][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 11:27:07][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:60188 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 11:27:08][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 11:27:08][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:60204 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 11:27:08][modules.smbus.smbus][read_pcf8574][ERROR] PCF8574 READ ERROR: [Errno 5] Input/output error
+
+[2025-08-16 11:27:08][modules.smbus.smbus][read_ina226][ERROR] INA226 READ ERROR: [Errno 5] Input/output error
+
+[2025-08-16 11:27:08][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:60216 - "POST /api/sensor/humiture HTTP/1.1" 422
+
+[2025-08-16 11:27:08][core.http_client][send_sensor_data][ERROR] Error sending data for sensor 'humiture': 422 Client Error: Unprocessable Entity for url: http://localhost:10240/api/sensor/humiture
+
+[2025-08-16 11:27:09][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 11:27:09][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:60222 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 11:27:10][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:60238 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 11:27:10][modules.smbus.smbus][read_ina226][ERROR] INA226 READ ERROR: [Errno 5] Input/output error
+
+
+[2025-08-16 11:27:12][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 11:27:12][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:60276 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 11:27:12][modules.smbus.smbus][read_pcf8574][ERROR] PCF8574 READ ERROR: [Errno 5] Input/output error
+
+[2025-08-16 11:27:12][modules.smbus.smbus][read_ina226][ERROR] INA226 READ ERROR: [Errno 5] Input/output error
+
+[2025-08-16 11:27:13][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 11:27:13][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:60286 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 11:27:13][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:60292 - "POST /api/sensor/humiture HTTP/1.1" 422
+
+[2025-08-16 11:27:13][core.http_client][send_sensor_data][ERROR] Error sending data for sensor 'humiture': 422 Client Error: Unprocessable Entity for url: http://localhost:10240/api/sensor/humiture
+
+[2025-08-16 11:27:14][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 11:27:14][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:60294 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 11:27:14][modules.smbus.smbus][read_pcf8574][ERROR] PCF8574 READ ERROR: [Errno 5] Input/output error
+
+[2025-08-16 11:27:14][modules.smbus.smbus][read_ina226][ERROR] INA226 READ ERROR: [Errno 5] Input/output error
+
+[2025-08-16 11:27:14][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:44494 - "POST /api/sensor/smbus HTTP/1.1" 200
+
+[2025-08-16 11:27:15][urgent_button][run][INFO] Urgent button pressed.
+[2025-08-16 11:27:15][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:44506 - "POST /api/sensor/humiture HTTP/1.1" 422
+
+[2025-08-16 11:27:15][core.http_client][send_sensor_data][ERROR] Error sending data for sensor 'humiture': 422 Client Error: Unprocessable Entity for url: http://localhost:10240/api/sensor/humiture
+
+[2025-08-16 11:27:16][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 11:27:16][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:44520 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 11:27:16][modules.smbus.smbus][read_pcf8574][ERROR] PCF8574 READ ERROR: [Errno 5] Input/output error
+
+[2025-08-16 11:27:16][modules.smbus.smbus][read_ina226][ERROR] INA226 READ ERROR: [Errno 5] Input/output error
+
+[2025-08-16 11:27:16][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:44534 - "POST /api/sensor/smbus HTTP/1.1" 200
+
+[2025-08-16 11:27:17][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 11:27:18][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:44552 - "POST /api/sensor/humiture HTTP/1.1" 422
+
+
+[2025-08-16 11:27:18][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 11:27:18][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:44564 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 11:27:18][modules.smbus.smbus][read_pcf8574][ERROR] PCF8574 READ ERROR: [Errno 5] Input/output error
+
+[2025-08-16 11:27:18][modules.smbus.smbus][read_ina226][ERROR] INA226 READ ERROR: [Errno 5] Input/output error
+
+[2025-08-16 11:27:18][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:44566 - "POST /api/sensor/smbus HTTP/1.1" 200
+
+[2025-08-16 11:27:19][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 11:27:19][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:44574 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 11:27:20][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 11:27:20][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:44590 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+[2025-08-16 11:27:20][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:44604 - "POST /api/sensor/humiture HTTP/1.1" 422
+
+[2025-08-16 11:27:20][core.http_client][send_sensor_data][ERROR] Error sending data for sensor 'humiture': 422 Client Error: Unprocessable Entity for url: http://localhost:10240/api/sensor/humiture
+
+[2025-08-16 11:27:20][modules.smbus.smbus][read_pcf8574][ERROR] PCF8574 READ ERROR: [Errno 5] Input/output error
+
+[2025-08-16 11:27:20][modules.smbus.smbus][read_ina226][ERROR] INA226 READ ERROR: [Errno 5] Input/output error
+
+[2025-08-16 11:27:20][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:44610 - "POST /api/sensor/smbus HTTP/1.1" 200
+
+[2025-08-16 11:27:21][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 11:27:21][uvicorn.protocols.http.h11_impl][send][Level 20] ::1:44612 - "POST /api/sensor/urgent_button HTTP/1.1" 200
+
+^C[2025-08-16 11:27:22][__main__][shutdown][INFO] Received shutdown signal, shutting down...
+
+[2025-08-16 11:27:22][__main__][main][INFO] Main process ended
+
+[2025-08-16 11:27:22][__main__][<module>][INFO] === Application terminated ===
+
+[2025-08-16 11:27:22][urgent_button][run][INFO] Urgent button pressed.
+
+[2025-08-16 11:27:22][wheel][wheel_thread][ERROR] Error in wheel thread: DigitalOutputDevice is closed or uninitialized
+
+Exception in thread Thread-15 (wheel_thread):
+[2025-08-16 11:27:22][rocker][run][ERROR] Error in rocker module: Button is closed or uninitialized
+Traceback (most recent call last):
+  File "/root/.cache/pypoetry/virtualenvs/pisensor-8mj9H3NO-py3.11/lib/python3.11/site-packages/gpiozero/output_devices.py", line 87, in _write

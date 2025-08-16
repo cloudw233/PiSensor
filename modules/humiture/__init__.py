@@ -13,11 +13,11 @@ def run():
     while True:
         try:
             # 获取温湿度数据
-            __humiture = get_humiture()
-            logger.debug(f"[Humiture]{__humiture}")
+            temperature, humidity = get_humiture()
+            logger.debug(f"[Humiture] Temperature: {temperature}, Humidity: {humidity}")
             
             # 通过队列发送数据到中继服务器
-            send_sensor_data('humiture', __humiture)
+            send_sensor_data('humiture', {'temperature': temperature, 'humidity': humidity})
             
             # 每2秒发送一次数据
             time.sleep(2)

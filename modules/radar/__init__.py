@@ -10,5 +10,5 @@ def run():
     while True:
         distance = radar()
         if distance:
-            radar_queue.put(distance)
+            radar_queue.put(int(distance))
         time.sleep(1)

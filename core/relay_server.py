@@ -89,6 +89,7 @@ def sensor_data_handler(path: str, data: dict):
                 sensor.gps = data['value']
             case 'heart':
                 sensor.heart_data = data['value']
+        message_queue_manager.send_message(QueueNames.SENSOR_DATA, MessageChain([account, sensor]))
     except Exception as e:
         logger.error(f"Error handling sensor data for {path}: {e}")
 

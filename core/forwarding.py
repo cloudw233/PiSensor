@@ -17,6 +17,7 @@ def forward_messages():
             # 获取消息队列
             main_queue = message_queue_manager.get_queue('main')
             main_response_queue = message_queue_manager.get_queue('main_response')
+            sensor_data_queue = message_queue_manager.get_queue('sensor_data')
             
             while True:
                 # 从远程服务器接收消息
@@ -30,6 +31,14 @@ def forward_messages():
                 recv_relay = None
                 try:
                     recv_relay = main_response_queue.get(timeout=0.01)
+                except:
+                    pass
+                
+                # 从传感器数据队列接收消息
+                try:
+                    sensor_data = sensor_data_queue.get(timeout=0.01)
+                    if sensor_data is not None:
+                        remote.send(sensor_data)
                 except:
                     pass
                 
@@ -48,6 +57,5 @@ def forward_messages():
             time.sleep(retry_delay)
             retry_delay = min(retry_delay * 2, 60)
         finally:
-            # 确保连接被正确关闭
             if 'remote' in locals() and remote.connected:
                 remote.close()

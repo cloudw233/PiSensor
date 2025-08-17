@@ -34,7 +34,7 @@ def calc_speed(
     elif direction == 'B':  # y 轴范围 (3072, 4095]
         speed = (y - 3072) / (4095 - 3072)
 
-    return max(0.0, min(speed, 1.0))
+    return 0.7
 
 
 def run():

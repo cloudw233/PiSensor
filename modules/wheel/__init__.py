@@ -13,27 +13,37 @@ def wheel_thread(motor_instance):
     轮子模块的处理线程
     """
     wheel_queue = message_queue_manager.get_queue(QueueNames.WHEEL)
-    
+    radar_queue = message_queue_manager.get_queue(QueueNames.RADAR)
+    length = 100  # 默认距离
+
     while True:
         try:
-            radar_queue = message_queue_manager.get_queue(QueueNames.RADAR)
-            length = radar_queue.get(timeout=1)
+            # 非阻塞地获取雷达数据
+            try:
+                length = radar_queue.get_nowait()
+            except queue.Empty:
+                pass  # 如果没有雷达数据，继续使用上一次的值
+
+            # 阻塞地等待摇杆指令
             recv_data = wheel_queue.get(timeout=1)
             action, speed = recv_data.split('|')[0], float(recv_data.split('|')[1])
-            match action:
-                case 'F':
-                    if length>20:
-                        motor_instance.forward(speed)
-                case 'B':
-                    motor_instance.backward(speed)
-                case 'L':
-                    motor_instance.turn_left(speed)
-                case 'R':
-                    motor_instance.turn_right(speed)
-                case _:
+
+            if action == 'F':
+                if length > 20:
+                    motor_instance.forward(speed)
+                else:
                     motor_instance.stop()
+            elif action == 'B':
+                motor_instance.backward(speed)
+            elif action == 'L':
+                motor_instance.turn_left(speed)
+            elif action == 'R':
+                motor_instance.turn_right(speed)
+            elif action == 'S':
+                motor_instance.stop()
         except queue.Empty:
-            continue
+            # 如果WHEEL队列超时，则停止电机
+            motor_instance.stop()
         except Exception as e:
             logger.error(f"Error in wheel thread: {e}")
             motor_instance.stop()

@@ -10,7 +10,7 @@ def run():
     logger.info("Urgent button module started.")
     while True:
         try:
-            if urgent_button.is_active:
+            if not urgent_button.is_active:
                 logger.info("Urgent button pressed.")
                 send_sensor_data("urgent_button", {"value": True})
             else:

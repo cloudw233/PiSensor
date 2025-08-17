@@ -25,7 +25,7 @@ def run():
             remove_count = 3
             length_list = length_list[remove_count:-remove_count]
             length_ = sum(length_list) / len(length_list) if len(length_list) !=0 else 1
-            message_queue_manager.send_message(QueueNames.RADAR, str(length_))
+            message_queue_manager.send_message(QueueNames.RADAR, length_)
         except Exception as e:
             print(e)
             ser.close()

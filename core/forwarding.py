@@ -38,7 +38,8 @@ def forward_messages():
                 try:
                     sensor_data = sensor_data_queue.get(timeout=0.01)
                     if sensor_data is not None:
-                        remote.send(sensor_data)
+                        remote.send_text(sensor_data)
+
                 except:
                     pass
                 

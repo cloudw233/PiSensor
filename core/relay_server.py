@@ -16,6 +16,8 @@ from config import config
 
 app = FastAPI()
 
+sensor_lock = threading.Lock()
+
 sensor = SensorElement(temp=0.0,
     humidity=0.0,
     power=30.0,
@@ -74,22 +76,23 @@ def sensor_data_handler(path: str, data: dict):
     处理传感器数据
     """
     try:
-        match path:
-            case 'humiture':
-                sensor.temp = data['temperature']
-                sensor.humidity = data['humidity']
-            case 'smbus':
-                sensor.tilt = data['tilt']
-                sensor.smoke["MQ_2"] = data['gas_sensors']['MQ2']
-                sensor.smoke["MQ_7"] = data['gas_sensors']['MQ7']
-                sensor.power = data['power']
-            case 'urgent_button':
-                sensor.urgent_button = data['value']
-            case 'location':
-                sensor.gps = data['value']
-            case 'heart':
-                sensor.heart_data = data['value']
-        message_queue_manager.send_message(QueueNames.SENSOR_DATA, MessageChain([account, sensor]))
+        with sensor_lock:
+            match path:
+                case 'humiture':
+                    sensor.temp = data['temperature']
+                    sensor.humidity = data['humidity']
+                case 'smbus':
+                    sensor.tilt = data['tilt']
+                    sensor.smoke["MQ_2"] = data['gas_sensors']['MQ2']
+                    sensor.smoke["MQ_7"] = data['gas_sensors']['MQ7']
+                    sensor.power = data['power']
+                case 'urgent_button':
+                    sensor.urgent_button = data['value']
+                case 'location':
+                    sensor.gps = data['value']
+                case 'heart':
+                    sensor.heart_data = data['value']
+            message_queue_manager.send_message(QueueNames.SENSOR_DATA, MessageChain([account, sensor]))
     except Exception as e:
         logger.error(f"Error handling sensor data for {path}: {e}")
 

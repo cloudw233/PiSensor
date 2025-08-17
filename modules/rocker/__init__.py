@@ -27,35 +27,8 @@ def calc_speed(
     min_val_x, min_val_y = mapping_min[direction]
     max_val_x, max_val_y = mapping_max[direction]
     value_x, value_y, _ = value
-    x_normalized = 0
-    y_normalized = 0
-
-    min_val_x, min_val_y = mapping_min[direction]
-    max_val_x, max_val_y = mapping_max[direction]
-
-    value_x = value[0]
-    value_y = value[1]
-
-    x_normalized = 0
-    y_normalized = 0
-
-    # 对于X轴的归一化
-    if direction == 'L': # 左转，X值越小速度越大，所以 (max_val_x - value_x)
-        x_normalized = (max_val_x - value_x) / (max_val_x - min_val_x) if (max_val_x - min_val_x) != 0 else 0
-    elif direction == 'R': # 右转，X值越大速度越大，所以 (value_x - min_val_x)
-        x_normalized = (value_x - min_val_x) / (max_val_x - min_val_x) if (max_val_x - min_val_x) != 0 else 0
-    else: # 前进和后退，X轴表示偏离中心，所以取绝对值
-        center_x = (min_val_x + max_val_x) / 2
-        x_normalized = abs(value_x - center_x) / (max_val_x - center_x) if (max_val_x - center_x) != 0 else 0
-
-    # 对于Y轴的归一化
-    if direction == 'F': # 前进，Y值越小速度越大，所以 (max_val_y - value_y)
-        y_normalized = (max_val_y - value_y) / (max_val_y - min_val_y) if (max_val_y - min_val_y) != 0 else 0
-    elif direction == 'B': # 后退，Y值越大速度越大，所以 (value_y - min_val_y)
-        y_normalized = (value_y - min_val_y) / (max_val_y - min_val_y) if (max_val_y - min_val_y) != 0 else 0
-    else: # 左转和右转，Y轴表示偏离中心，所以取绝对值
-        center_y = (min_val_y + max_val_y) / 2
-        y_normalized = abs(value_y - center_y) / (max_val_y - center_y) if (max_val_y - center_y) != 0 else 0
+    x_normalized = (value_x - min_val_x) / (max_val_x - min_val_x) if (max_val_x - min_val_x) != 0 else 0
+    y_normalized = (value_y - min_val_y) / (max_val_y - min_val_y) if (max_val_y - min_val_y) != 0 else 0
     speed = hypot(x_normalized, y_normalized)
     return round(min(1.0, max(0.0, speed)), 3)
 

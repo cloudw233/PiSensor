@@ -22,19 +22,27 @@ def calc_speed(
     :return: 速度值 (0.0 到 1.0)
     """
     x, y, _ = value
+    center = 2048
+    # 摇杆值范围 0-4095, 中心点 2048
+    # 死区范围 1024-3072, 对应中心偏移量 1024
+    dead_zone_offset = 1024
+    # 最大偏移量 2047 (例如 4095 - 2048)
+    max_offset = 2047
 
-    # run() 函数已经过滤了正确的范围
-    # 我们只需要将该范围内的值映射到速度即可
-    if direction == 'R':  # 范围 (3072, 4095]
-        speed = (x - 3072) / (4095 - 3072)
-    elif direction == 'L':  # 范围 [0, 1024)
-        speed = (1024 - x) / 1024
-    elif direction == 'F':  # y 轴范围 [0, 1024)
-        speed = (1024 - y) / 1024
-    elif direction == 'B':  # y 轴范围 (3072, 4095]
-        speed = (y - 3072) / (4095 - 3072)
+    offset = 0
+    if direction in ('R', 'L'):
+        offset = abs(x - center)
+    elif direction in ('F', 'B'):
+        offset = abs(y - center)
 
-    return max(0.0, min(speed, 1.0))
+    if offset <= dead_zone_offset:
+        return 0.0
+
+    # 将超出死区部分的偏移量映射到速度值
+    speed = (offset - dead_zone_offset) / (max_offset - dead_zone_offset)
+
+    # 确保速度不超过1.0
+    return min(speed, 1.0)
 
 
 def run():

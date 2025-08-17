@@ -5,10 +5,8 @@ from core.constants import QueueNames
 import time
 
 def run():
-    radar_queue = message_queue_manager.get_queue(QueueNames.RADAR)
     logger.info("[Radar]Here we go!")
     while True:
-        distance = radar()
-        if distance:
-            radar_queue.put(int(distance))
-        time.sleep(1)
+        radar()
+        time.sleep(0.1)
+

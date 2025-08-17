@@ -16,11 +16,14 @@ def wheel_thread(motor_instance):
     
     while True:
         try:
+            radar_queue = message_queue_manager.get_queue(QueueNames.RADAR)
+            length = radar_queue.get(timeout=1)
             recv_data = wheel_queue.get(timeout=1)
             action, speed = recv_data.split('|')[0], float(recv_data.split('|')[1])
             match action:
                 case 'F':
-                    motor_instance.forward(speed)
+                    if length>20:
+                        motor_instance.forward(speed)
                 case 'B':
                     motor_instance.backward(speed)
                 case 'L':

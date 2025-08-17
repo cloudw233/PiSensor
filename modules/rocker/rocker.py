@@ -8,7 +8,7 @@ class MCP3208_Joystick:
         # 初始化SPI
         self.spi = spidev.SpiDev()
         self.spi.open(0, 0)  # 使用CE0 (GPIO8)
-        self.spi.max_speed_hz = 1000000  # 1MHz SPI时钟
+        self.spi.max_speed_hz = 3600000  # 3.6MHz SPI时钟
         self.button = Button(25)
         
     def read_channel(self, channel):
@@ -30,7 +30,7 @@ class MCP3208_Joystick:
         x_val = self.read_channel(0)  # CH0接X轴
         y_val = self.read_channel(1)  # CH1接Y轴
         button_state = self.button.is_active
-        return int(x_val/4), int(y_val/4), button_state
+        return x_val, y_val, button_state
     
     def close(self):
         """关闭SPI连接和GPIO资源"""

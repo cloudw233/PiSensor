@@ -13,21 +13,24 @@ def calc_speed(
         direction: Literal['R', 'L', 'F', 'B']
 ) -> float:
     mapping_min = {
-        'R': (768,256),
-        'L': (0,256),
-        'F': (256,0),
-        'B': (256,768)
+        'R': (3072,1024),
+        'L': (0,1024),
+        'F': (1024,0),
+        'B': (1024,3072)
     }
     mapping_max = {
-        'R': (1023,768),
-        'L': (256,768),
-        'F': (768,256),
-        'B': (768,1023)
+        'R': (4092,3072),
+        'L': (1024,3072),
+        'F': (3072,1024),
+        'B': (3072,4092)
     }
     min_val_x, min_val_y = mapping_min[direction]
     max_val_x, max_val_y = mapping_max[direction]
     value_x, value_y, _ = value
-    return hypot((value_x-min_val_x)/(max_val_x-min_val_x), (value_y-min_val_y)/(max_val_y-min_val_y))
+    x_normalized = (value_x - min_val_x) / (max_val_x - min_val_x) if (max_val_x - min_val_x) != 0 else 0
+    y_normalized = (value_y - min_val_y) / (max_val_y - min_val_y) if (max_val_y - min_val_y) != 0 else 0
+    speed = hypot(x_normalized, y_normalized)
+    return round(min(1.0, max(0.0, speed)), 3)
 
 def run():
     joystick = MCP3208_Joystick()
@@ -37,17 +40,17 @@ def run():
         while True:
             value = joystick.read_joystick()
             logger.debug(f"Joystick value: {value}")
-            if 1023 >= value[0] >= 768 >= value[1] >= 256:
+            if value[0] > 3072 and value[1] > 1024 and value[1] < 3072:
                 wheel_queue.put(f'R|{calc_speed(value, "R"):.3f}')
-            elif 0 <= value[0] <= 256 <= value[1] <= 768:
+            elif value[0] < 1024 and value[1] > 1024 and value[1] < 3072:
                 wheel_queue.put(f'L|{calc_speed(value, "L"):.3f}')
-            elif 768 >= value[0] >= 256 >= value[1] >= 0:
+            elif value[0] > 1024 and value[0] < 3072 and value[1] < 1024:
                 wheel_queue.put(f'F|{calc_speed(value, "F"):.3f}')
-            elif 256 <= value[0] <= 768 <= value[1] <= 1023:
+            elif value[0] > 1024 and value[0] < 3072 and value[1] > 3072:
                 wheel_queue.put(f'B|{calc_speed(value, "B"):.3f}')
             else:
                 wheel_queue.put('S|0')
-            time.sleep(0.1)
+            time.sleep(0.01)
     except Exception as e:
         logger.error(f"Error in rocker module: {e}")
     finally:

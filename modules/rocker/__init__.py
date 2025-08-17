@@ -27,8 +27,8 @@ def calc_speed(
     min_val_x, min_val_y = mapping_min[direction]
     max_val_x, max_val_y = mapping_max[direction]
     value_x, value_y, _ = value
-    x_normalized = (value_x - min_val_x) / (max_val_x - min_val_x) if (max_val_x - min_val_x) != 0 else 0
-    y_normalized = (value_y - min_val_y) / (max_val_y - min_val_y) if (max_val_y - min_val_y) != 0 else 0
+    x_normalized = abs(value_x - min_val_x) / (max_val_x - min_val_x) if (max_val_x - min_val_x) != 0 else 0
+    y_normalized = abs(value_y - min_val_y) / (max_val_y - min_val_y) if (max_val_y - min_val_y) != 0 else 0
     speed = hypot(x_normalized, y_normalized)
     return round(min(1.0, max(0.0, speed)), 3)
 

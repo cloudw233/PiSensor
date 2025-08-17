@@ -1,3 +1,4 @@
+from fcntl import F_SEAL_SEAL
 import spidev
 import time
 
@@ -9,7 +10,6 @@ class MCP3208_Joystick:
         self.spi = spidev.SpiDev()
         self.spi.open(0, 0)  # 使用CE0 (GPIO8)
         self.spi.max_speed_hz = 3600000  # 3.6MHz SPI时钟
-        self.button = Button(25)
         
     def read_channel(self, channel):
         """读取MCP3208指定通道的模拟值（0-7）"""
@@ -29,7 +29,7 @@ class MCP3208_Joystick:
         """读取摇杆X/Y轴的值（0-4095）"""
         x_val = self.read_channel(0)  # CH0接X轴
         y_val = self.read_channel(1)  # CH1接Y轴
-        button_state = self.button.is_active
+        button_state = False
         return x_val, y_val, button_state
     
     def close(self):

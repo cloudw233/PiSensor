@@ -13,9 +13,10 @@ def run():
             if not urgent_button.is_active:
                 logger.info("Urgent button pressed.")
                 send_sensor_data("urgent_button", {"value": True})
+                time.sleep(0.5)  # Debounce
             else:
                 send_sensor_data("urgent_button", {"value": False})
-            time.sleep(0.01)  # Debounce
+            time.sleep(0.1)  # Debounce
         except Exception as e:
             logger.error(f"Error in urgent button module: {e}")
 

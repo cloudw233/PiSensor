@@ -9,7 +9,6 @@ from core.builtins.elements import HeartElements
 from core.builtins.message_constructors import MessageChainD
 from core.constants import QueueNames
 from core.message_queue import message_queue_manager
-from core.relay_server import sensor_data_handler
 
 from modules.heart.heart import init_max30102, measure_heart_rate
 

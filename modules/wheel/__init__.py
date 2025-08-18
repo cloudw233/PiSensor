@@ -47,7 +47,6 @@ def wheel_thread(motor_instance):
         except Exception as e:
             logger.error(f"Error in wheel thread: {e}")
             motor_instance.stop()
-        time.sleep(0.01)
 
 def radar_thread(motor_instance):
     """

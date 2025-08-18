@@ -55,7 +55,6 @@ def run():
                 wheel_queue.put(f'B|{calc_speed(value, "B"):.3f}')
             else:
                 wheel_queue.put('S|0')
-            time.sleep(0.01)
     except Exception as e:
         logger.error(f"Error in rocker module: {e}")
     finally:

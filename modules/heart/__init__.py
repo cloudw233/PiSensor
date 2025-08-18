@@ -7,6 +7,7 @@ from loguru import logger
 
 from core.builtins.elements import HeartElements
 from core.builtins.message_constructors import MessageChainD
+from core.constants import QueueNames
 from core.message_queue import message_queue_manager
 from core.relay_server import sensor_data_handler
 
@@ -16,7 +17,8 @@ def heart_thread():
     """
     心率模块的处理线程
     """
-    heart_queue = message_queue_manager.get_queue('heart')
+    heart_queue = message_queue_manager.get_queue(QueueNames.HEART)
+
     
     while True:
         try:
@@ -29,7 +31,7 @@ def heart_thread():
                 logger.info("[Heart]Measuring heart rate...")
                 bpm = measure_heart_rate()
                 logger.debug(f"[Heart]<{bpm}>")
-                sensor_data_handler('heart', str(bpm))
+                heart_queue.put(bpm)
         except queue.Empty:
             continue
         except Exception as e:

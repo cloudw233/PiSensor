@@ -11,8 +11,7 @@ from pathlib import Path
 from loguru import logger
 import time
 
-from core.relay_server import run_relay_server
-from core.forwarding import forward_messages
+from core.forwarding import run_servers
 from modules.wheel.wheel import MotorControl
 
 # 配置loguru
@@ -135,17 +134,12 @@ def main():
             return
 
         # 为每个模块创建线程
-        logger.info(f"Starting {len(runners)} modules")
+        logger.info(f"Starting {len(runners)} modules") 
         
-        logger.info('Starting relay server...')
-        relay_thread = threading.Thread(target=run_relay_server, daemon=True)
-        relay_thread.start()
-        running_threads.append(relay_thread)
-        
-        logger.info('Starting message forwarding service...')
-        forward_thread = threading.Thread(target=forward_messages, daemon=True)
-        forward_thread.start()
-        running_threads.append(forward_thread)
+        logger.info('Starting forwarding and relay servers...')
+        servers_thread = threading.Thread(target=run_servers, daemon=True)
+        servers_thread.start()
+        running_threads.append(servers_thread)
         
         for name, run_func in runners:
             thread = threading.Thread(target=run_module, args=(name, run_func), daemon=True)

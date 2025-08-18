@@ -11,3 +11,4 @@ class QueueNames(Enum):
     LOCATOR = "locator"
     SMBUS = "smbus"
     URGENT_BUTTON = "urgent_button"
+    SENSOR_DATA = "sensor_data"

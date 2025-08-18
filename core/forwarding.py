@@ -73,9 +73,11 @@ def sensor_data_aggregator():
         QueueNames.SMBUS: message_queue_manager.get_queue(QueueNames.SMBUS),
         QueueNames.LOCATOR: message_queue_manager.get_queue(QueueNames.LOCATOR),
         QueueNames.HEART: message_queue_manager.get_queue(QueueNames.HEART),
+        QueueNames.URGENT_BUTTON: message_queue_manager.get_queue(QueueNames.URGENT_BUTTON),
     }
 
     while True:
+        data_updated = False
         for queue_name, queue in queues.items():
             try:
                 data = queue.get(timeout=0.01)
@@ -92,9 +94,18 @@ def sensor_data_aggregator():
                         sensor.gps = data
                     elif queue_name == QueueNames.HEART:
                         sensor.heart_data = data
-                message_queue_manager.send_message(QueueNames.SENSOR_DATA, MessageChain([account, sensor]))
+                    elif queue_name == QueueNames.URGENT_BUTTON:
+                        sensor.urgent_button = data.get('value', False)
+                data_updated = True
+                logger.debug(f"Updated sensor data from {queue_name}: {data}")
             except Exception as e:
                 pass
+        
+        # 只有在有数据更新时才发送传感器数据
+        if data_updated:
+            message_queue_manager.send_message(QueueNames.SENSOR_DATA, MessageChain([account, sensor]))
+            logger.debug("Sent aggregated sensor data to SENSOR_DATA queue")
+        
         time.sleep(0.1)
 
 
@@ -130,14 +141,15 @@ def forward_messages():
                 try:
                     sensor_data = sensor_data_queue.get(timeout=0.01)
                     if sensor_data is not None:
-                        remote.send_text(sensor_data)
-
+                        remote.send(sensor_data)
+                        logger.debug(f"Sent sensor data to remote: {sensor_data}")
                 except:
                     pass
                 
                 # 转发消息
                 if recv_relay is not None:
-                    remote.send_text(recv_relay)
+                    remote.send(recv_relay)
+                    logger.debug(f"Sent relay response to remote: {recv_relay}")
                 
                 # 短暂休眠以避免过度占用CPU
                 time.sleep(0.01)
